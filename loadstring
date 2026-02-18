@@ -1,0 +1,1 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/o1nb/drip/main/NewMainScript.lua", true))()
