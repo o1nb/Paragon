@@ -2149,7 +2149,15 @@ run(function()
 					debug.setupvalue(bedwars.ScytheController.playLocalAnimation, 3, fake)
 
 					task.spawn(function()
-    local wrist = gameCamera.Viewmodel.RightHand.RightWrist
+   local wrist
+repeat
+    task.wait()
+    if gameCamera and gameCamera.Viewmodel
+    and gameCamera.Viewmodel:FindFirstChild("RightHand")
+    and gameCamera.Viewmodel.RightHand:FindFirstChild("RightWrist") then
+        wrist = gameCamera.Viewmodel.RightHand.RightWrist
+    end
+until wrist or not Killaura.Enabled
     armC0 = armC0 or wrist.C0
 
     local animPlaying = false
