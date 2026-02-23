@@ -621,753 +621,435 @@ end
 -- ═══════════════════════════════════════════════════════════════
 -- AimAssist (Visual only - camera smoothing, no hit manipulation)
 -- ═══════════════════════════════════════════════════════════════
-run(function()
-	local AimAssist
-	local Targets
-	local Sort
-	local AimSpeed
-	local Distance
-	local AngleSlider
-	local ClickAim
 
-	AimAssist = vape.Categories.Combat:CreateModule({
-		Name = 'AimAssist',
+run(function()
+	local HitBoxes
+	local Targets
+	local TargetPart
+	local Expand
+	local modified = {}
+	
+	HitBoxes = vape.Categories.Blatant:CreateModule({
+		Name = 'HitBoxes',
 		Function = function(callback)
 			if callback then
-				AimAssist:Clean(runService.Heartbeat:Connect(function(dt)
-					if entitylib.isAlive and inputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
-						local ent = entitylib.EntityPosition({
-							Range = Distance.Value,
-							Part = 'Head',
-							Wallcheck = Targets.Walls.Enabled,
-							Players = Targets.Players.Enabled,
-							NPCs = Targets.NPCs.Enabled,
-							Sort = sortmethods[Sort.Value]
-						})
-
-						if ent then
-							local delta = (ent.Head.Position - entitylib.character.RootPart.Position)
-							local localfacing = entitylib.character.RootPart.CFrame.LookVector * Vector3.new(1, 0, 1)
-							local angle = math.acos(localfacing:Dot((delta * Vector3.new(1, 0, 1)).Unit))
-							if angle >= (math.rad(AngleSlider.Value) / 2) then return end
-							targetinfo.Targets[ent] = tick() + 1
-							gameCamera.CFrame = gameCamera.CFrame:Lerp(
-								CFrame.lookAt(gameCamera.CFrame.p, ent.Head.Position),
-								AimSpeed.Value * dt
-							)
+				repeat
+					for _, v in entitylib.List do
+						if v.Targetable then
+							if not Targets.Players.Enabled and v.Player then continue end
+							if not Targets.NPCs.Enabled and v.NPC then continue end
+							local part = v[TargetPart.Value]
+							if not modified[part] then
+								modified[part] = part.Size
+							end
+							part.Size = modified[part] + Vector3.new(Expand.Value, Expand.Value, Expand.Value)
 						end
 					end
-				end))
+					task.wait()
+				until not HitBoxes.Enabled
+			else
+				for i, v in modified do
+					i.Size = v
+				end
+				table.clear(modified)
 			end
 		end,
-		Tooltip = 'Smoothly aims camera toward nearest enemy (visual camera assist only)'
+		Tooltip = 'Expands entities hitboxes'
 	})
-	Targets = AimAssist:CreateTargets({
-		Players = true,
-		Walls = true
+	Targets = HitBoxes:CreateTargets({Players = true})
+	TargetPart = HitBoxes:CreateDropdown({
+		Name = 'Part',
+		List = {'RootPart', 'Head'}
 	})
-	Sort = AimAssist:CreateDropdown({
-		Name = 'Target Mode',
-		List = {'Distance', 'Health', 'Angle', 'Weapon'}
-	})
-	AimSpeed = AimAssist:CreateSlider({
-		Name = 'Aim Speed',
-		Min = 1,
-		Max = 20,
-		Default = 6
-	})
-	Distance = AimAssist:CreateSlider({
-		Name = 'Distance',
-		Min = 1,
-		Max = 200,
-		Default = 100,
-		Suffx = function(val)
+	Expand = HitBoxes:CreateSlider({
+		Name = 'Expand amount',
+		Min = 0,
+		Max = 50,
+		Decimal = 10,
+		Suffix = function(val)
 			return val == 1 and 'stud' or 'studs'
 		end
 	})
-	AngleSlider = AimAssist:CreateSlider({
-		Name = 'Max angle',
+end)
+local mouseClicked
+run(function()
+	local SilentAim
+	local Target
+	local Mode
+	local Method
+	local MethodRay
+	local IgnoredScripts
+	local Range
+	local HitChance
+	local HeadshotChance
+	local AutoFire
+	local AutoFireShootDelay
+	local AutoFireMode
+	local AutoFirePosition
+	local Wallbang
+	local CircleColor
+	local CircleTransparency
+	local CircleFilled
+	local CircleObject
+	local Projectile
+	local ProjectileSpeed
+	local ProjectileGravity
+	local RaycastWhitelist = RaycastParams.new()
+	RaycastWhitelist.FilterType = Enum.RaycastFilterType.Include
+	local ProjectileRaycast = RaycastParams.new()
+	ProjectileRaycast.RespectCanCollide = true
+	local fireoffset, rand, delayCheck = CFrame.identity, Random.new(), tick()
+	local oldnamecall, oldray
+
+	local function getTarget(origin, obj)
+		if rand.NextNumber(rand, 0, 100) > (AutoFire.Enabled and 100 or HitChance.Value) then return end
+		local targetPart = (rand.NextNumber(rand, 0, 100) < (AutoFire.Enabled and 100 or HeadshotChance.Value)) and 'Head' or 'RootPart'
+		local ent = entitylib['Entity'..Mode.Value]({
+			Range = Range.Value,
+			Wallcheck = Target.Walls.Enabled and (obj or true) or nil,
+			Part = targetPart,
+			Origin = origin,
+			Players = Target.Players.Enabled,
+			NPCs = Target.NPCs.Enabled
+		})
+
+		if ent then
+			targetinfo.Targets[ent] = tick() + 1
+			if Projectile.Enabled then
+				ProjectileRaycast.FilterDescendantsInstances = {gameCamera, ent.Character}
+				ProjectileRaycast.CollisionGroup = ent[targetPart].CollisionGroup
+			end
+		end
+
+		return ent, ent and ent[targetPart], origin
+	end
+
+	local Hooks = {
+		FindPartOnRayWithIgnoreList = function(args)
+			local ent, targetPart, origin = getTarget(args[1].Origin, {args[2]})
+			if not ent then return end
+			if Wallbang.Enabled then
+				return {targetPart, targetPart.Position, targetPart.GetClosestPointOnSurface(targetPart, origin), targetPart.Material}
+			end
+			args[1] = Ray.new(origin, CFrame.lookAt(origin, targetPart.Position).LookVector * args[1].Direction.Magnitude)
+		end,
+		Raycast = function(args)
+			if MethodRay.Value ~= 'All' and args[3] and args[3].FilterType ~= Enum.RaycastFilterType[MethodRay.Value] then return end
+			local ent, targetPart, origin = getTarget(args[1])
+			if not ent then return end
+			args[2] = CFrame.lookAt(origin, targetPart.Position).LookVector * args[2].Magnitude
+			if Wallbang.Enabled then
+				RaycastWhitelist.FilterDescendantsInstances = {targetPart}
+				args[3] = RaycastWhitelist
+			end
+		end,
+		ScreenPointToRay = function(args)
+			local ent, targetPart, origin = getTarget(gameCamera.CFrame.Position)
+			if not ent then return end
+			local direction = CFrame.lookAt(origin, targetPart.Position)
+			if Projectile.Enabled then
+				local calc = prediction.SolveTrajectory(origin, ProjectileSpeed.Value, ProjectileGravity.Value, targetPart.Position, targetPart.Velocity, workspace.Gravity, ent.HipHeight, nil, ProjectileRaycast)
+				if not calc then return end
+				direction = CFrame.lookAt(origin, calc)
+			end
+			return {Ray.new(origin + (args[3] and direction.LookVector * args[3] or Vector3.zero), direction.LookVector)}
+		end,
+		Ray = function(args)
+			local ent, targetPart, origin = getTarget(args[1])
+			if not ent then return end
+			if Projectile.Enabled then
+				local calc = prediction.SolveTrajectory(origin, ProjectileSpeed.Value, ProjectileGravity.Value, targetPart.Position, targetPart.Velocity, workspace.Gravity, ent.HipHeight, nil, ProjectileRaycast)
+				if not calc then return end
+				args[2] = CFrame.lookAt(origin, calc).LookVector * args[2].Magnitude
+			else
+				args[2] = CFrame.lookAt(origin, targetPart.Position).LookVector * args[2].Magnitude
+			end
+		end
+	}
+	Hooks.FindPartOnRayWithWhitelist = Hooks.FindPartOnRayWithIgnoreList
+	Hooks.FindPartOnRay = Hooks.FindPartOnRayWithIgnoreList
+	Hooks.ViewportPointToRay = Hooks.ScreenPointToRay
+
+	SilentAim = vape.Categories.Combat:CreateModule({
+		Name = 'SilentAim',
+		Function = function(callback)
+			if CircleObject then
+				CircleObject.Visible = callback and Mode.Value == 'Mouse'
+			end
+			if callback then
+				if Method.Value == 'Ray' then
+					oldray = hookfunction(Ray.new, function(origin, direction)
+						if checkcaller() then
+							return oldray(origin, direction)
+						end
+						local calling = getcallingscript()
+
+						if calling then
+							local list = #IgnoredScripts.ListEnabled > 0 and IgnoredScripts.ListEnabled or {'ControlScript', 'ControlModule'}
+							if table.find(list, tostring(calling)) then
+								return oldray(origin, direction)
+							end
+						end
+
+						local args = {origin, direction}
+						Hooks.Ray(args)
+						return oldray(unpack(args))
+					end)
+				else
+					oldnamecall = hookmetamethod(game, '__namecall', function(...)
+						if getnamecallmethod() ~= Method.Value then
+							return oldnamecall(...)
+						end
+						if checkcaller() then
+							return oldnamecall(...)
+						end
+
+						local calling = getcallingscript()
+						if calling then
+							local list = #IgnoredScripts.ListEnabled > 0 and IgnoredScripts.ListEnabled or {'ControlScript', 'ControlModule'}
+							if table.find(list, tostring(calling)) then
+								return oldnamecall(...)
+							end
+						end
+
+						local self, args = ..., {select(2, ...)}
+						local res = Hooks[Method.Value](args)
+						if res then
+							return unpack(res)
+						end
+						return oldnamecall(self, unpack(args))
+					end)
+				end
+
+				repeat
+					if CircleObject then
+						CircleObject.Position = inputService:GetMouseLocation()
+					end
+					if AutoFire.Enabled then
+						local origin = AutoFireMode.Value == 'Camera' and gameCamera.CFrame or entitylib.isAlive and entitylib.character.RootPart.CFrame or CFrame.identity
+						local ent = entitylib['Entity'..Mode.Value]({
+							Range = Range.Value,
+							Wallcheck = Target.Walls.Enabled or nil,
+							Part = 'Head',
+							Origin = (origin * fireoffset).Position,
+							Players = Target.Players.Enabled,
+							NPCs = Target.NPCs.Enabled
+						})
+
+						if mouse1click and (isrbxactive or iswindowactive)() then
+							if ent and canClick() then
+								if delayCheck < tick() then
+									if mouseClicked then
+										mouse1release()
+										delayCheck = tick() + AutoFireShootDelay.Value
+									else
+										mouse1press()
+									end
+									mouseClicked = not mouseClicked
+								end
+							else
+								if mouseClicked then
+									mouse1release()
+								end
+								mouseClicked = false
+							end
+						end
+					end
+					task.wait()
+				until not SilentAim.Enabled
+			else
+				if oldnamecall then
+					hookmetamethod(game, '__namecall', oldnamecall)
+				end
+				if oldray then
+					hookfunction(Ray.new, oldray)
+				end
+				oldnamecall, oldray = nil, nil
+			end
+		end,
+		ExtraText = function()
+			return Method.Value:gsub('FindPartOnRay', '')
+		end,
+		Tooltip = 'Silently adjusts your aim towards the enemy'
+	})
+	Target = SilentAim:CreateTargets({Players = true})
+	Mode = SilentAim:CreateDropdown({
+		Name = 'Mode',
+		List = {'Mouse', 'Position'},
+		Function = function(val)
+			if CircleObject then
+				CircleObject.Visible = SilentAim.Enabled and val == 'Mouse'
+			end
+		end,
+		Tooltip = 'Mouse - Checks for entities near the mouses position\nPosition - Checks for entities near the local character'
+	})
+	Method = SilentAim:CreateDropdown({
+		Name = 'Method',
+		List = {'FindPartOnRay', 'FindPartOnRayWithIgnoreList', 'FindPartOnRayWithWhitelist', 'ScreenPointToRay', 'ViewportPointToRay', 'Raycast', 'Ray'},
+		Function = function(val)
+			if SilentAim.Enabled then
+				SilentAim:Toggle()
+				SilentAim:Toggle()
+			end
+			MethodRay.Object.Visible = val == 'Raycast'
+		end,
+		Tooltip = 'FindPartOnRay* - Deprecated methods of raycasting used in old games\nRaycast - The modern raycast method\nPointToRay - Method to generate a ray from screen coords\nRay - Hooking Ray.new'
+	})
+	MethodRay = SilentAim:CreateDropdown({
+		Name = 'Raycast Type',
+		List = {'All', 'Exclude', 'Include'},
+		Darker = true,
+		Visible = false
+	})
+	IgnoredScripts = SilentAim:CreateTextList({Name = 'Ignored Scripts'})
+	Range = SilentAim:CreateSlider({
+		Name = 'Range',
 		Min = 1,
-		Max = 360,
-		Default = 90
-	})
-	ClickAim = AimAssist:CreateToggle({
-		Name = 'Click Aim',
-		Default = true
-	})
-end)
-
--- ═══════════════════════════════════════════════════════════════
--- ESP Module
--- ═══════════════════════════════════════════════════════════════
-run(function()
-	local ESP
-	local ESPTargets
-	local ShowWeapon
-	local ShowDistance
-	local ShowHealth
-	local ESPColor
-	local EnemyColor
-	local FriendColor
-	local MaxDist
-	local TextSize
-	local espObjects = {}
-
-	local function createESP(entity)
-		local billboard = Instance.new('BillboardGui')
-		billboard.Name = 'VapeESP'
-		billboard.AlwaysOnTop = true
-		billboard.Size = UDim2.fromOffset(200, 50)
-		billboard.StudsOffset = Vector3.new(0, 3, 0)
-		billboard.LightInfluence = 0
-		billboard.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
-		local nameLabel = Instance.new('TextLabel')
-		nameLabel.Name = 'Name'
-		nameLabel.Size = UDim2.new(1, 0, 0, 16)
-		nameLabel.BackgroundTransparency = 1
-		nameLabel.TextColor3 = Color3.new(1, 1, 1)
-		nameLabel.TextStrokeTransparency = 0.5
-		nameLabel.TextStrokeColor3 = Color3.new(0, 0, 0)
-		nameLabel.Font = Enum.Font.GothamBold
-		nameLabel.TextSize = 13
-		nameLabel.Parent = billboard
-
-		local healthLabel = Instance.new('TextLabel')
-		healthLabel.Name = 'Health'
-		healthLabel.Size = UDim2.new(1, 0, 0, 14)
-		healthLabel.Position = UDim2.fromOffset(0, 16)
-		healthLabel.BackgroundTransparency = 1
-		healthLabel.TextColor3 = Color3.new(0, 1, 0)
-		healthLabel.TextStrokeTransparency = 0.5
-		healthLabel.TextStrokeColor3 = Color3.new(0, 0, 0)
-		healthLabel.Font = Enum.Font.Gotham
-		healthLabel.TextSize = 11
-		healthLabel.Parent = billboard
-
-		local weaponLabel = Instance.new('TextLabel')
-		weaponLabel.Name = 'Weapon'
-		weaponLabel.Size = UDim2.new(1, 0, 0, 14)
-		weaponLabel.Position = UDim2.fromOffset(0, 30)
-		weaponLabel.BackgroundTransparency = 1
-		weaponLabel.TextColor3 = Color3.new(1, 0.8, 0.2)
-		weaponLabel.TextStrokeTransparency = 0.5
-		weaponLabel.TextStrokeColor3 = Color3.new(0, 0, 0)
-		weaponLabel.Font = Enum.Font.Gotham
-		weaponLabel.TextSize = 11
-		weaponLabel.Parent = billboard
-
-		billboard.Adornee = entity.Head
-		billboard.Parent = coreGui
-
-		espObjects[entity] = {
-			billboard = billboard,
-			nameLabel = nameLabel,
-			healthLabel = healthLabel,
-			weaponLabel = weaponLabel
-		}
-	end
-
-	local function removeESP(entity)
-		if espObjects[entity] then
-			espObjects[entity].billboard:Destroy()
-			espObjects[entity] = nil
-		end
-	end
-
-	local function updateESP()
-		if not entitylib.isAlive then return end
-		local selfPos = entitylib.character.RootPart.Position
-
-		for entity, obj in espObjects do
-			if not entity.RootPart or not entity.RootPart.Parent then
-				removeESP(entity)
-				continue
-			end
-
-			local dist = (entity.RootPart.Position - selfPos).Magnitude
-			if dist > MaxDist.Value then
-				obj.billboard.Enabled = false
-				continue
-			end
-
-			obj.billboard.Enabled = true
-
-			-- Color based on team
-			local isEnemy = entity.Targetable
-			local espColor = isEnemy and EnemyColor:GetColor() or FriendColor:GetColor()
-			if entity.Friend then
-				espColor = Color3.new(0, 0.6, 1)
-			end
-			if entity.Target then
-				espColor = Color3.new(1, 0.2, 0.2)
-			end
-
-			-- Name
-			local name = entity.Player and entity.Player.DisplayName or 'Unknown'
-			local distText = ShowDistance.Enabled and string.format(' [%dm]', math.floor(dist)) or ''
-			obj.nameLabel.Text = name .. distText
-			obj.nameLabel.TextColor3 = espColor
-			obj.nameLabel.TextSize = TextSize.Value
-
-			-- Health
-			if ShowHealth.Enabled then
-				local hp, maxhp = entity.Health, entity.MaxHealth
-				local pct = math.clamp(hp / maxhp, 0, 1)
-				obj.healthLabel.Text = string.format('%d/%d', math.floor(hp), math.floor(maxhp))
-				obj.healthLabel.TextColor3 = Color3.new(1 - pct, pct, 0)
-				obj.healthLabel.Visible = true
-			else
-				obj.healthLabel.Visible = false
-			end
-
-			-- Weapon
-			if ShowWeapon.Enabled then
-				obj.weaponLabel.Text = entity.Weapon or getPlayerWeapon(entity.Player)
-				obj.weaponLabel.Visible = true
-			else
-				obj.weaponLabel.Visible = false
-			end
-		end
-	end
-
-	ESP = vape.Categories.Render:CreateModule({
-		Name = 'ESP',
-		Function = function(callback)
-			if callback then
-				-- Create ESP for existing entities
-				for _, v in entitylib.List do
-					createESP(v)
-				end
-
-				ESP:Clean(entitylib.Events.EntityAdded:Connect(function(ent)
-					createESP(ent)
-				end))
-
-				ESP:Clean(entitylib.Events.EntityRemoved:Connect(function(ent)
-					removeESP(ent)
-				end))
-
-				ESP:Clean(runService.RenderStepped:Connect(updateESP))
-			else
-				for entity in espObjects do
-					removeESP(entity)
-				end
-				table.clear(espObjects)
-			end
-		end,
-		Tooltip = 'Shows player names, health, weapons, and distance through walls'
-	})
-	ESPTargets = ESP:CreateTargets({
-		Players = true,
-		Walls = true
-	})
-	ShowWeapon = ESP:CreateToggle({
-		Name = 'Show Weapon',
-		Default = true
-	})
-	ShowDistance = ESP:CreateToggle({
-		Name = 'Show Distance',
-		Default = true
-	})
-	ShowHealth = ESP:CreateToggle({
-		Name = 'Show Health',
-		Default = true
-	})
-	TextSize = ESP:CreateSlider({
-		Name = 'Text Size',
-		Min = 8,
-		Max = 20,
-		Default = 13
-	})
-	MaxDist = ESP:CreateSlider({
-		Name = 'Max Distance',
-		Min = 50,
 		Max = 1000,
-		Default = 500,
-		Suffx = function(val)
-			return 'studs'
-		end
-	})
-	EnemyColor = ESP:CreateColorSlider({
-		Name = 'Enemy Color',
-		Default = Color3.fromRGB(255, 50, 50)
-	})
-	FriendColor = ESP:CreateColorSlider({
-		Name = 'Team Color',
-		Default = Color3.fromRGB(50, 255, 50)
-	})
-end)
-
--- ═══════════════════════════════════════════════════════════════
--- Chams Module (Character Highlights)
--- ═══════════════════════════════════════════════════════════════
-run(function()
-	local Chams
-	local ChamsTargets
-	local ChamTransparency
-	local ChamEnemyColor
-	local ChamFriendColor
-	local MaxDist
-	local chamObjects = {}
-
-	local function createChams(entity)
-		local highlight = Instance.new('Highlight')
-		highlight.Name = 'VapeChams'
-		highlight.FillTransparency = 0.5
-		highlight.OutlineTransparency = 0
-		highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-		highlight.Adornee = entity.Character
-		highlight.Parent = coreGui
-
-		chamObjects[entity] = highlight
-	end
-
-	local function removeChams(entity)
-		if chamObjects[entity] then
-			chamObjects[entity]:Destroy()
-			chamObjects[entity] = nil
-		end
-	end
-
-	local function updateChams()
-		if not entitylib.isAlive then return end
-		local selfPos = entitylib.character.RootPart.Position
-
-		for entity, highlight in chamObjects do
-			if not entity.RootPart or not entity.RootPart.Parent then
-				removeChams(entity)
-				continue
-			end
-
-			local dist = (entity.RootPart.Position - selfPos).Magnitude
-			if dist > MaxDist.Value then
-				highlight.Enabled = false
-				continue
-			end
-
-			highlight.Enabled = true
-			highlight.FillTransparency = ChamTransparency.Value / 100
-
-			local isEnemy = entity.Targetable
-			local chamColor = isEnemy and ChamEnemyColor:GetColor() or ChamFriendColor:GetColor()
-			if entity.Friend then
-				chamColor = Color3.new(0, 0.6, 1)
-			end
-			if entity.Target then
-				chamColor = Color3.new(1, 0.2, 0.2)
-			end
-
-			highlight.FillColor = chamColor
-			highlight.OutlineColor = chamColor
-		end
-	end
-
-	Chams = vape.Categories.Render:CreateModule({
-		Name = 'Chams',
-		Function = function(callback)
-			if callback then
-				for _, v in entitylib.List do
-					createChams(v)
-				end
-
-				Chams:Clean(entitylib.Events.EntityAdded:Connect(function(ent)
-					createChams(ent)
-				end))
-
-				Chams:Clean(entitylib.Events.EntityRemoved:Connect(function(ent)
-					removeChams(ent)
-				end))
-
-				Chams:Clean(runService.RenderStepped:Connect(updateChams))
-			else
-				for entity in chamObjects do
-					removeChams(entity)
-				end
-				table.clear(chamObjects)
+		Default = 150,
+		Function = function(val)
+			if CircleObject then
+				CircleObject.Radius = val
 			end
 		end,
-		Tooltip = 'Highlights players through walls with colored outlines'
+		Suffix = function(val)
+			return val == 1 and 'stud' or 'studs'
+		end
 	})
-	ChamsTargets = Chams:CreateTargets({
-		Players = true,
-		Walls = true
-	})
-	ChamTransparency = Chams:CreateSlider({
-		Name = 'Fill Transparency',
+	HitChance = SilentAim:CreateSlider({
+		Name = 'Hit Chance',
 		Min = 0,
 		Max = 100,
-		Default = 50
+		Default = 85,
+		Suffix = '%'
 	})
-	MaxDist = Chams:CreateSlider({
-		Name = 'Max Distance',
-		Min = 50,
-		Max = 1000,
-		Default = 500,
-		Suffx = function(val)
-			return 'studs'
-		end
+	HeadshotChance = SilentAim:CreateSlider({
+		Name = 'Headshot Chance',
+		Min = 0,
+		Max = 100,
+		Default = 65,
+		Suffix = '%'
 	})
-	ChamEnemyColor = Chams:CreateColorSlider({
-		Name = 'Enemy Color',
-		Default = Color3.fromRGB(255, 50, 50)
-	})
-	ChamFriendColor = Chams:CreateColorSlider({
-		Name = 'Team Color',
-		Default = Color3.fromRGB(50, 255, 50)
-	})
-end)
-
--- ═══════════════════════════════════════════════════════════════
--- Tracers Module
--- ═══════════════════════════════════════════════════════════════
-run(function()
-	local Tracers
-	local TracerTargets
-	local TracerOrigin
-	local TracerThickness
-	local TracerEnemyColor
-	local TracerFriendColor
-	local MaxDist
-	local tracerObjects = {}
-
-	local function createTracer(entity)
-		local line = Drawing.new('Line')
-		line.Visible = false
-		line.Thickness = 1
-		line.Transparency = 1
-		tracerObjects[entity] = line
-	end
-
-	local function removeTracer(entity)
-		if tracerObjects[entity] then
-			tracerObjects[entity]:Remove()
-			tracerObjects[entity] = nil
-		end
-	end
-
-	local function updateTracers()
-		if not entitylib.isAlive then return end
-		local selfPos = entitylib.character.RootPart.Position
-		local viewportSize = gameCamera.ViewportSize
-
-		for entity, line in tracerObjects do
-			if not entity.RootPart or not entity.RootPart.Parent then
-				line.Visible = false
-				continue
-			end
-
-			local dist = (entity.RootPart.Position - selfPos).Magnitude
-			if dist > MaxDist.Value then
-				line.Visible = false
-				continue
-			end
-
-			local screenPos, onScreen = gameCamera:WorldToViewportPoint(entity.RootPart.Position)
-			if not onScreen then
-				line.Visible = false
-				continue
-			end
-
-			line.Visible = true
-			line.Thickness = TracerThickness.Value
-
-			-- Origin point
-			local origin
-			if TracerOrigin.Value == 'Bottom' then
-				origin = Vector2.new(viewportSize.X / 2, viewportSize.Y)
-			elseif TracerOrigin.Value == 'Center' then
-				origin = Vector2.new(viewportSize.X / 2, viewportSize.Y / 2)
-			else -- Top
-				origin = Vector2.new(viewportSize.X / 2, 0)
-			end
-
-			line.From = origin
-			line.To = Vector2.new(screenPos.X, screenPos.Y)
-
-			local isEnemy = entity.Targetable
-			local tracerColor = isEnemy and TracerEnemyColor:GetColor() or TracerFriendColor:GetColor()
-			if entity.Friend then
-				tracerColor = Color3.new(0, 0.6, 1)
-			end
-			if entity.Target then
-				tracerColor = Color3.new(1, 0.2, 0.2)
-			end
-			line.Color = tracerColor
-		end
-	end
-
-	Tracers = vape.Categories.Render:CreateModule({
-		Name = 'Tracers',
+	AutoFire = SilentAim:CreateToggle({
+		Name = 'AutoFire',
 		Function = function(callback)
-			if callback then
-				for _, v in entitylib.List do
-					createTracer(v)
-				end
-
-				Tracers:Clean(entitylib.Events.EntityAdded:Connect(function(ent)
-					createTracer(ent)
-				end))
-
-				Tracers:Clean(entitylib.Events.EntityRemoved:Connect(function(ent)
-					removeTracer(ent)
-				end))
-
-				Tracers:Clean(runService.RenderStepped:Connect(updateTracers))
-			else
-				for entity in tracerObjects do
-					removeTracer(entity)
-				end
-				table.clear(tracerObjects)
-			end
-		end,
-		Tooltip = 'Draws lines from screen to player positions'
+			AutoFireShootDelay.Object.Visible = callback
+			AutoFireMode.Object.Visible = callback
+			AutoFirePosition.Object.Visible = callback
+		end
 	})
-	TracerTargets = Tracers:CreateTargets({
-		Players = true,
-		Walls = true
+	AutoFireShootDelay = SilentAim:CreateSlider({
+		Name = 'Next Shot Delay',
+		Min = 0,
+		Max = 1,
+		Decimal = 100,
+		Visible = false,
+		Darker = true,
+		Suffix = function(val)
+			return val == 1 and 'second' or 'seconds'
+		end
 	})
-	TracerOrigin = Tracers:CreateDropdown({
+	AutoFireMode = SilentAim:CreateDropdown({
 		Name = 'Origin',
-		List = {'Bottom', 'Center', 'Top'}
+		List = {'RootPart', 'Camera'},
+		Visible = false,
+		Darker = true,
+		Tooltip = 'Determines the position to check for before shooting'
 	})
-	TracerThickness = Tracers:CreateSlider({
-		Name = 'Thickness',
-		Min = 1,
-		Max = 5,
-		Default = 1
-	})
-	MaxDist = Tracers:CreateSlider({
-		Name = 'Max Distance',
-		Min = 50,
-		Max = 1000,
-		Default = 500,
-		Suffx = function(val)
-			return 'studs'
-		end
-	})
-	TracerEnemyColor = Tracers:CreateColorSlider({
-		Name = 'Enemy Color',
-		Default = Color3.fromRGB(255, 50, 50)
-	})
-	TracerFriendColor = Tracers:CreateColorSlider({
-		Name = 'Team Color',
-		Default = Color3.fromRGB(50, 255, 50)
-	})
-end)
-
--- ═══════════════════════════════════════════════════════════════
--- Nametags Module (Custom styled nametags)
--- ═══════════════════════════════════════════════════════════════
-run(function()
-	local Nametags
-	local NametagTargets
-	local ShowWeapon
-	local ShowHealth
-	local ShowHealthBar
-	local NametagScale
-	local MaxDist
-	local nametagObjects = {}
-
-	local function createNametag(entity)
-		local billboard = Instance.new('BillboardGui')
-		billboard.Name = 'VapeNametag'
-		billboard.AlwaysOnTop = true
-		billboard.Size = UDim2.fromOffset(200, 48)
-		billboard.StudsOffset = Vector3.new(0, 2.5, 0)
-		billboard.LightInfluence = 0
-		billboard.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
-		local frame = Instance.new('Frame')
-		frame.Name = 'Container'
-		frame.Size = UDim2.new(1, 0, 1, 0)
-		frame.BackgroundColor3 = Color3.new(0, 0, 0)
-		frame.BackgroundTransparency = 0.4
-		frame.Parent = billboard
-
-		local corner = Instance.new('UICorner')
-		corner.CornerRadius = UDim.new(0, 4)
-		corner.Parent = frame
-
-		local nameLabel = Instance.new('TextLabel')
-		nameLabel.Name = 'Name'
-		nameLabel.Size = UDim2.new(1, -8, 0, 16)
-		nameLabel.Position = UDim2.fromOffset(4, 2)
-		nameLabel.BackgroundTransparency = 1
-		nameLabel.TextColor3 = Color3.new(1, 1, 1)
-		nameLabel.Font = Enum.Font.GothamBold
-		nameLabel.TextSize = 12
-		nameLabel.TextXAlignment = Enum.TextXAlignment.Left
-		nameLabel.Parent = frame
-
-		local healthBar = Instance.new('Frame')
-		healthBar.Name = 'HealthBarBG'
-		healthBar.Size = UDim2.new(1, -8, 0, 4)
-		healthBar.Position = UDim2.new(0, 4, 1, -8)
-		healthBar.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
-		healthBar.BorderSizePixel = 0
-		healthBar.Parent = frame
-
-		local healthBarCorner = Instance.new('UICorner')
-		healthBarCorner.CornerRadius = UDim.new(0, 2)
-		healthBarCorner.Parent = healthBar
-
-		local healthFill = Instance.new('Frame')
-		healthFill.Name = 'Fill'
-		healthFill.Size = UDim2.new(1, 0, 1, 0)
-		healthFill.BackgroundColor3 = Color3.new(0, 1, 0)
-		healthFill.BorderSizePixel = 0
-		healthFill.Parent = healthBar
-
-		local healthFillCorner = Instance.new('UICorner')
-		healthFillCorner.CornerRadius = UDim.new(0, 2)
-		healthFillCorner.Parent = healthFill
-
-		local weaponLabel = Instance.new('TextLabel')
-		weaponLabel.Name = 'Weapon'
-		weaponLabel.Size = UDim2.new(1, -8, 0, 14)
-		weaponLabel.Position = UDim2.fromOffset(4, 18)
-		weaponLabel.BackgroundTransparency = 1
-		weaponLabel.TextColor3 = Color3.new(0.8, 0.8, 0.8)
-		weaponLabel.Font = Enum.Font.Gotham
-		weaponLabel.TextSize = 10
-		weaponLabel.TextXAlignment = Enum.TextXAlignment.Left
-		weaponLabel.Parent = frame
-
-		billboard.Adornee = entity.Head
-		billboard.Parent = coreGui
-
-		-- Hide default nametag
-		pcall(function()
-			if entity.Character:FindFirstChild('NameTag') then
-				entity.Character.NameTag.Enabled = false
-			end
-		end)
-
-		nametagObjects[entity] = {
-			billboard = billboard,
-			frame = frame,
-			nameLabel = nameLabel,
-			healthBar = healthBar,
-			healthFill = healthFill,
-			weaponLabel = weaponLabel
-		}
-	end
-
-	local function removeNametag(entity)
-		if nametagObjects[entity] then
-			nametagObjects[entity].billboard:Destroy()
-			-- Restore default nametag
-			pcall(function()
-				if entity.Character and entity.Character:FindFirstChild('NameTag') then
-					entity.Character.NameTag.Enabled = true
-				end
+	AutoFirePosition = SilentAim:CreateTextBox({
+		Name = 'Offset',
+		Function = function()
+			local suc, res = pcall(function()
+				return CFrame.new(unpack(AutoFirePosition.Value:split(',')))
 			end)
-			nametagObjects[entity] = nil
-		end
-	end
-
-	local function updateNametags()
-		if not entitylib.isAlive then return end
-		local selfPos = entitylib.character.RootPart.Position
-
-		for entity, obj in nametagObjects do
-			if not entity.RootPart or not entity.RootPart.Parent then
-				removeNametag(entity)
-				continue
-			end
-
-			local dist = (entity.RootPart.Position - selfPos).Magnitude
-			if dist > MaxDist.Value then
-				obj.billboard.Enabled = false
-				continue
-			end
-
-			obj.billboard.Enabled = true
-
-			-- Scale based on distance
-			local scale = math.clamp(NametagScale.Value / math.max(dist, 1), 0.3, 2)
-			obj.billboard.Size = UDim2.fromOffset(200 * scale, 48 * scale)
-
-			-- Name
-			local name = entity.Player and entity.Player.DisplayName or 'Unknown'
-			obj.nameLabel.Text = name
-
-			-- Health bar
-			if ShowHealthBar.Enabled then
-				local pct = math.clamp(entity.Health / entity.MaxHealth, 0, 1)
-				obj.healthFill.Size = UDim2.new(pct, 0, 1, 0)
-				obj.healthFill.BackgroundColor3 = Color3.new(1 - pct, pct, 0)
-				obj.healthBar.Visible = true
-			else
-				obj.healthBar.Visible = false
-			end
-
-			-- Weapon
-			if ShowWeapon.Enabled then
-				obj.weaponLabel.Text = entity.Weapon or getPlayerWeapon(entity.Player)
-				obj.weaponLabel.Visible = true
-			else
-				obj.weaponLabel.Visible = false
-			end
-		end
-	end
-
-	Nametags = vape.Categories.Render:CreateModule({
-		Name = 'NameTags',
+			if suc then fireoffset = res end
+		end,
+		Default = '0, 0, 0',
+		Visible = false,
+		Darker = true
+	})
+	Wallbang = SilentAim:CreateToggle({Name = 'Wallbang'})
+	SilentAim:CreateToggle({
+		Name = 'Range Circle',
 		Function = function(callback)
 			if callback then
-				for _, v in entitylib.List do
-					createNametag(v)
-				end
-
-				Nametags:Clean(entitylib.Events.EntityAdded:Connect(function(ent)
-					createNametag(ent)
-				end))
-
-				Nametags:Clean(entitylib.Events.EntityRemoved:Connect(function(ent)
-					removeNametag(ent)
-				end))
-
-				Nametags:Clean(runService.RenderStepped:Connect(updateNametags))
+				CircleObject = Drawing.new('Circle')
+				CircleObject.Filled = CircleFilled.Enabled
+				CircleObject.Color = Color3.fromHSV(CircleColor.Hue, CircleColor.Sat, CircleColor.Value)
+				CircleObject.Position = vape.gui.AbsoluteSize / 2
+				CircleObject.Radius = Range.Value
+				CircleObject.NumSides = 100
+				CircleObject.Transparency = 1 - CircleTransparency.Value
+				CircleObject.Visible = SilentAim.Enabled and Mode.Value == 'Mouse'
 			else
-				for entity in nametagObjects do
-					removeNametag(entity)
-				end
-				table.clear(nametagObjects)
+				pcall(function()
+					CircleObject.Visible = false
+					CircleObject:Remove()
+				end)
+			end
+			CircleColor.Object.Visible = callback
+			CircleTransparency.Object.Visible = callback
+			CircleFilled.Object.Visible = callback
+		end
+	})
+	CircleColor = SilentAim:CreateColorSlider({
+		Name = 'Circle Color',
+		Function = function(hue, sat, val)
+			if CircleObject then
+				CircleObject.Color = Color3.fromHSV(hue, sat, val)
 			end
 		end,
-		Tooltip = 'Custom styled nametags showing player info through walls'
+		Darker = true,
+		Visible = false
 	})
-	NametagTargets = Nametags:CreateTargets({
-		Players = true,
-		Walls = true
+	CircleTransparency = SilentAim:CreateSlider({
+		Name = 'Transparency',
+		Min = 0,
+		Max = 1,
+		Decimal = 10,
+		Default = 0.5,
+		Function = function(val)
+			if CircleObject then
+				CircleObject.Transparency = 1 - val
+			end
+		end,
+		Darker = true,
+		Visible = false
 	})
-	ShowWeapon = Nametags:CreateToggle({
-		Name = 'Show Weapon',
-		Default = true
+	CircleFilled = SilentAim:CreateToggle({
+		Name = 'Circle Filled',
+		Function = function(callback)
+			if CircleObject then
+				CircleObject.Filled = callback
+			end
+		end,
+		Darker = true,
+		Visible = false
 	})
-	ShowHealth = Nametags:CreateToggle({
-		Name = 'Show Health Text',
-		Default = false
-	})
-	ShowHealthBar = Nametags:CreateToggle({
-		Name = 'Show Health Bar',
-		Default = true
-	})
-	NametagScale = Nametags:CreateSlider({
-		Name = 'Scale',
-		Min = 10,
-		Max = 200,
-		Default = 80
-	})
-	MaxDist = Nametags:CreateSlider({
-		Name = 'Max Distance',
-		Min = 50,
-		Max = 1000,
-		Default = 500,
-		Suffx = function(val)
-			return 'studs'
+	Projectile = SilentAim:CreateToggle({
+		Name = 'Projectile',
+		Function = function(callback)
+			ProjectileSpeed.Object.Visible = callback
+			ProjectileGravity.Object.Visible = callback
 		end
+	})
+	ProjectileSpeed = SilentAim:CreateSlider({
+		Name = 'Speed',
+		Min = 1,
+		Max = 1000,
+		Default = 1000,
+		Darker = true,
+		Visible = false,
+		Suffix = function(val)
+			return val == 1 and 'stud' or 'studs'
+		end
+	})
+	ProjectileGravity = SilentAim:CreateSlider({
+		Name = 'Gravity',
+		Min = 0,
+		Max = 192.6,
+		Default = 192.6,
+		Darker = true,
+		Visible = false
 	})
 end)
