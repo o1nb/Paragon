@@ -2149,39 +2149,55 @@ run(function()
 					debug.setupvalue(bedwars.ScytheController.playLocalAnimation, 3, fake)
 
 					task.spawn(function()
-						local started = false
-						repeat
-							if Attacking then
-								if not armC0 then
-									armC0 = gameCamera.Viewmodel.RightHand.RightWrist.C0
-								end
-								local first = not started
-								started = true
+    local wrist = gameCamera.Viewmodel.RightHand.RightWrist
+    armC0 = armC0 or wrist.C0
 
-								if AnimationMode.Value == 'Random' then
-									anims.Random = {{CFrame = CFrame.Angles(math.rad(math.random(1, 360)), math.rad(math.random(1, 360)), math.rad(math.random(1, 360))), Time = 0.12}}
-								end
+    local animPlaying = false
 
-								for _, v in anims[AnimationMode.Value] do
-									AnimTween = tweenService:Create(gameCamera.Viewmodel.RightHand.RightWrist, TweenInfo.new(first and (AnimationTween.Enabled and 0.001 or 0.1) or v.Time / AnimationSpeed.Value, Enum.EasingStyle.Linear), {
-										C0 = armC0 * v.CFrame
-									})
-									AnimTween:Play()
-									AnimTween.Completed:Wait()
-									first = false
-									if (not Killaura.Enabled) or (not Attacking) then break end
-								end
-							elseif started then
-								started = false
-								AnimTween = tweenService:Create(gameCamera.Viewmodel.RightHand.RightWrist, TweenInfo.new(AnimationTween.Enabled and 0.001 or 0.3, Enum.EasingStyle.Exponential), {
-									C0 = armC0
-								})
-								AnimTween:Play()
-							end
+    while Killaura.Enabled and Animation.Enabled do
+        if Attacking then
+            if animPlaying then task.wait() continue end
+            animPlaying = true
 
-							if not started then
-								task.wait(1 / UpdateRate.Value)
-							end
+            local anim = anims[AnimationMode.Value]
+
+            if AnimationMode.Value == "Random" then
+                anim = {
+                    {CFrame = CFrame.Angles(math.rad(math.random(-30,30)),math.rad(math.random(-30,30)),math.rad(math.random(-30,30))), Time = 0.08},
+                    {CFrame = CFrame.new(0.69,-0.7,0.6) * CFrame.Angles(math.rad(-30),math.rad(50),math.rad(-90)), Time = 0.12}
+                }
+            end
+
+            for _,frame in ipairs(anim) do
+                if not (Killaura.Enabled and Attacking and Animation.Enabled) then break end
+
+                local tween = tweenService:Create(
+                    wrist,
+                    TweenInfo.new(
+                        math.max(frame.Time / AnimationSpeed.Value, 0.05),
+                        Enum.EasingStyle.Sine,
+                        Enum.EasingDirection.InOut
+                    ),
+                    {C0 = armC0 * frame.CFrame}
+                )
+
+                tween:Play()
+                tween.Completed:Wait()
+            end
+
+            animPlaying = false
+
+        else
+            tweenService:Create(
+                wrist,
+                TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                {C0 = armC0}
+            ):Play()
+
+            task.wait(0.05)
+        end
+    end
+end)
 						until (not Killaura.Enabled) or (not Animation.Enabled)
 					end)
 				end
