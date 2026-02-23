@@ -1314,7 +1314,7 @@ run(function()
 	end
 
 	Nametags = vape.Categories.Render:CreateModule({
-		Name = 'Nametags',
+		Name = 'NameTags',
 		Function = function(callback)
 			if callback then
 				for _, v in entitylib.List do
