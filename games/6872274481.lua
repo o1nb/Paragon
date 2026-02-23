@@ -3,6 +3,7 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local run = function(func)
 	func()
 end
@@ -3237,84 +3238,163 @@ run(function()
 end)
 	
 run(function()
-	local Speed
-	local Value
-	local WallCheck
-	local AutoJump
-	local AlwaysJump
-	local rayCheck = RaycastParams.new()
-	rayCheck.RespectCanCollide = true
-	
-	Speed = vape.Categories.Blatant:CreateModule({
-		Name = 'Speed',
-		Function = function(callback)
-			frictionTable.Speed = callback or nil
-			updateVelocity()
-			pcall(function()
-				debug.setconstant(bedwars.WindWalkerController.updateSpeed, 7, callback and 'constantSpeedMultiplier' or 'moveSpeedMultiplier')
-			end)
-	
+    local Speed
+    local SpeedValue
+    local WallCheck
+    local AutoJump
+    local JumpHeight
+    local AlwaysJump
+    local JumpSound
+    local VanillaJump
+    local SlowdownAnim
+
+    local rayCheck = RaycastParams.new()
+    rayCheck.RespectCanCollide = true
+
+    Speed = vape.Categories.Blatant:CreateModule({
+        Name = 'Speed',
+        Function = function(callback)
+            frictionTable.Speed = callback or nil
+            updateVelocity()
+            pcall(function()
+                debug.setconstant(bedwars.WindWalkerController.updateSpeed, 7, callback and 'constantSpeedMultiplier' or 'moveSpeedMultiplier')
+            end)
+
+            if callback then
+                Speed:Clean(runService.PreSimulation:Connect(function(dt)
+                    bedwars.StatefulEntityKnockbackController.lastImpulseTime = callback and math.huge or time()
+                    if entitylib.isAlive and not Fly.Enabled and not InfiniteFly.Enabled and not LongJump.Enabled and isnetworkowner(entitylib.character.RootPart) then
+                        local state = entitylib.character.Humanoid:GetState()
+                        if state == Enum.HumanoidStateType.Climbing then return end
+
+                        local root = entitylib.character.RootPart
+                        local velo = getSpeed()
+                        local moveDirection = AntiFallDirection or entitylib.character.Humanoid.MoveDirection
+                        local destination = (moveDirection * math.max(SpeedValue.Value - velo, 0) * dt)
+
+                        if WallCheck.Enabled then
+                            rayCheck.FilterDescendantsInstances = {lplr.Character, gameCamera}
+                            rayCheck.CollisionGroup = root.CollisionGroup
+                            local ray = workspace:Raycast(root.Position, destination, rayCheck)
+                            if ray then
+                                destination = ((ray.Position + ray.Normal) - root.Position)
+                            end
+                        end
+
+                        root.CFrame += destination
+                        root.AssemblyLinearVelocity = (moveDirection * velo) + Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
+
+                        if SlowdownAnim.Enabled then
+                            for _, anim in pairs(entitylib.character.Humanoid:GetPlayingAnimationTracks()) do
+                                if anim.Name == "WalkAnim" or anim.Name == "RunAnim" then
+                                    anim:AdjustSpeed(entitylib.character.Humanoid.WalkSpeed / 16)
+                                end
+                            end
+                        end
+
+                        if AutoJump.Enabled and (state == Enum.HumanoidStateType.Running or state == Enum.HumanoidStateType.Landed) 
+                           and moveDirection ~= Vector3.zero and (Attacking or AlwaysJump.Enabled) then
+                            if VanillaJump.Enabled then
+                                entitylib.character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                            else
+                                local v = entitylib.character.HumanoidRootPart.Velocity
+                                entitylib.character.HumanoidRootPart.Velocity = Vector3.new(v.X, JumpHeight.Value, v.Z)
+                                if JumpSound.Enabled then
+                                    pcall(function() entitylib.character.HumanoidRootPart.Jumping:Play() end)
+                                end
+                            end
+                        end
+                    end
+                end))
+            end
+        end,
+        ExtraText = function()
+            return 'Heatseeker'
+        end,
+        Tooltip = 'Increases your movement'
+    })
+
+    SpeedValue = Speed:CreateSlider({
+        Name = 'Speed',
+        Min = 1,
+        Max = 23,
+        Default = 23,
+        Suffix = function(val)
+            return val == 1 and 'stud' or 'studs'
+        end
+    })
+
+    WallCheck = Speed:CreateToggle({
+        Name = 'Wall Check',
+        Default = true
+    })
+
+    JumpHeight = Speed:CreateSlider({
+        Name = 'Jump Height',
+        Min = 0,
+        Max = 30,
+        Default = 25
+    })
+
+    AlwaysJump = Speed:CreateToggle({
+        Name = 'Always Jump',
+        Default = false,
+        Visible = false,
+        Darker = true
+    })
+
+    JumpSound = Speed:CreateToggle({
+        Name = 'Jump Sound',
+        Default = false,
+        Visible = false,
+        Darker = true
+    })
+
+    VanillaJump = Speed:CreateToggle({
+        Name = 'Real Jump',
+        Default = false,
+        Visible = false,
+        Darker = true
+    })
+
+    AutoJump = Speed:CreateToggle({
+        Name = 'AutoJump',
+        Default = true,
+        Function = function(callback)
+            JumpHeight.Object.Visible = callback
+            AlwaysJump.Object.Visible = callback
+            JumpSound.Object.Visible = callback
+            VanillaJump.Object.Visible = callback
+        end
+    })
+
+    SlowdownAnim = Speed:CreateToggle({
+        Name = 'Slowdown Anim',
+        Default = false
+    })
+end)
+run(function()
+	local InfernalKill = {Enabled = false}
+	InfernalKill = vape.Categories.Utility:CreateModule({
+		["Name"] = "EmberExploit",
+		["Function"] = function(callback)
 			if callback then
-				Speed:Clean(runService.PreSimulation:Connect(function(dt)
-					bedwars.StatefulEntityKnockbackController.lastImpulseTime = callback and math.huge or time()
-					if entitylib.isAlive and not Fly.Enabled and not InfiniteFly.Enabled and not LongJump.Enabled and isnetworkowner(entitylib.character.RootPart) then
-						local state = entitylib.character.Humanoid:GetState()
-						if state == Enum.HumanoidStateType.Climbing then return end
-	
-						local root, velo = entitylib.character.RootPart, getSpeed()
-						local moveDirection = AntiFallDirection or entitylib.character.Humanoid.MoveDirection
-						local destination = (moveDirection * math.max(Value.Value - velo, 0) * dt)
-	
-						if WallCheck.Enabled then
-							rayCheck.FilterDescendantsInstances = {lplr.Character, gameCamera}
-							rayCheck.CollisionGroup = root.CollisionGroup
-							local ray = workspace:Raycast(root.Position, destination, rayCheck)
-							if ray then
-								destination = ((ray.Position + ray.Normal) - root.Position)
-							end
-						end
-	
-						root.CFrame += destination
-						root.AssemblyLinearVelocity = (moveDirection * velo) + Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
-						if AutoJump.Enabled and (state == Enum.HumanoidStateType.Running or state == Enum.HumanoidStateType.Landed) and moveDirection ~= Vector3.zero and (Attacking or AlwaysJump.Enabled) then
-							entitylib.character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-						end
+				repeat
+					wait()
+					local tmp = getItem("infernal_saber")
+					if tmp then
+						bedwars.Client:Get('HellBladeRelease'):SendToServer({
+							weapon = tmp.tool;
+							player = game:GetService("Players").LocalPlayer;
+							chargeTime = 0.9;
+						})
 					end
-				end))
+				until not InfernalKill["Enabled"]
 			end
 		end,
-		ExtraText = function()
-			return 'Heatseeker'
-		end,
-		Tooltip = 'Increases your movement with various methods.'
+		["Description"] = "Ember Exploit"
 	})
-	Value = Speed:CreateSlider({
-		Name = 'Speed',
-		Min = 1,
-		Max = 23,
-		Default = 23,
-		Suffix = function(val)
-			return val == 1 and 'stud' or 'studs'
-		end
-	})
-	WallCheck = Speed:CreateToggle({
-		Name = 'Wall Check',
-		Default = true
-	})
-	AutoJump = Speed:CreateToggle({
-		Name = 'AutoJump',
-		Function = function(callback)
-			AlwaysJump.Object.Visible = callback
-		end
-	})
-	AlwaysJump = Speed:CreateToggle({
-		Name = 'Always Jump',
-		Visible = false,
-		Darker = true
-	})
-	
 end)
-	
 run(function()
 	local BedESP
 	local Reference = {}
