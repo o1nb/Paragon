@@ -5,6 +5,7 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local run = function(func)
 	func()
 end
@@ -9465,7 +9466,7 @@ run(function()
 	-- ═══════════════════════════════════════════════════════════
 	-- Module
 	-- ═══════════════════════════════════════════════════════════
-	Envision = vape.Categories.Other:CreateModule({
+	Envision = vape.Categories.World:CreateModule({
 		Name = 'Petty Visualis',
 		Function = function(callback)
 			if callback then
@@ -9718,556 +9719,489 @@ run(function()
 	})
 end)
 run(function()
-	local Atmosphere: table = {["Enabled"] = false};
-	local Toggles: table = {}
-	local themeName: any;
-	local newobjects: table, oldobjects: table = {}, {}
-	local function BeforeShaders()
-	        return {
-	            Brightness = lightingService.Brightness,
-	            ColorShift_Bottom = lightingService.ColorShift_Bottom,
-	            ColorShift_Top = lightingService.ColorShift_Top,
-	            OutdoorAmbient = lightingService.OutdoorAmbient,
-	            TimeOfDay = lightingService.TimeOfDay,
-	            FogColor = lightingService.FogColor,
-	            FogEnd = lightingService.FogEnd,
-	            FogStart = lightingService.FogStart,
-	            ExposureCompensation = lightingService.ExposureCompensation,
-	            ShadowSoftness = lightingService.ShadowSoftness,
-	            Ambient = lightingService.Ambient,
-	            children = lightingService:GetChildren()
-	        }
-	end;
-	local function restoreDefault(lightingState)
-	        lightingService:ClearAllChildren();
-	        lightingService.Brightness = lightingState.Brightness;
-	        lightingService.ColorShift_Bottom = lightingState.ColorShift_Bottom;
-	        lightingService.ColorShift_Top = lightingState.ColorShift_Top;
-	        lightingService.OutdoorAmbient = lightingState.OutdoorAmbient;
-	        lightingService.TimeOfDay = lightingState.TimeOfDay;
-	        lightingService.FogColor = lightingState.FogColor;
-	        lightingService.FogEnd = lightingState.FogEnd;
-	        lightingService.FogStart = lightingState.FogStart;
-	        lightingService.ExposureCompensation = lightingState.ExposureCompensation;
-	        lightingService.ShadowSoftness = lightingState.ShadowSoftness;
-	        lightingService.Ambient = lightingState.Ambient;
-	        for _, child in next, workspace.ItemDrops:GetChildren() do
-	            child.Parent = lightingService;
-	        end;
-	end;
-	local apidump: table = {
-		Sky = {
-			SkyboxUp = 'Text',
-			SkyboxDn = 'Text',
-			SkyboxLf = 'Text',
-			SkyboxRt = 'Text',
-			SkyboxFt = 'Text',
-			SkyboxBk = 'Text',
-			SunTextureId = 'Text',
-			SunAngularSize = 'Number',
-			MoonTextureId = 'Text',
-			MoonAngularSize = 'Number',
-			StarCount = 'Number'
-		},
-		Atmosphere = {
-			Color = 'Color',
-			Decay = 'Color',
-			Density = 'Number',
-			Offset = 'Number',
-			Glare = 'Number',
-			Haze = 'Number'
-		},
-		BloomEffect = {
-			Intensity = 'Number',
-			Size = 'Number',
-			Threshold = 'Number'
-		},
-		DepthOfFieldEffect = {
-			FarIntensity = 'Number',
-			FocusDistance = 'Number',
-			InFocusRadius = 'Number',
-			NearIntensity = 'Number'
-		},
-		SunRaysEffect = {
-			Intensity = 'Number',
-			Spread = 'Number'
-		},
-		ColorCorrectionEffect = {
-			TintColor = 'Color',
-			Saturation = 'Number',
-			Contrast = 'Number',
-			Brightness = 'Number'
-		}
-	}
-    	local skyThemes: table = {
-		        NetherWorld = {
-			            MoonAngularSize = 0,
-			            SunAngularSize = 0,
-			            SkyboxBk = 'rbxassetid://14365019002',
-			            SkyboxDn = 'rbxassetid://14365023350',
-			            SkyboxFt = 'rbxassetid://14365018399',
-			            SkyboxLf = 'rbxassetid://14365018705',
-			            SkyboxRt = 'rbxassetid://14365018143',
-			            SkyboxUp = 'rbxassetid://14365019327',
-		        },
-		        Neptune = {
-				    SkyboxBk = 'rbxassetid://218955819',
-				    SkyboxDn = 'rbxassetid://218953419',
-				    SkyboxFt = 'rbxassetid://218954524',
-				    SkyboxLf = 'rbxassetid://218958493',
-				    SkyboxRt = 'rbxassetid://218957134',
-				    SkyboxUp = 'rbxassetid://218950090',
-		        },
-		        Velocity = {
-			            SkyboxBk = 'rbxassetid://570557514',
-			            SkyboxDn = 'rbxassetid://570557775',
-			            SkyboxFt = 'rbxassetid://570557559',
-			            SkyboxLf = 'rbxassetid://570557620',
-			            SkyboxRt = 'rbxassetid://570557672',
-			            SkyboxUp = 'rbxassetid://570557727',
-		        },
-		        Minecraft = {
-			            SkyboxBk = 'rbxassetid://591058823',
-			            SkyboxDn = 'rbxassetid://591059876',
-			            SkyboxFt = 'rbxassetid://591058104',
-			            SkyboxLf = 'rbxassetid://591057861',
-			            SkyboxRt = 'rbxassetid://591057625',
-			            SkyboxUp = 'rbxassetid://591059642',
-		        },
-		        Purple = {
-			            SkyboxBk = "rbxassetid://8539982183",
-			            SkyboxDn = "rbxassetid://8539981943",
-			            SkyboxFt = "rbxassetid://8539981721",
-			            SkyboxLf = "rbxassetid://8539981424",
-			            SkyboxRt = "rbxassetid://8539980766",
-			            SkyboxUp = "rbxassetid://8539981085",
-			            MoonAngularSize = 0,
-			            SunAngularSize = 0,
-			            StarCount = 3000,
-		        }, 
-		        ["日の出"] = {
-				    SkyboxBk = "rbxassetid://600830446",
-				    SkyboxDn = "rbxassetid://600831635",
-				    SkyboxFt = "rbxassetid://600832720",
-				    SkyboxLf = "rbxassetid://600886090",
-				    SkyboxRt = "rbxassetid://600833862",
-				    SkyboxUp = "rbxassetid://600835177",
-		        },
-		        Sakura = {
-			            SkyboxBk = "http://www.roblox.com/asset/?id=16694315897",
-			            SkyboxDn = "http://www.roblox.com/asset/?id=16694319417",
-			            SkyboxFt = "http://www.roblox.com/asset/?id=16694324910",
-			            SkyboxLf = "http://www.roblox.com/asset/?id=16694328308",
-			            SkyboxRt = "http://www.roblox.com/asset/?id=16694331447",
-			            SkyboxUp = "http://www.roblox.com/asset/?id=16694334666",
-			            SunAngularSize = 21,
-			            StarCount = 3000,
-		        },
-		        Hexagonal = {
-			            SkyboxBk = "http://www.roblox.com/asset/?id=15876463105",
-			            SkyboxDn = "http://www.roblox.com/asset/?id=15876464432",
-			            SkyboxFt = "http://www.roblox.com/asset/?id=15876465852",
-			            SkyboxLf = "http://www.roblox.com/asset/?id=15876467260",
-			            SkyboxRt = "http://www.roblox.com/asset/?id=15876469097",
-			            SkyboxUp = "http://www.roblox.com/asset/?id=15876470945",
-			            SunAngularSize = 21,
-			            StarCount = 3000,
-		        },
-		        Reality = {
-			            SkyboxBk = "http://www.roblox.com/asset/?id=6778646360",
-			            SkyboxDn = "http://www.roblox.com/asset/?id=6778658683",
-			            SkyboxFt = "http://www.roblox.com/asset/?id=6778648039",
-			            SkyboxLf = "http://www.roblox.com/asset/?id=6778649136",
-			            SkyboxRt = "http://www.roblox.com/asset/?id=6778650519",
-			            SkyboxUp = "http://www.roblox.com/asset/?id=6778658364",
-		        },
-		        LunarNight = {
-			            SkyboxBk = 'rbxassetid://187713366',
-			            SkyboxDn = 'rbxassetid://187712428',
-			            SkyboxFt = 'rbxassetid://187712836',
-			            SkyboxLf = 'rbxassetid://187713755',
-			            SkyboxRt = 'rbxassetid://187714525',
-			            SkyboxUp = 'rbxassetid://187712111',
-			            SunAngularSize = 0,
-			            StarCount = 0,
-		        },
-		        FPSBoost = {
-			            SkyboxBk = 'rbxassetid://11457548274',
-			            SkyboxDn = 'rbxassetid://11457548274',
-			            SkyboxFt = 'rbxassetid://11457548274',
-			            SkyboxLf = 'rbxassetid://11457548274',
-			            SkyboxRt = 'rbxassetid://11457548274',
-			            SkyboxUp = 'rbxassetid://11457548274',
-			            SunAngularSize = 0,
-			            StarCount = 3000,
-		        },
-		        Etheral = {
-			            SkyboxBk = 'rbxassetid://16262356578',
-			            SkyboxDn = 'rbxassetid://16262358026',
-			            SkyboxFt = 'rbxassetid://16262360469',
-			            SkyboxLf = 'rbxassetid://16262362003',
-			            SkyboxRt = 'rbxassetid://16262363873',
-			            SkyboxUp = 'rbxassetid://16262366016',
-			            SunAngularSize = 21,
-			            StarCount = 3000,
-		        },
-		        Pandora = {
-			            SkyboxBk = 'http://www.roblox.com/asset/?id=16739324092',
-			            SkyboxDn = 'http://www.roblox.com/asset/?id=16739325541',
-			            SkyboxFt = 'http://www.roblox.com/asset/?id=16739327056',
-			            SkyboxLf = 'http://www.roblox.com/asset/?id=16739329370',
-			            SkyboxRt = 'http://www.roblox.com/asset/?id=16739331050',
-			            SkyboxUp = 'http://www.roblox.com/asset/?id=16739332736',
-			            SunAngularSize = 21,
-			            StarCount = 3000,
-		        },
-		        Polaris = {
-			            SkyboxBk = 'http://www.roblox.com/asset/?id=16823270864',
-			            SkyboxDn = 'http://www.roblox.com/asset/?id=16823272150',
-			            SkyboxFt = 'http://www.roblox.com/asset/?id=16823273508',
-			            SkyboxLf = 'http://www.roblox.com/asset/?id=16823274898',
-			            SkyboxRt = 'http://www.roblox.com/asset/?id=16823276281',
-			            SkyboxUp = 'http://www.roblox.com/asset/?id=16823277547',
-			            SunAngularSize = 21,
-			            StarCount = 3000,
-		        },
-		        Diaphanous = {
-			            SkyboxBk = 'http://www.roblox.com/asset/?id=16888989874',
-			            SkyboxDn = 'http://www.roblox.com/asset/?id=16888991855',
-			            SkyboxFt = 'http://www.roblox.com/asset/?id=16888995219',
-			            SkyboxLf = 'http://www.roblox.com/asset/?id=16888998994',
-			            SkyboxRt = 'http://www.roblox.com/asset/?id=16889000916',
-			            SkyboxUp = 'http://www.roblox.com/asset/?id=16889004122',
-			            SunAngularSize = 21,
-			            StarCount = 3000,
-		        },
-		        Transcendent = {
-			            SkyboxBk = 'http://www.roblox.com/asset/?id=17124357467',
-			            SkyboxDn = 'http://www.roblox.com/asset/?id=17124359797',
-			            SkyboxFt = 'http://www.roblox.com/asset/?id=17124362093',
-			            SkyboxLf = 'http://www.roblox.com/asset/?id=17124365127',
-			            SkyboxRt = 'http://www.roblox.com/asset/?id=17124367200',
-			            SkyboxUp = 'http://www.roblox.com/asset/?id=17124369657',
-			            SunAngularSize = 21,
-			            StarCount = 3000,
-		        },
-		        Truth = {
-			            SkyboxBk = "http://www.roblox.com/asset/?id=144933338",
-			            SkyboxDn = "http://www.roblox.com/asset/?id=144931530",
-			            SkyboxFt = "http://www.roblox.com/asset/?id=144933262",
-			            SkyboxLf = "http://www.roblox.com/asset/?id=144933244",
-			            SkyboxRt = "http://www.roblox.com/asset/?id=144933299",
-			            SkyboxUp = "http://www.roblox.com/asset/?id=144931564",
-		        },
-		        RayTracing = {
-			            SkyboxBk = "http://www.roblox.com/asset/?id=271042516",
-			            SkyboxDn = "http://www.roblox.com/asset/?id=271077243",
-			            SkyboxFt = "http://www.roblox.com/asset/?id=271042556",
-			            SkyboxLf = "http://www.roblox.com/asset/?id=271042310",
-			            SkyboxRt = "http://www.roblox.com/asset/?id=271042467",
-			            SkyboxUp = "http://www.roblox.com/asset/?id=271077958",
-		        },
-		        Nebula = {
-			            MoonAngularSize = 0,
-			            SunAngularSize = 0,
-			            SkyboxBk = 'rbxassetid://5260808177',
-			            SkyboxDn = 'rbxassetid://5260653793',
-			            SkyboxFt = 'rbxassetid://5260817288',
-			            SkyboxLf = 'rbxassetid://5260800833',
-			            SkyboxRt = 'rbxassetid://5260811073',
-			            SkyboxUp = 'rbxassetid://5260824661',
-		        },
-		        Planets = {
-			            MoonAngularSize = 0,
-			            SunAngularSize = 0,
-			            SkyboxBk = 'rbxassetid://15983968922',
-			            SkyboxDn = 'rbxassetid://15983966825',
-			            SkyboxFt = 'rbxassetid://15983965025',
-			            SkyboxLf = 'rbxassetid://15983967420',
-			            SkyboxRt = 'rbxassetid://15983966246',
-			            SkyboxUp = 'rbxassetid://15983964246',
-			            StarCount = 3000,
-		        },
-		        Galaxy = {
-			            SkyboxBk = "rbxassetid://159454299",
-			            SkyboxDn = "rbxassetid://159454296",
-			            SkyboxFt = "rbxassetid://159454293",
-			            SkyboxLf = "rbxassetid://159454293",
-			            SkyboxRt = "rbxassetid://159454293",
-			            SkyboxUp = "rbxassetid://159454288",
-			            SunAngularSize = 0,
-		        }, 
-		        Blues = {
-			            SkyboxBk = 'http://www.roblox.com/asset/?id=17124357467',
-			            SkyboxDn = 'http://www.roblox.com/asset/?id=17124359797',
-			            SkyboxFt = 'http://www.roblox.com/asset/?id=17124362093',
-			            SkyboxLf = 'http://www.roblox.com/asset/?id=17124365127',
-			            SkyboxRt = 'http://www.roblox.com/asset/?id=17124367200',
-			            SkyboxUp = 'http://www.roblox.com/asset/?id=17124369657',
-			            SunAngularSize = 21,
-			            StarCount = 3000,
-		        },
-		        Milkyway = {
-			            MoonTextureId = 'rbxassetid://1075087760',
-			            SkyboxBk = 'rbxassetid://2670643994',
-			            SkyboxDn = 'rbxassetid://2670643365',
-			            SkyboxFt = 'rbxassetid://2670643214',
-			            SkyboxLf = 'rbxassetid://2670643070',
-			            SkyboxRt = 'rbxassetid://2670644173',
-			            SkyboxUp = 'rbxassetid://2670644331',
-			            MoonAngularSize = 1.5,
-			            StarCount = 500,
-		        },
-		        Orange = {
-			            SkyboxBk = 'rbxassetid://150939022',
-			            SkyboxDn = 'rbxassetid://150939038',
-			            SkyboxFt = 'rbxassetid://150939047',
-			            SkyboxLf = 'rbxassetid://150939056',
-			            SkyboxRt = 'rbxassetid://150939063',
-			            SkyboxUp = 'rbxassetid://150939082',
-		        },
-		        DarkMountains = {
-			            SkyboxBk = 'rbxassetid://5098814730',
-			            SkyboxDn = 'rbxassetid://5098815227',
-			            SkyboxFt = 'rbxassetid://5098815653',
-			            SkyboxLf = 'rbxassetid://5098816155',
-			            SkyboxRt = 'rbxassetid://5098820352',
-			            SkyboxUp = 'rbxassetid://5098819127',
-		        },
-		        Space = {
-			            MoonAngularSize = 0,
-			            SunAngularSize = 0,
-			            SkyboxBk = 'rbxassetid://166509999',
-			            SkyboxDn = 'rbxassetid://166510057',
-			            SkyboxFt = 'rbxassetid://166510116',
-			            SkyboxLf = 'rbxassetid://166510092',
-			            SkyboxRt = 'rbxassetid://166510131',
-			            SkyboxUp = 'rbxassetid://166510114',
-		        },
-		        Void = {
-			            MoonAngularSize = 0,
-			            SunAngularSize = 0,
-			            SkyboxBk = 'rbxassetid://14543264135',
-			            SkyboxDn = 'rbxassetid://14543358958',
-			            SkyboxFt = 'rbxassetid://14543257810',
-			            SkyboxLf = 'rbxassetid://14543275895',
-			            SkyboxRt = 'rbxassetid://14543280890',
-			            SkyboxUp = 'rbxassetid://14543371676',
-		        },
-		        Stary = {
-			            SkyboxBk = 'rbxassetid://248431616',
-			            SkyboxDn = 'rbxassetid://248431677',
-			            SkyboxFt = 'rbxassetid://248431598',
-			            SkyboxLf = 'rbxassetid://248431686',
-			            SkyboxRt = 'rbxassetid://248431611',
-			            SkyboxUp = 'rbxassetid://248431605',
-				    StarCount = 3000,       
-		        },
-			Violet = {
-				    SkyboxBk = 'rbxassetid://8107841671',
-				    SkyboxDn = 'rbxassetid://6444884785',
-				    SkyboxFt = 'rbxassetid://8107841671',
-				    SkyboxLf = 'rbxassetid://8107841671',
-				    SkyboxRt = 'rbxassetid://8107841671',
-				    SkyboxUp = 'rbxassetid://8107849791',
-				    SunTextureId = 'rbxassetid://6196665106',
-				    MoonTextureId = 'rbxassetid://6444320592',
-				    MoonAngularSize = 0,
-		        },
-			Cloudy = {
-				    SkyboxBk = 'rbxassetid://15876597103',
-				    SkyboxDn = 'rbxassetid://15876592775',
-				    SkyboxFt = 'rbxassetid://15876640231',
-				    SkyboxLf = 'rbxassetid://15876638420',
-				    SkyboxRt = 'rbxassetid://15876595486',
-				    SkyboxUp = 'rbxassetid://15876639348',
-				    SunTextureId = 'rbxasset://sky/sun.jpg',
-				    MoonTextureId = 'rbxasset://sky/moon.jpg',
-				    MoonAngularSize = 11,
-		            	    SunAngularSize = 21,
-				    StarCount = 3000,
-		    	}
-	};																																					
-    	local ILS: any = BeforeShaders()
-	local function removeObject(v: Instance?)
-		if not table.find(newobjects, v) then 
-			local vt: table? = Toggles[v.ClassName]
-			if vt and vt.Toggle["Enabled"] then
-				table.insert(oldobjects, v);
-				v.Parent = game;
-			end;
-		end;
-	end;
-	
-	local function themes(val: any)
-	        local theme: any = skyThemes[themeName["Value"]];
-	        if theme then
-		        local sky: Sky? = lightingService:FindFirstChild("CustomSky") or Instance.new("Sky", lightingService);
-		        for v: any, value: any in next, theme do
-		                if v ~= "Atmosphere" then
-		                        sky[v] = value;
-		                end;
-		        end;
-		end;
-	end;
-
-	Atmosphere = vape.Categories.Other:CreateModule({
-		["Name"] = 'Atmosphere',
+    local og: table = {}                                                        
+    local function default()
+        og = {
+            Brightness = lightingService.Brightness,
+            ColorShift_Top = lightingService.ColorShift_Top,
+            ColorShift_Bottom = lightingService.ColorShift_Bottom,
+            OutdoorAmbient = lightingService.OutdoorAmbient,
+            ClockTime = lightingService.ClockTime,
+            FogColor = lightingService.FogColor,
+            FogStart = lightingService.FogStart,
+            FogEnd = lightingService.FogEnd,
+            ExposureCompensation = lightingService.ExposureCompensation,
+            ShadowSoftness = lightingService.ShadowSoftness,
+            Ambient = lightingService.Ambient
+        }
+    end;
+    local Luminescents: table = {["Enabled"] = false};
+    local Blurs: any;
+    local ColorCorrectionEffect: any;
+    local SkyColor: table = {["Value"] = 1};
+    local light: any;
+    local on: boolean = false;
+	Luminescents = vape.Categories.World:CreateModule({
+		["Name"] = 'Luminescents',
 		["Function"] = function(callback: boolean): void
 			if callback then
-				for _, v in lightingService:GetChildren() do
-			                if v:IsA('PostEffect') or v:IsA('Sky') or v:IsA('Atmosphere') or v:IsA('Clouds') then
-			                        v:Destroy();
-			                end;
-		        	end;
-		
-		                for _, v in workspace:GetDescendants() do
-			                if v:IsA("Clouds") then
-			                        v:Destroy();
-			                end;
-		                end;
-				local d: number = 0;
-				local r: any = workspace.Terrain;
-				for _, v in lightingService:GetChildren() do
-		                	if v:IsA('PostEffect') or v:IsA('Sky') or v:IsA('Atmosphere') or v:IsA('Clouds') then
-		                        	v:Destroy();
-		                        end;
-		                end;
-				lightingService.Brightness = d + 1;
-		                lightingService.EnvironmentDiffuseScale = d + 0.2;
-		                lightingService.EnvironmentSpecularScale = d + 0.82;
-		
-		                local sunRays: SunRaysEffect = Instance.new('SunRaysEffect');
-		                table.insert(newobjects, sunRays);
-		                pcall(function() sunRays.Parent = lightingService end);
-		
-		                local atmosphere: Atmosphere = Instance.new('Atmosphere');
-		                table.insert(newobjects, atmosphere);
-		                pcall(function() atmosphere.Parent = lightingService end);
-		
-		                local sky: Sky = Instance.new('Sky');
-		                table.insert(newobjects, sky);
-		                pcall(function() sky.Parent = lightingService end);
-		
-		                local blur: BlurEffect = Instance.new('BlurEffect');
-		                blur.Size = d + 3.921;
-		                table.insert(newobjects, blur);
-		                pcall(function() blur.Parent = lightingService end);
-		
-		                local color_correction: ColorCorrectionEffect = Instance.new('ColorCorrectionEffect');
-		                color_correction.Saturation = d + 0.092;
-		                table.insert(newobjects, color_correction);
-		                pcall(function() color_correction.Parent = lightingService end);
-		
-		                local clouds: Clouds = Instance.new('Clouds');
-		                clouds.Cover = d + 0.4;
-		                table.insert(newobjects, clouds);
-		                pcall(function() clouds.Parent = r end);
-		
-		                r.WaterTransparency = d + 1;
-		                r.WaterReflectance = d + 1;
-
-				themes()
-				for _, v in lightingService:GetChildren() do
-					removeObject(v);
-				end;
-				Atmosphere:Clean(lightingService.ChildAdded:Connect(function(v)
-					task.defer(removeObject, v);
-				end));
+				repeat task.wait() until game:IsLoaded()
+                Blurs = Instance.new("BlurEffect");
+                Blurs.Parent = lightingService;
+                Blurs.Size = 5;
+                ColorCorrectionEffect = Instance.new("ColorCorrectionEffect");
+                ColorCorrectionEffect.Parent = lightingService;
+                ColorCorrectionEffect.Saturation = -0.2;
+                ColorCorrectionEffect.TintColor = Color3.fromRGB(255, 224, 219);
+                lightingService.ClockTime = 8.7;
+                lightingService.FogEnd = 1000;
+                lightingService.FogStart = 0;
+                lightingService.ExposureCompensation = 0.30;
+                lightingService.ShadowSoftness = 0;
+                lightingService.Ambient = Color3.fromRGB(59, 33, 27);
+                lightingService.ColorShift_Bottom = Color3.fromHSV(SkyColor["Hue"], SkyColor["Sat"], SkyColor["Value"]);
+                lightingService.ColorShift_Top = Color3.fromHSV(SkyColor["Hue"], SkyColor["Sat"], SkyColor["Value"]);
+                lightingService.OutdoorAmbient = Color3.fromHSV(SkyColor["Hue"], SkyColor["Sat"], SkyColor["Value"]);
+                lightingService.FogColor = Color3.fromHSV(SkyColor["Hue"], SkyColor["Sat"], SkyColor["Value"]);
+            else
+                if ColorCorrectionEffect and ColorCorrectionEffect.Parent then 
+                    ColorCorrectionEffect:Destroy();
+                end;
+                if Blurs and Blurs.Parent then 
+                    Blurs:Destroy();
+                end;
+                for k, v in pairs(og) do
+                    lightingService[k] = v;
+                end;
+            end;
+        end;
+    })
+    SkyColor = Luminescents:CreateColorSlider({
+        ["Name"] ='Color',
+        ["Function"] = function(hue, sat, val)
+            if light then
+                lightingService.ColorShift_Bottom = Color3.fromHSV(SkyColor["Hue"], SkyColor["Sat"], SkyColor["Value"]);
+                lightingService.ColorShift_Top = Color3.fromHSV(SkyColor["Hue"], SkyColor["Sat"], SkyColor["Value"]);
+                lightingService.OutdoorAmbient = Color3.fromHSV(SkyColor["Hue"], SkyColor["Sat"], SkyColor["Value"]);
+                lightingService.FogColor = Color3.fromHSV(SkyColor["Hue"], SkyColor["Sat"], SkyColor["Value"]);
+            end;
+        end;
+    })
+end)
+run(function()
+	local Value
+	local CameraDir
+	local BoostDuration
+	local start
+	local JumpTick, JumpSpeed, Direction = tick(), 0
+	local JadeHammerPulse = {active = false, nextPulse = 0, speed = 0, boostEnd = 0}
+	local projectileRemote = {InvokeServer = function() end}
+	task.spawn(function()
+		projectileRemote = bedwars.Client:Get(remotes.FireProjectile).instance
+	end)
 	
-				for className, classData in Toggles do
-					if classData.Toggle["Enabled"] then
-						local obj: any = Instance.new(className);
-						for propName, propData in classData.Objects do
-							if propData.Type == 'ColorSlider' then
-								obj[propName] = Color3.fromHSV(propData.Hue, propData.Sat, propData.Value);
-							else
-								if apidump[className][propName] == 'Number' then
-									obj[propName] = tonumber(propData.Value) or 0;
-								else
-									obj[propName] = propData.Value;
-								end;
-							end;
-						end;
-						obj.Name = "Custom" .. className;
-						table.insert(newobjects, obj);
-						task.defer(function()
-							pcall(function() obj.Parent = lightingService end);
-						end);
-					end;
-				end;
-			else
-		                for _, v in newobjects do
-			                if v and v.Destroy then
-			                        v:Destroy();
-			                end;
-		                end;
-		                for _, v in oldobjects do
-		                    	pcall(function() v.Parent = lightingService end);
-		                end;
-		                table.clear(newobjects);
-		                table.clear(oldobjects);
-				for _, v in lightingService:GetChildren() do
-		                    	if v:IsA("ColorCorrectionEffect") then
-		                        	v:Destroy();
-		                    	end;
-		                end;
-				restoreDefault(ILS);
-			end;
+	local function launchProjectile(item, pos, proj, speed, dir)
+		if not pos then return end
+	
+		pos = pos - dir * 0.1
+		local shootPosition = (CFrame.lookAlong(pos, Vector3.new(0, -speed, 0)) * CFrame.new(Vector3.new(-bedwars.BowConstantsTable.RelX, -bedwars.BowConstantsTable.RelY, -bedwars.BowConstantsTable.RelZ)))
+		switchItem(item.tool, 0)
+		task.wait(0.1)
+		bedwars.ProjectileController:createLocalProjectile(bedwars.ProjectileMeta[proj], proj, proj, shootPosition.Position, '', shootPosition.LookVector * speed, {drawDurationSeconds = 1})
+		if projectileRemote:InvokeServer(item.tool, proj, proj, shootPosition.Position, pos, shootPosition.LookVector * speed, httpService:GenerateGUID(true), {drawDurationSeconds = 1}, workspace:GetServerTimeNow() - 0.045) then
+			local shoot = bedwars.ItemMeta[item.itemType].projectileSource.launchSound
+			shoot = shoot and shoot[math.random(1, #shoot)] or nil
+			if shoot then
+				bedwars.SoundManager:playSound(shoot)
+			end
+		end
+	end
+	
+	local LongJumpMethods = {
+		cannon = function(_, pos, dir)
+			pos = pos - Vector3.new(0, (entitylib.character.HipHeight + (entitylib.character.RootPart.Size.Y / 2)) - 3, 0)
+			local rounded = Vector3.new(math.round(pos.X / 3) * 3, math.round(pos.Y / 3) * 3, math.round(pos.Z / 3) * 3)
+			bedwars.placeBlock(rounded, 'cannon', false)
+	
+			task.delay(0, function()
+				local block, blockpos = getPlacedBlock(rounded)
+				if block and block.Name == 'cannon' and (entitylib.character.RootPart.Position - block.Position).Magnitude < 20 then
+					local breaktype = bedwars.ItemMeta[block.Name].block.breakType
+					local tool = store.tools[breaktype]
+					if tool then
+						switchItem(tool.tool)
+					end
+	
+					bedwars.Client:Get(remotes.CannonAim):SendToServer({
+						cannonBlockPos = blockpos,
+						lookVector = dir
+					})
+	
+					local broken = 0.1
+					if bedwars.BlockController:calculateBlockDamage(lplr, {blockPosition = blockpos}) < block:GetAttribute('Health') then
+						broken = 0.4
+						bedwars.breakBlock(block, true, true)
+					end
+	
+					task.delay(broken, function()
+						for _ = 1, 3 do
+							local call = bedwars.Client:Get(remotes.CannonLaunch):CallServer({cannonBlockPos = blockpos})
+							if call then
+								bedwars.breakBlock(block, true, true)
+								JumpSpeed = 5.25 * Value.Value
+								JumpTick = tick() + BoostDuration.Value
+								Direction = Vector3.new(dir.X, 0, dir.Z).Unit
+								break
+							end
+							task.wait(0.1)
+						end
+					end)
+				end
+			end)
 		end,
-		["Tooltip"] = 'Custom lighting objects'
-	})
-	local skyboxes: table = {};
-	for v,_ in next, skyThemes do
-	        table.insert(skyboxes, v);
-	end;
-	themeName = Atmosphere:CreateDropdown({
-	        ["Name"] = "Mode",
-	        ["List"] = skyboxes,
-	        ["Function"] = function(val) end
-	})
-	for i, v in apidump do
-		Toggles[i] = {Objects = {}}
-		Toggles[i].Toggle = Atmosphere:CreateToggle({
-			["Name"] = i,
-			["Function"] = function(callback: boolean): void
-				if Atmosphere["Enabled"] then
-					Atmosphere:Toggle();
-					Atmosphere:Toggle();
-				end;
-				for _, toggle in Toggles[i].Objects do
-					toggle.Object.Visible = callback;
-				end;
-			end;
-		})
+		cat = function(_, _, dir)
+			LongJump:Clean(vapeEvents.CatPounce.Event:Connect(function()
+				JumpSpeed = 4 * Value.Value
+				JumpTick = tick() + BoostDuration.Value
+				Direction = Vector3.new(dir.X, 0, dir.Z).Unit
+				entitylib.character.RootPart.Velocity = Vector3.zero
+			end))
 	
-		for i2, v2 in v do
-			if v2 == 'Text' or v2 == 'Number' then
-				Toggles[i].Objects[i2] = Atmosphere:CreateTextBox({
-					["Name"] = i2,
-					["Function"] = function(enter)
-						if Atmosphere["Enabled"] and enter then
-							Atmosphere:Toggle();
-							Atmosphere:Toggle();
-						end;
-					end,
-					["Darker"] = true,
-					["Default"] = v2 == 'Number' and '0' or nil,
-					["Visible"] = false
+			if not bedwars.AbilityController:canUseAbility('CAT_POUNCE') then
+				repeat task.wait() until bedwars.AbilityController:canUseAbility('CAT_POUNCE') or not LongJump.Enabled
+			end
+	
+			if bedwars.AbilityController:canUseAbility('CAT_POUNCE') and LongJump.Enabled then
+				bedwars.AbilityController:useAbility('CAT_POUNCE')
+			end
+		end,
+		fireball = function(item, pos, dir)
+			launchProjectile(item, pos, 'fireball', 60, dir)
+		end,
+		grappling_hook = function(item, pos, dir)
+			launchProjectile(item, pos, 'grappling_hook_projectile', 140, dir)
+		end,
+		jade_hammer = function(item, _, dir)
+			if JadePulse.Enabled then
+				JadeHammerPulse.active = true
+				JadeHammerPulse.nextPulse = 0
+			else
+				if not bedwars.AbilityController:canUseAbility(item.itemType..'_jump') then
+					repeat task.wait() until bedwars.AbilityController:canUseAbility(item.itemType..'_jump') or not LongJump.Enabled
+				end
+	
+				if bedwars.AbilityController:canUseAbility(item.itemType..'_jump') and LongJump.Enabled then
+					bedwars.AbilityController:useAbility(item.itemType..'_jump')
+					JumpSpeed = 1.4 * Value.Value
+					JumpTick = tick() + BoostDuration.Value
+					Direction = Vector3.new(dir.X, 0, dir.Z).Unit
+				end
+			end
+		end,
+		tnt = function(item, pos, dir)
+			pos = pos - Vector3.new(0, (entitylib.character.HipHeight + (entitylib.character.RootPart.Size.Y / 2)) - 3, 0)
+			local rounded = Vector3.new(math.round(pos.X / 3) * 3, math.round(pos.Y / 3) * 3, math.round(pos.Z / 3) * 3)
+			start = Vector3.new(rounded.X, start.Y, rounded.Z) + (dir * (item.itemType == 'pirate_gunpowder_barrel' and 2.6 or 0.2))
+			bedwars.placeBlock(rounded, item.itemType, false)
+		end,
+		wood_dao = function(item, pos, dir)
+			if (lplr.Character:GetAttribute('CanDashNext') or 0) > workspace:GetServerTimeNow() or not bedwars.AbilityController:canUseAbility('dash') then
+				repeat task.wait() until (lplr.Character:GetAttribute('CanDashNext') or 0) < workspace:GetServerTimeNow() and bedwars.AbilityController:canUseAbility('dash') or not LongJump.Enabled
+			end
+	
+			if LongJump.Enabled then
+				bedwars.SwordController.lastAttack = workspace:GetServerTimeNow()
+				switchItem(item.tool, 0.1)
+				replicatedStorage['events-@easy-games/game-core:shared/game-core-networking@getEvents.Events'].useAbility:FireServer('dash', {
+					direction = dir,
+					origin = pos,
+					weapon = item.itemType
 				})
-			elseif v2 == 'Color' then
-				Toggles[i].Objects[i2] = Atmosphere:CreateColorSlider({
-					["Name"] = i2,
-					["Function"] = function()
-						if Atmosphere["Enabled"] then
-							Atmosphere:Toggle();
-							Atmosphere:Toggle();
-						end;
-					end,
-					["Darker"] = true,
-					["Visible"] = false
-				})
-			end;
-		end;
-	end;
+				JumpSpeed = 4.5 * Value.Value
+				JumpTick = tick() + BoostDuration.Value
+				Direction = Vector3.new(dir.X, 0, dir.Z).Unit
+			end
+		end
+	}
+	for _, v in {'stone_dao', 'iron_dao', 'diamond_dao', 'emerald_dao'} do
+		LongJumpMethods[v] = LongJumpMethods.wood_dao
+	end
+	LongJumpMethods.void_axe = LongJumpMethods.jade_hammer
+	LongJumpMethods.siege_tnt = LongJumpMethods.tnt
+	LongJumpMethods.pirate_gunpowder_barrel = LongJumpMethods.tnt
+	local Speds
+	LongJump = vape.Categories.Other:CreateModule({
+		Name = 'LongJump +',
+		Function = function(callback)
+			frictionTable.LongJump = callback or nil
+			updateVelocity()
+			if callback then
+				LongJump:Clean(vapeEvents.EntityDamageEvent.Event:Connect(function(damageTable)
+					if damageTable.entityInstance == lplr.Character and damageTable.fromEntity == lplr.Character and (not damageTable.knockbackMultiplier or not damageTable.knockbackMultiplier.disabled) then
+						local knockbackBoost = bedwars.KnockbackUtil.calculateKnockbackVelocity(Vector3.one, 1, {
+							vertical = 0,
+							horizontal = (damageTable.knockbackMultiplier and damageTable.knockbackMultiplier.horizontal or 1)
+						}).Magnitude * 1.1
+	
+						if knockbackBoost >= JumpSpeed then
+							local pos = damageTable.fromPosition and Vector3.new(damageTable.fromPosition.X, damageTable.fromPosition.Y, damageTable.fromPosition.Z) or damageTable.fromEntity and damageTable.fromEntity.PrimaryPart.Position
+							if not pos then return end
+							local vec = (entitylib.character.RootPart.Position - pos)
+							JumpSpeed = knockbackBoost
+							JumpTick = tick() + BoostDuration.Value
+							Direction = Vector3.new(vec.X, 0, vec.Z).Unit
+						end
+					end
+				end))
+				LongJump:Clean(vapeEvents.GrapplingHookFunctions.Event:Connect(function(dataTable)
+					if dataTable.hookFunction == 'PLAYER_IN_TRANSIT' then
+						local vec = entitylib.character.RootPart.CFrame.LookVector
+						JumpSpeed = 2.5 * Value.Value
+						JumpTick = tick() + BoostDuration.Value
+						Direction = Vector3.new(vec.X, 0, vec.Z).Unit
+					end
+				end))
+	
+				start = entitylib.isAlive and entitylib.character.RootPart.Position or nil
+				LongJump:Clean(runService.PreSimulation:Connect(function(dt)
+					local root = entitylib.isAlive and entitylib.character.RootPart or nil
+					if root and isnetworkowner(root) then
+						if JadePulse["Enabled"] then
+							local foundItem, method
+							local jadeHammer = getItem("jade_hammer")
+							if jadeHammer then
+								foundItem, method = jadeHammer, LongJumpMethods.jade_hammer
+							end
+							if foundItem and method and LongJump.Enabled then
+								method(foundItem, nil, (CameraDir.Enabled and gameCamera or root).CFrame.LookVector)
+							else
+								JumpTick = 0
+								Direction = nil
+							end
+						end
+						if JadeHammerPulse.active then
+							if tick() >= JadeHammerPulse.nextPulse then
+								local item = getItem('jade_hammer') or getItem('void_axe')
+								if item and bedwars.AbilityController:canUseAbility(item.itemType..'_jump') then
+									bedwars.AbilityController:useAbility(item.itemType..'_jump')
+									JadeHammerPulse.boostEnd = tick() + BoostDuration.Value
+									JadeHammerPulse.nextPulse = tick() + BoostDuration.Value + 1
+								end
+							end
+							if tick() < JadeHammerPulse.boostEnd then
+								-- Progressive slowdown: lerp from full boosted speed back to walk speed over the boost window
+								local timeLeft = JadeHammerPulse.boostEnd - tick()
+								local t = math.clamp(timeLeft / BoostDuration.Value, 0, 1)
+								local boostedSpeed = getSpeed() + (1.0 * Value.Value)
+								local currentSpeed = Speds.Value + (boostedSpeed - Speds.Value) * t
+								local moveDir = entitylib.character.Humanoid.MoveDirection
+								if moveDir.Magnitude > 0 then
+									root.AssemblyLinearVelocity = moveDir.Unit * currentSpeed + Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
+								else
+									root.AssemblyLinearVelocity = Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
+								end
+							else
+								local moveDir = entitylib.character.Humanoid.MoveDirection
+								if moveDir.Magnitude > 0 then
+									root.AssemblyLinearVelocity = moveDir.Unit * getSpeed() + Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
+								else
+									root.AssemblyLinearVelocity = Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
+								end
+							end
+						elseif JumpTick > tick() then
+							-- Progressive slowdown: lerp JumpSpeed down to 0 as boost expires
+							local timeLeft = JumpTick - tick()
+							local t = math.clamp(timeLeft / BoostDuration.Value, 0, 1)
+							local currentBoost = JumpSpeed * t
+							root.AssemblyLinearVelocity = Direction * (getSpeed() + currentBoost) + Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
+							if entitylib.character.Humanoid.FloorMaterial == Enum.Material.Air and not start then
+								root.AssemblyLinearVelocity += Vector3.new(0, dt * (workspace.Gravity - 23), 0)
+							else
+								root.AssemblyLinearVelocity = Vector3.new(root.AssemblyLinearVelocity.X, 15, root.AssemblyLinearVelocity.Z)
+							end
+							start = nil
+						else
+							if not JadePulse["Enabled"] then
+								if start then
+									root.CFrame = CFrame.lookAlong(start, root.CFrame.LookVector)
+								end
+								root.AssemblyLinearVelocity = Vector3.zero
+							else
+								if entitylib.isAlive then
+									local humanoid = entitylib.character.Humanoid
+									local root = entitylib.character.RootPart
+									local state = humanoid:GetState()
+									if state == Enum.HumanoidStateType.Climbing then return end
+									local moveDirection = humanoid.MoveDirection
+									local velo = getSpeed()
+									local destination = moveDirection * math.max(Speds["Value"] - velo, 0) * dt 
+									root.CFrame += destination
+									root.AssemblyLinearVelocity = (moveDirection * Speds["Value"]) + Vector3.new(0, root.AssemblyLinearVelocity.Y, 0)
+								end
+							end
+							JumpSpeed = 0
+						end
+					else
+						start = nil
+					end
+				end))
+				if not JadePulse["Enabled"] then
+					if store.hand and LongJumpMethods[store.hand.tool.Name] then
+						task.spawn(LongJumpMethods[store.hand.tool.Name], getItem(store.hand.tool.Name), start, (CameraDir.Enabled and gameCamera or entitylib.character.RootPart).CFrame.LookVector)
+						return
+					end
+		
+					for i, v in LongJumpMethods do
+						local item = getItem(i)
+						if item or store.equippedKit == i then
+							task.spawn(v, item, start, (CameraDir.Enabled and gameCamera or entitylib.character.RootPart).CFrame.LookVector)
+							break
+						end
+					end
+				end
+			else
+				JumpTick = tick()
+				Direction = nil
+				JumpSpeed = 0
+				JadeHammerPulse.active = false
+				JadeHammerPulse.speed = 0
+			end
+		end,
+		ExtraText = function()
+			return 'Heatseeker'
+		end,
+		Tooltip = 'Lets you jump farther'
+	})
+	Value = LongJump:CreateSlider({
+		Name = 'Speed',
+		Min = 1,
+		Max = 37,
+		Default = 37,
+		Suffix = function(val)
+			return val == 1 and 'stud' or 'studs'
+		end
+	})
+	BoostDuration = LongJump:CreateSlider({
+		Name = 'Boost Duration',
+		Min = 1,
+		Max = 10,
+		Default = 3,
+		Suffix = function(val)
+			return val == 1 and 'sec' or 'secs'
+		end
+	})
+	CameraDir = LongJump:CreateToggle({
+		Name = 'Camera Direction'
+	})
+	Speds = LongJump:CreateSlider({
+		Name = 'Walk Speed',
+		Min = 1,
+		Max = 23,
+		Default = 23,
+		Suffix = function(val)
+			return val == 1 and 'stud' or 'studs'
+		end
+	})
+	JadePulse = LongJump:CreateToggle({
+		Name = 'JadePulse',
+		Default = true,
+		Function = function(callback)
+			if Speds.Object then
+				Speds.Object.Visible = callback
+			end
+		end
+	})
+end)
+run(function()
+        local AutoReport: table = {["Enabled"] = false}
+        local AutoReportList: any = {}
+        local AutoReportNotify: table = {["Enabled"] = false}
+        local alreadyreported: table = {}
+        local removerepeat = function(str: string?)
+                local new: string = ""
+                local last: string = ""
+                for _: any, v: string? in next, str:split("") do
+                        if v ~= last then 
+                                new ..= v ;
+                                last = v ;
+                        end;
+                end;
+                return new;
+        end;
+        local reporttable: table = {
+                gay = "Bullying", gae = "Bullying", gey = "Bullying",
+                hack = "Scamming", exploit = "Scamming", cheat = "Scamming",
+                hecker = "Scamming", haxker = "Scamming", hacer = "Scamming",
+                report = "Bullying", fat = "Bullying", black = "Bullying",
+                getalife = "Bullying", fatherless = "Bullying", fk = "Bullying",
+                disco = "Offsite Links", yt = "Offsite Links", dizcourde = "Offsite Links",
+                retard = "Swearing", bad = "Bullying", trash = "Bullying", nolife = "Bullying",
+                negar = "Bullying", loser = "Bullying", killyour = "Bullying", kys = "Bullying",
+                hacktowin = "Bullying", bozo = "Bullying", kid = "Bullying", adopted = "Bullying",
+                linlife = "Bullying", commitnotalive = "Bullying", vape = "Offsite Links",
+                futureclient = "Offsite Links", download = "Offsite Links", youtube = "Offsite Links",
+                die = "Bullying", lobby = "Bullying", ban = "Bullying", wizard = "Bullying",
+                wisard = "Bullying", witch = "Bullying", magic = "Bullying"
+        };
+        local reporttableexact: table = {
+                L = "Bullying",
+        };
+        local function findreport(msg: string?)
+                local str: string = removerepeat((msg or ""):gsub("%W+", ""):lower())
+                for w, r in next, reporttable do
+                        if str:find(w) then return r, w end;
+                end;
+                for w, r in next, reporttableexact do
+                        if str == w then return r, w end;
+                end;
+                if AutoReportList.ListEnabled then
+                        for _, w in next, AutoReportList.ListEnabled do
+                                if str:find(w) then return "Bullying", w end;
+                        end;
+                end;
+                return nil;
+        end;
+        local function handlechat(plr: Player?, msg: string?)
+                if plr and plr ~= lplr and whitelist:get(plr) == 0 then
+                        local reason: string?, match: any = findreport(msg);
+                        if reason and not alreadyreported[plr] then
+                                task.spawn(function()
+                                        playersService:ReportAbuse(plr, reason, "he said a bad word");
+                                end);
+                                if AutoReportNotify["Enabled"] then
+                                        notif("Vape", "Reported "..plr.Name.." for "..reason.." ("..match..")", 15, "alert");
+                                end;
+                                alreadyreported[plr] = true;
+                        end;
+                end;
+        end;
+        AutoReport = vape.Categories.Utility:CreateModule({
+                ["Name"] ="AutoReport",
+                ["Function"] = function(callback: boolean): void
+                        if not callback then return end
+                        if textChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+                                table.insert(AutoReport.Connections, textChatService.MessageReceived:Connect(function(tab)
+                                        if tab.TextSource then
+                                                local plr: Player? = playersService:GetPlayerByUserId(tab.TextSource.UserId);
+                                                handlechat(plr, tab.Text);
+                                        end;
+                                end));
+                        elseif replicatedStorage:FindFirstChild("DefaultChatSystemChatEvents") then
+                                table.insert(AutoReport.Connections, replicatedStorage.DefaultChatSystemChatEvents.OnMessageDoneFiltering.OnClientEvent:Connect(function(tab)
+                                        handlechat(playersService:FindFirstChild(tab.FromSpeaker), tab.Message);
+                                end));
+                        else
+                                notif("Vape", "Default chat not found.", 5);
+                                AutoReport:Toggle();
+                        end;
+                end;
+        });
+        AutoReportNotify = AutoReport:CreateToggle({
+                ["Name"] = "Notify",
+                ["Function"] = function() end
+        });
+        AutoReportList = AutoReport:CreateTextList({
+                ["Name"] = "Report Words",
+                ["TempText"] = "phrase (to report)"
+        });
 end)
