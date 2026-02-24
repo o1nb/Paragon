@@ -1,4 +1,5 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local mainapi = {
 	Categories = {},
 	GUIColor = {
@@ -124,7 +125,7 @@ local getcustomassets = {
 	['Paragonv4/assets/new/dripcape.png'] = '',
 	['Paragonv4/assets/new/warning.png'] = 'rbxassetid://14368361552',
 	['Paragonv4/assets/new/worldicon.png'] = 'rbxassetid://14368362492',
-	['Paragonv4/assets/new/OtherIcon.png'] = ''
+	['Paragonv4/assets/new/othericon.png'] = 'rbxassetid://14368362492'
 }
 
 local isfile = isfile or function(file)
@@ -5803,7 +5804,7 @@ mainapi:CreateCategory({
 mainapi.Categories.Main:CreateDivider('misc')
 mainapi:CreateCategory({
 	Name = 'Other',
-	Icon = getcustomasset('Paragonv4/assets/new/OtherIcon.png'),
+	Icon = getcustomasset('Paragonv4/assets/new/othericon.png'),
 	Size = UDim2.fromOffset(14, 14)
 --[[
 	Friends
