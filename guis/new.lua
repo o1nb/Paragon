@@ -1,3 +1,4 @@
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local mainapi = {
 	Categories = {},
 	GUIColor = {
@@ -51,8 +52,8 @@ local tween = {
 	tweenstwo = {}
 }
 local uipallet = {
-	Main = Color3.fromRGB(26, 25, 26),
-	Text = Color3.fromRGB(200, 200, 200),
+	Main = Color3.fromRGB(16, 17, 16),
+	Text = Color3.fromRGB(212, 212, 212),
 	Font = Font.fromEnum(Enum.Font.Arial),
 	FontSemiBold = Font.fromEnum(Enum.Font.Arial, Enum.FontWeight.SemiBold),
 	Tween = TweenInfo.new(0.16, Enum.EasingStyle.Linear)
@@ -122,7 +123,8 @@ local getcustomassets = {
 	['Paragonv4/assets/new/bucket.png'] = 'rbxassetid://14373395239',
 	['Paragonv4/assets/new/dripcape.png'] = '',
 	['Paragonv4/assets/new/warning.png'] = 'rbxassetid://14368361552',
-	['Paragonv4/assets/new/worldicon.png'] = 'rbxassetid://14368362492'
+	['Paragonv4/assets/new/worldicon.png'] = 'rbxassetid://14368362492',
+	['Paragonv4/assets/new/OtherIcon.png'] = ''
 }
 
 local isfile = isfile or function(file)
@@ -5799,7 +5801,10 @@ mainapi:CreateCategory({
 	Size = UDim2.fromOffset(19, 12)
 })
 mainapi.Categories.Main:CreateDivider('misc')
-
+mainapi:CreateCategory({
+	Name = 'Other',
+	Icon = getcustomasset('Paragonv4/assets/new/OtherIcon.png'),
+	Size = UDim2.fromOffset(14, 14)
 --[[
 	Friends
 ]]
