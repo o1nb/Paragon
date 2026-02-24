@@ -4,6 +4,7 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local run = function(func)
 	func()
 end
@@ -2171,6 +2172,48 @@ run(function()
 		['Exhibition Fast'] = {
 			{CFrame = CFrame.new(0.7, -0.7, 0.6) * CFrame.Angles(math.rad(-20), math.rad(50), math.rad(-90)), Time = 0.05},
 			{CFrame = CFrame.new(0.8, -0.8, 0.5) * CFrame.Angles(math.rad(-60), math.rad(60), math.rad(-80)), Time = 0.07}
+		},
+		['Smooth'] = {
+			{CFrame = CFrame.new(1, 0, -0.5) * CFrame.Angles(math.rad(-90), math.rad(60), math.rad(-60)), Time = 0.2},
+			{CFrame = CFrame.new(1, -0.2, -0.5) * CFrame.Angles(math.rad(-160), math.rad(60), math.rad(-30)), Time = 0.12}
+		},
+		['Drop'] = {
+			{CFrame = CFrame.new(-0.4, -0.7, -1.3) * CFrame.Angles(math.rad(111), math.rad(111), math.rad(130)), Time = 0.23},
+			{CFrame = CFrame.new(-0.8, -0.9, -1.7) * CFrame.Angles(math.rad(20), math.rad(130), math.rad(180)), Time = 0.23},
+			{CFrame = CFrame.new(-0.4, -0.7, -1.3) * CFrame.Angles(math.rad(111), math.rad(111), math.rad(130)), Time = 0.23},
+			{CFrame = CFrame.new(-0.8, -0.9, -1.7) * CFrame.Angles(math.rad(20), math.rad(130), math.rad(180)), Time = 0.23},
+			{CFrame = CFrame.new(-0.8, -0.6, -1) * CFrame.Angles(math.rad(20), math.rad(130), math.rad(180)), Time = 0.19}
+		},
+		['Rise'] = {
+			{CFrame = CFrame.new(0.9, 0, 0) * CFrame.Angles(math.rad(-80), math.rad(60), math.rad(-40)), Time = 0.14},
+			{CFrame = CFrame.new(0.5, 0.2, -0.7) * CFrame.Angles(math.rad(-150), math.rad(55), math.rad(20)), Time = 0.14}
+		},
+		['fdp'] = {
+			{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(295), math.rad(55), math.rad(290)), Time = 0.90},
+			{CFrame = CFrame.new(0.69, -0.71, 0.6) * CFrame.Angles(math.rad(200), math.rad(60), math.rad(1)), Time = 0.50}
+		},
+		['old Tenacity'] = {
+			{CFrame = CFrame.new(0.9, 0, 0) * CFrame.Angles(math.rad(-80), math.rad(60), math.rad(-40)), Time = 0.2},
+			{CFrame = CFrame.new(0.5, -0.2, -0.7) * CFrame.Angles(math.rad(-150), math.rad(55), math.rad(20)), Time = 0.2}
+		},
+		['Tenacity'] = {
+			{CFrame = CFrame.new(0, 0, 0) * CFrame.Angles(-math.rad(190), math.rad(110), -math.rad(90)), Time = 0.3},
+			{CFrame = CFrame.new(0.3, -2, 2) * CFrame.Angles(math.rad(120), math.rad(140), math.rad(320)), Time = 0.3}
+		},
+		['Tenacityv2'] = {
+			{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(25), math.rad(-60)), Time = 0.1},
+			{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-40), math.rad(40), math.rad(-90)), Time = 0.1},
+			{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(55), math.rad(-115)), Time = 0.1},
+			{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-50), math.rad(70), math.rad(-60)), Time = 0.1},
+			{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(70), math.rad(-70)), Time = 0.1}
+		},
+		['Smooth'] = {
+			{CFrame = CFrame.new(1, 0, -0.5) * CFrame.Angles(math.rad(-90), math.rad(60), math.rad(-60)), Time = 0.2},
+			{CFrame = CFrame.new(1, -0.2, -0.5) * CFrame.Angles(math.rad(-160), math.rad(60), math.rad(-30)), Time = 0.12}
+		},
+		['Smoother'] = {
+			{CFrame = CFrame.new(3.0, -1.7, -1.1) * CFrame.Angles(math.rad(307), math.rad(57), math.rad(145)), Time = 0.18},
+			{CFrame = CFrame.new(3.0, -1.7, -1.3) * CFrame.Angles(math.rad(203), math.rad(57), math.rad(226)), Time = 0.14}
 		},
 		['Smooth Gaming'] = {
 			{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(50), math.rad(-90)), Time = 0.25},
@@ -8804,6 +8847,9 @@ run(function()
 	local import
 
 	local packs = {
+		-- ═══════════════════════════════════════════════════════
+		-- Original V4 packs
+		-- ═══════════════════════════════════════════════════════
 		['Pack 1'] = {
 			asset = 'rbxassetid://105125574712206',
 			items = {
@@ -8945,10 +8991,139 @@ run(function()
 				{name = 'speed_potion', model = 'SpeedPotion', offset = CFrame.Angles(math.rad(45), math.rad(-180), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
 			}
 		},
+
+		-- ═══════════════════════════════════════════════════════
+		-- V3 Asset-based packs
+		-- ═══════════════════════════════════════════════════════
+		['Velocity'] = {
+			asset = 'rbxassetid://13988978091',
+			items = {
+				{name = 'wood_sword', model = 'Wood_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.4, 0, -0.9)},
+				{name = 'stone_sword', model = 'Stone_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.4, 0, -0.9)},
+				{name = 'iron_sword', model = 'Iron_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.4, 0, -0.9)},
+				{name = 'diamond_sword', model = 'Diamond_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.4, 0, -0.9)},
+				{name = 'emerald_sword', model = 'Emerald_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.4, 0, -0.9)},
+				{name = 'wood_pickaxe', model = 'Wood_Pickaxe', offset = CFrame.Angles(0, math.rad(-190), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'stone_pickaxe', model = 'Stone_Pickaxe', offset = CFrame.Angles(0, math.rad(-190), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'iron_pickaxe', model = 'Iron_Pickaxe', offset = CFrame.Angles(0, math.rad(-190), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'diamond_pickaxe', model = 'Diamond_Pickaxe', offset = CFrame.Angles(0, math.rad(80), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'wood_axe', model = 'Wood_Axe', offset = CFrame.Angles(0, math.rad(-10), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'stone_axe', model = 'Stone_Axe', offset = CFrame.Angles(0, math.rad(-10), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'iron_axe', model = 'Iron_Axe', offset = CFrame.Angles(0, math.rad(-10), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'diamond_axe', model = 'Diamond_Axe', offset = CFrame.Angles(0, math.rad(-90), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+			}
+		},
+		['Aquarium'] = {
+			asset = 'rbxassetid://14217388022',
+			items = {
+				{name = 'wood_sword', model = 'Wood_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.4, 0, -0.9)},
+				{name = 'stone_sword', model = 'Stone_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.4, 0, -0.9)},
+				{name = 'iron_sword', model = 'Iron_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.4, 0, -0.9)},
+				{name = 'diamond_sword', model = 'Diamond_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.4, 0, -0.9)},
+				{name = 'emerald_sword', model = 'Diamond_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.4, 0, -0.9)},
+				{name = 'Rageblade', model = 'Diamond_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.4, 0, -0.9)},
+			}
+		},
+		['Ocean'] = {
+			asset = 'rbxassetid://14356045010',
+			items = {
+				{name = 'wood_sword', model = 'Wood_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.7, 0, -0.8)},
+				{name = 'stone_sword', model = 'Stone_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.7, 0, -0.8)},
+				{name = 'iron_sword', model = 'Iron_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.7, 0, -0.8)},
+				{name = 'diamond_sword', model = 'Diamond_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.7, 0, -0.8)},
+				{name = 'emerald_sword', model = 'Emerald_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(0.7, 0, -0.8)},
+				{name = 'rageblade', model = 'Rageblade', offset = CFrame.Angles(0, math.rad(-100), math.rad(90)), charOffset = CFrame.new(0.7, 0, -0.8)},
+				{name = 'fireball', model = 'Fireball', offset = CFrame.Angles(0, 0, math.rad(90)), charOffset = CFrame.new(0.28, 0.1, 0)},
+				{name = 'telepearl', model = 'Telepearl', offset = CFrame.Angles(0, 0, math.rad(90)), charOffset = CFrame.new(0.1, 0, 0.1)},
+				{name = 'wood_bow', model = 'Bow', offset = CFrame.Angles(0, 0, math.rad(90)), charOffset = CFrame.new(-0.2, 0.1, -0.05)},
+				{name = 'wood_crossbow', model = 'Crossbow', offset = CFrame.Angles(0, 0, math.rad(90)), charOffset = CFrame.new(-0.5, 0, 0.05)},
+				{name = 'tactical_crossbow', model = 'Crossbow', offset = CFrame.Angles(0, math.rad(180), math.rad(-90)), charOffset = CFrame.new(-0.35, 0, -1.2)},
+				{name = 'wood_pickaxe', model = 'Wood_Pickaxe', offset = CFrame.Angles(0, math.rad(-180), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'stone_pickaxe', model = 'Stone_Pickaxe', offset = CFrame.Angles(0, math.rad(-180), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'iron_pickaxe', model = 'Iron_Pickaxe', offset = CFrame.Angles(0, math.rad(-180), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'diamond_pickaxe', model = 'Diamond_Pickaxe', offset = CFrame.Angles(0, math.rad(80), math.rad(-95)), charOffset = CFrame.new(0.2, 0, -0.26)},
+				{name = 'wood_axe', model = 'Wood_Axe', offset = CFrame.Angles(0, math.rad(-10), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'stone_axe', model = 'Stone_Axe', offset = CFrame.Angles(0, math.rad(-10), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'iron_axe', model = 'Iron_Axe', offset = CFrame.Angles(0, math.rad(-10), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'diamond_axe', model = 'Diamond_Axe', offset = CFrame.Angles(0, math.rad(-89), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+			}
+		},
+		['DemonSlayer'] = {
+			asset = 'rbxassetid://14241215869',
+			items = {
+				{name = 'wood_sword', model = 'Wood_Sword', offset = CFrame.Angles(0, math.rad(-89), math.rad(-90)), charOffset = CFrame.new(0.2, 0, -0.8)},
+				{name = 'stone_sword', model = 'Stone_Sword', offset = CFrame.Angles(0, math.rad(-89), math.rad(-90)), charOffset = CFrame.new(0.2, 0, -0.8)},
+				{name = 'iron_sword', model = 'Iron_Sword', offset = CFrame.Angles(0, math.rad(-89), math.rad(-90)), charOffset = CFrame.new(0.2, 0, -0.8)},
+				{name = 'diamond_sword', model = 'Diamond_Sword', offset = CFrame.Angles(0, math.rad(-89), math.rad(-90)), charOffset = CFrame.new(0.2, 0, -0.8)},
+				{name = 'emerald_sword', model = 'Emerald_Sword', offset = CFrame.Angles(0, math.rad(-89), math.rad(-90)), charOffset = CFrame.new(0.2, 0, -0.8)},
+				{name = 'wood_dao', model = 'Wood_Sword', offset = CFrame.Angles(0, math.rad(89), math.rad(-90)), charOffset = CFrame.new(0.7, 0, -1.3)},
+				{name = 'stone_dao', model = 'Stone_Sword', offset = CFrame.Angles(0, math.rad(89), math.rad(-90)), charOffset = CFrame.new(0.7, 0, -1.3)},
+				{name = 'iron_dao', model = 'Iron_Sword', offset = CFrame.Angles(0, math.rad(89), math.rad(-90)), charOffset = CFrame.new(0.7, 0, -1.3)},
+				{name = 'diamond_dao', model = 'Diamond_Sword', offset = CFrame.Angles(0, math.rad(89), math.rad(-90)), charOffset = CFrame.new(0.7, 0, -1.3)},
+				{name = 'fireball', model = 'Fireball', offset = CFrame.Angles(0, math.rad(-90), math.rad(90)), charOffset = CFrame.new(0.28, 0.1, 0)},
+				{name = 'telepearl', model = 'Telepearl', offset = CFrame.Angles(0, math.rad(-90), math.rad(90)), charOffset = CFrame.new(0.1, 0, 0.1)},
+				{name = 'diamond', model = 'Diamond', offset = CFrame.Angles(0, math.rad(-90), math.rad(-90)), charOffset = CFrame.new(0, -0.03, 0)},
+				{name = 'iron', model = 'Iron', offset = CFrame.Angles(0, math.rad(-90), math.rad(90)), charOffset = CFrame.new(0, -0.24, 0)},
+				{name = 'gold', model = 'Gold', offset = CFrame.Angles(0, math.rad(-90), math.rad(90)), charOffset = CFrame.new(0, 0.03, 0)},
+				{name = 'emerald', model = 'Emerald', offset = CFrame.Angles(0, math.rad(-90), math.rad(-90)), charOffset = CFrame.new(0, -0.03, 0)},
+				{name = 'wood_bow', model = 'Bow', offset = CFrame.Angles(0, 0, math.rad(90)), charOffset = CFrame.new(-0.29, 0.1, -0.2)},
+				{name = 'wood_crossbow', model = 'Bow', offset = CFrame.Angles(0, 0, math.rad(90)), charOffset = CFrame.new(-0.6, 0, 0)},
+				{name = 'tactical_crossbow', model = 'Bow', offset = CFrame.Angles(0, math.rad(180), math.rad(-90)), charOffset = CFrame.new(-0.5, 0, -1.2)},
+				{name = 'wood_pickaxe', model = 'Wood_Pickaxe', offset = CFrame.Angles(0, math.rad(-180), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'stone_pickaxe', model = 'Stone_Pickaxe', offset = CFrame.Angles(0, math.rad(-180), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'iron_pickaxe', model = 'Iron_Pickaxe', offset = CFrame.Angles(0, math.rad(-180), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'diamond_pickaxe', model = 'Diamond_Pickaxe', offset = CFrame.Angles(0, math.rad(90), math.rad(-95)), charOffset = CFrame.new(0.2, 0, -0.26)},
+			}
+		},
+		['Glizzy'] = {
+			asset = 'rbxassetid://13804645310',
+			items = {
+				{name = 'wood_sword', model = 'Wood_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(-0.4, 0, -0.10)},
+				{name = 'stone_sword', model = 'Stone_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(-0.4, 0, -0.10)},
+				{name = 'iron_sword', model = 'Iron_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(-0.4, 0, -0.10)},
+				{name = 'diamond_sword', model = 'Diamond_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(-0.4, 0, -0.10)},
+				{name = 'emerald_sword', model = 'Emerald_Sword', offset = CFrame.Angles(0, math.rad(-100), math.rad(-90)), charOffset = CFrame.new(-0.4, 0, -0.10)},
+				{name = 'rageblade', model = 'Rageblade', offset = CFrame.Angles(0, math.rad(-100), math.rad(-270)), charOffset = CFrame.new(-0.4, 0, -0.10)},
+			},
+			charExtraRotation = CFrame.Angles(0, math.rad(-105), 0),
+		},
+		['PrivatePack'] = {
+			asset = 'rbxassetid://14161283331',
+			items = {
+				{name = 'wood_sword', model = 'Wood_Sword', offset = CFrame.Angles(0, math.rad(-89), math.rad(-90)), charOffset = CFrame.new(0.6, 0, -0.8)},
+				{name = 'stone_sword', model = 'Stone_Sword', offset = CFrame.Angles(0, math.rad(-89), math.rad(-90)), charOffset = CFrame.new(0.6, 0, -0.8)},
+				{name = 'iron_sword', model = 'Iron_Sword', offset = CFrame.Angles(0, math.rad(-89), math.rad(-90)), charOffset = CFrame.new(0.6, 0, -0.8)},
+				{name = 'diamond_sword', model = 'Diamond_Sword', offset = CFrame.Angles(0, math.rad(-89), math.rad(-90)), charOffset = CFrame.new(0.6, 0, -0.8)},
+				{name = 'emerald_sword', model = 'Emerald_Sword', offset = CFrame.Angles(0, math.rad(-89), math.rad(-90)), charOffset = CFrame.new(0.6, 0, -0.8)},
+				{name = 'rageblade', model = 'Rageblade', offset = CFrame.Angles(0, math.rad(-100), math.rad(90)), charOffset = CFrame.new(0.7, 0, -1)},
+				{name = 'fireball', model = 'Fireball', offset = CFrame.Angles(0, math.rad(-90), math.rad(90)), charOffset = CFrame.new(0.28, 0.1, 0)},
+				{name = 'telepearl', model = 'Telepearl', offset = CFrame.Angles(0, math.rad(-90), math.rad(90)), charOffset = CFrame.new(0.1, 0, 0.1)},
+				{name = 'diamond', model = 'Diamond', offset = CFrame.Angles(0, math.rad(-90), math.rad(90)), charOffset = CFrame.new(0, 0.027, 0)},
+				{name = 'iron', model = 'Iron', offset = CFrame.Angles(0, math.rad(-90), math.rad(90)), charOffset = CFrame.new(0, -0.24, 0)},
+				{name = 'gold', model = 'Gold', offset = CFrame.Angles(0, math.rad(-90), math.rad(90)), charOffset = CFrame.new(0, 0.03, 0)},
+				{name = 'emerald', model = 'Emerald', offset = CFrame.Angles(0, math.rad(-90), math.rad(90)), charOffset = CFrame.new(0, 0.001, 0)},
+				{name = 'wood_bow', model = 'Bow', offset = CFrame.Angles(0, 0, math.rad(90)), charOffset = CFrame.new(-0.29, 0.1, -0.2)},
+				{name = 'wood_crossbow', model = 'Bow', offset = CFrame.Angles(0, 0, math.rad(90)), charOffset = CFrame.new(-0.6, 0, 0)},
+				{name = 'tactical_crossbow', model = 'Bow', offset = CFrame.Angles(0, math.rad(180), math.rad(-90)), charOffset = CFrame.new(-0.5, 0, -1.2)},
+				{name = 'wood_pickaxe', model = 'Wood_Pickaxe', offset = CFrame.Angles(0, math.rad(-180), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'stone_pickaxe', model = 'Stone_Pickaxe', offset = CFrame.Angles(0, math.rad(-180), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'iron_pickaxe', model = 'Iron_Pickaxe', offset = CFrame.Angles(0, math.rad(-18033), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'diamond_pickaxe', model = 'Diamond_Pickaxe', offset = CFrame.Angles(0, math.rad(80), math.rad(-95)), charOffset = CFrame.new(0.2, 0, -0.26)},
+				{name = 'wood_axe', model = 'Wood_Axe', offset = CFrame.Angles(0, math.rad(-10), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'stone_axe', model = 'Stone_Axe', offset = CFrame.Angles(0, math.rad(-10), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'iron_axe', model = 'Iron_Axe', offset = CFrame.Angles(0, math.rad(-10), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+				{name = 'diamond_axe', model = 'Diamond_Axe', offset = CFrame.Angles(0, math.rad(-89), math.rad(-95)), charOffset = CFrame.new(-0.2, 0, -0.08)},
+			}
+		},
+		['Lunar'] = {
+			asset = 'rbxassetid://14027120450',
+			generic = true, -- uses generic model-name matching instead of item index
+		},
 	}
 
 	local lookup = {}
 	local extraRotation = CFrame.Angles(0, math.rad(-50), 0)
+	local lunarConnection
 
 	local function hideParts(parent)
 		for _, v in parent:GetDescendants() do
@@ -8965,19 +9140,20 @@ run(function()
 		weld.Parent = model
 	end
 
-	local function applyViewmodel(tool, entry)
+	local function applyViewmodel(tool, entry, pack)
 		local src = import and import:FindFirstChild(entry.model)
 		if not src then return end
 		hideParts(tool)
 		local handle = tool:FindFirstChild('Handle')
 		if not handle then return end
 		local clone = src:Clone()
+		local charExtra = pack and pack.charExtraRotation
 		clone.CFrame = handle.CFrame * entry.offset * extraRotation
 		clone.Parent = tool
 		weldModel(clone, handle)
 	end
 
-	local function applyCharacter(tool, entry)
+	local function applyCharacter(tool, entry, pack)
 		if not lplr.Character then return end
 		local charTool = lplr.Character:FindFirstChild(tool.Name)
 		if not charTool or not charTool:IsA('Accessory') then return end
@@ -8988,25 +9164,73 @@ run(function()
 		if not handle then return end
 		local clone = src:Clone()
 		clone.Anchored = false
-		clone.CFrame = handle.CFrame * entry.offset * extraRotation * entry.charOffset
+		local charRotation = pack and pack.charExtraRotation or extraRotation
+		clone.CFrame = handle.CFrame * entry.offset * charRotation * entry.charOffset
 		clone.Parent = charTool
 		weldModel(clone, handle)
 	end
 
-	local function onViewmodelChild(tool)
+	-- Lunar-style generic matching (matches by child name in asset)
+	local function applyLunarViewmodel(tool)
+		if not tool:IsA('Accessory') then return end
+		if not import then return end
+		local match = import:FindFirstChild(tool.Name)
+		if not match then return end
+
+		hideParts(tool)
+		local handle = tool:FindFirstChild('Handle')
+		if not handle or not handle:IsA('BasePart') then return end
+
+		local vmmodel = match:Clone()
+		vmmodel.CFrame = handle.CFrame * CFrame.Angles(math.rad(90), math.rad(-130), 0)
+		if tool.Name == 'rageblade' then
+			vmmodel.CFrame = CFrame.Angles(math.rad(-80), math.rad(230), math.rad(10))
+		end
+		vmmodel.Parent = tool
+		weldModel(vmmodel, handle)
+
+		-- Character model
+		if not lplr.Character then return end
+		local charPart = lplr.Character:FindFirstChild(tool.Name)
+		if not charPart then return end
+		local charHandle = charPart:FindFirstChild('Handle')
+		if not charHandle or not charHandle:IsA('BasePart') then return end
+
+		hideParts(charPart)
+		local charmodel = match:Clone()
+		charmodel.CFrame = charHandle.CFrame * CFrame.Angles(math.rad(90), math.rad(-130), 0)
+		if tool.Name == 'rageblade' then
+			charmodel.CFrame = CFrame.Angles(math.rad(-80), math.rad(230), math.rad(10))
+		end
+		charmodel.Anchored = false
+		charmodel.CanCollide = false
+		charmodel.Parent = charPart
+		weldModel(charmodel, charHandle)
+	end
+
+	local function onViewmodelChild(tool, pack)
 		if not tool:IsA('Accessory') then return end
 		local entry = lookup[tool.Name]
 		if not entry then return end
-		applyViewmodel(tool, entry)
-		task.spawn(applyCharacter, tool, entry)
+		applyViewmodel(tool, entry, pack)
+		task.spawn(applyCharacter, tool, entry, pack)
 	end
 
-	local function hookViewmodel()
+	local function hookViewmodel(pack)
 		local viewmodel = gameCamera:FindFirstChild('Viewmodel')
-		if viewmodel then
-			TexturePack:Clean(viewmodel.ChildAdded:Connect(onViewmodelChild))
+		if not viewmodel then return end
+
+		if pack and pack.generic then
+			TexturePack:Clean(viewmodel.ChildAdded:Connect(applyLunarViewmodel))
 			for _, child in viewmodel:GetChildren() do
-				task.spawn(onViewmodelChild, child)
+				task.spawn(applyLunarViewmodel, child)
+			end
+		else
+			TexturePack:Clean(viewmodel.ChildAdded:Connect(function(tool)
+				onViewmodelChild(tool, pack)
+			end))
+			for _, child in viewmodel:GetChildren() do
+				task.spawn(onViewmodelChild, child, pack)
 			end
 		end
 	end
@@ -9015,6 +9239,19 @@ run(function()
 		local pack = packs[packName]
 		if not pack then return end
 
+		-- URL-loaded pack (external loadstring)
+		if pack.url then
+			local suc, err = pcall(function()
+				loadstring(game:HttpGet(pack.url))()
+			end)
+			if not suc then
+				notif('TexturePack', 'Failed to load ' .. packName .. ': ' .. tostring(err), 5, 'alert')
+				return false
+			end
+			return true, true -- true, isUrlPack
+		end
+
+		-- Asset-based pack
 		if import then
 			import:Destroy()
 			import = nil
@@ -9030,27 +9267,39 @@ run(function()
 		import = objs[1]
 		import.Parent = replicatedStorage
 
-		for _, entry in pack.items do
-			lookup[entry.name] = entry
+		if pack.items then
+			for _, entry in pack.items do
+				lookup[entry.name] = entry
+			end
 		end
 
-		return true
+		return true, false
 	end
 
 	TexturePack = vape.Categories.Render:CreateModule({
 		Name = 'TexturePack',
 		Function = function(callback)
 			if callback then
-				if not loadPack(PackSelect.Value) then
+				local loaded, isUrlPack = loadPack(PackSelect.Value)
+				if not loaded then
 					TexturePack:Toggle()
 					return
 				end
 
-				hookViewmodel()
+				-- URL packs handle their own hooking
+				if isUrlPack then
+					TexturePack:Clean(function()
+						-- URL packs can't be easily cleaned, user must rejoin
+					end)
+					return
+				end
+
+				local pack = packs[PackSelect.Value]
+				hookViewmodel(pack)
 
 				TexturePack:Clean(gameCamera.ChildAdded:Connect(function(child)
 					if child.Name == 'Viewmodel' then
-						hookViewmodel()
+						hookViewmodel(pack)
 					end
 				end))
 
@@ -9084,586 +9333,7 @@ run(function()
 				TexturePack:Toggle()
 			end
 		end,
-		Tooltip = 'Pack 1 - Full pack (swords, tools, bows, etc)\nPack 2 - Swords only'
-	})
-end)
-local GodMode = {Enabled = false}
-run(function()
-    local antiDeath = {}
-    local antiDeathConfig = {
-        Mode = {},
-        BoostMode = {},
-        SongId = {},
-        Health = {},
-        Velocity = {},
-        CFrame = {},
-        TweenPower = {},
-        TweenDuration = {},
-        SkyPosition = {},
-        AutoDisable = {},
-        Sound = {},
-        Notify = {}
-    }
-    local antiDeathState = {}
-    local handlers = {}
-
-    function handlers.new()
-        local self = {
-			godmode = false,
-            boost = false,
-            inf = false,
-            notify = false,
-            id = false,
-            hrp = entitylib.character.RootPart,
-            hasNotified = false
-        }
-        setmetatable(self, { __index = handlers })
-        return self
-    end
-
-    function handlers:enable()
-		antiDeath:Clean(runService.Heartbeat:Connect(function()
-			if not isAlive(lplr, true) then
-                handlers:disable()
-                return
-            end
-
-            if getHealth() <= antiDeathConfig.Health.Value and getHealth() > 0 then
-                if not handlers.boost then
-                    handlers:activateMode()
-                    if not handlers.hasNotified and antiDeathConfig.Notify.Enabled then
-                        handlers:sendNotification()
-                    end
-                    handlers:playNotificationSound()
-                    handlers.boost = true
-                end
-            else
-                handlers:resetMode()
-				pcall(function()
-					handlers.hrp = entityLibrary.character.HumanoidRootPart
-					handlers.hrp.Anchored = false
-				end)
-                handlers.boost = false
-
-                if handlers.hasNotified then
-                    handlers.hasNotified = false
-                end
-            end
-		end))
-    end
-
-    function handlers:disable()
-        --RunLoops:UnbindFromHeartbeat('antiDeath')
-    end
-
-    function handlers:activateMode()
-        local modeActions = {
-            Infinite = function() self:enableInfiniteMode() end,
-            Boost = function() self:applyBoost() end,
-            Sky = function() self:moveToSky() end,
-			AntiHit = function() self:enableAntiHitMode() end
-        }
-		if antiDeathConfig.Mode.Value == "Infinite" then return end
-        modeActions[antiDeathConfig.Mode.Value]()
-    end
-
-	function handlers:enableAntiHitMode()
-		if not GodMode.Enabled then
-			GodMode:Toggle(false)
-			self.godmode = true
-		end
-	end
-
-    function handlers:enableInfiniteMode()
-        if not vape.Modules.InfiniteFly.Enabled then
-            vape.Modules.InfiniteFly:Toggle(true)
-            self.inf = true
-        end
-    end
-
-    function handlers:applyBoost()
-        local boostActions = {
-            Velocity = function() self.hrp.Velocity += Vector3.new(0, antiDeathConfig.Velocity.Value, 0) end,
-            CFrame = function() self.hrp.CFrame += Vector3.new(0, antiDeathConfig.CFrame.Value, 0) end,
-            Tween = function()
-                tweenService:Create(self.hrp, twinfo(antiDeathConfig.TweenDuration.Value / 10), {
-                    CFrame = self.hrp.CFrame + Vector3.new(0, antiDeathConfig.TweenPower.Value, 0)
-                }):Play()
-            end
-        }
-        boostActions[antiDeathConfig.BoostMode.Value]()
-    end
-
-    function handlers:moveToSky()
-        self.hrp.CFrame += Vector3.new(0, antiDeathConfig.SkyPosition.Value, 0)
-        self.hrp.Anchored = true
-    end
-
-    function handlers:sendNotification()
-        InfoNotification('AntiDeath', 'Prevented death. Health is lower than ' .. antiDeathConfig.Health.Value ..
-            '. (Current health: ' .. math.floor(getHealth() + 0.5) .. ')', 5)
-        self.hasNotified = true
-    end
-
-    function handlers:playNotificationSound()
-        if antiDeathConfig.Sound.Enabled then
-            local soundId = antiDeathConfig.SongId.Value ~= '' and antiDeathConfig.SongId.Value or '7396762708'
-            playSound(soundId, false)
-        end
-    end
-
-    function handlers:resetMode()
-        if self.inf then
-            if antiDeathConfig.AutoDisable.Enabled then
-                if vape.Modules.InfiniteFly.Enabled then
-                    vape.Modules.InfiniteFly:Toggle(false)
-                end
-            end
-            self.inf = false
-            self.hasNotified = false
-        elseif self.godmode then
-			if antiDeathConfig.AutoDisable.Enabled then
-                if GodMode.Enabled then
-                    GodMode:Toggle(false)
-                end
-            end
-            self.godmode = false
-            self.hasNotified = false
-		end
-    end
-
-    local antiDeathStatus = handlers.new()
-
-    antiDeath = vape.Categories.Utility:CreateModule({
-        Name = 'AntiDeath',
-        Function = function(callback)
-            if callback then
-                coroutine.wrap(function()
-                    antiDeathStatus:enable()
-                end)()
-            else
-                pcall(function()
-                    antiDeathStatus:disable()
-                end)
-            end
-        end,
-        Default = false,
-        ExtraText = function()
-            return antiDeathConfig.Mode.Value
-        end
-    })
-
-    antiDeathConfig.Mode = antiDeath:CreateDropdown({
-        Name = 'Mode',
-        List = {'Infinite', 'Boost', 'Sky', 'AntiHit'},
-        Default = 'AntiHit',
-        Function = function(val)
-            antiDeathConfig.BoostMode.Object.Visible = val == 'Boost'
-            antiDeathConfig.SkyPosition.Object.Visible = val == 'Sky'
-            antiDeathConfig.AutoDisable.Object.Visible = (val == 'Infinite' or val == 'AntiHit')
-            antiDeathConfig.Velocity.Object.Visible = false
-            antiDeathConfig.CFrame.Object.Visible = false
-            antiDeathConfig.TweenPower.Object.Visible = false
-            antiDeathConfig.TweenDuration.Object.Visible = false
-        end
-    })
-
-    antiDeathConfig.BoostMode = antiDeath:CreateDropdown({
-        Name = 'Boost',
-        List = { 'Velocity', 'CFrame', 'Tween' },
-        Default = 'Velocity',
-        Function = function(val)
-            antiDeathConfig.Velocity.Object.Visible = val == 'Velocity'
-            antiDeathConfig.CFrame.Object.Visible = val == 'CFrame'
-            antiDeathConfig.TweenPower.Object.Visible = val == 'Tween'
-            antiDeathConfig.TweenDuration.Object.Visible = val == 'Tween'
-        end
-    })
-    antiDeathConfig.BoostMode.Object.Visible = false
-
-    antiDeathConfig.SongId = antiDeath:CreateTextBox({
-        Name = 'SongID',
-        TempText = 'Song ID',
-        Tooltip = 'ID to play the song.',
-        FocusLost = function()
-            if antiDeath.Enabled then
-                antiDeath:Toggle()
-                antiDeath:Toggle()
-            end
-        end
-    })
-    antiDeathConfig.SongId.Object.Visible = false
-
-    antiDeathConfig.Health = antiDeath:CreateSlider({
-        Name = 'Health Trigger',
-        Min = 10,
-        Max = 90,
-        Default = 50,
-        Function = function(val) end
-    })
-
-    antiDeathConfig.Velocity = antiDeath:CreateSlider({
-        Name = 'Velocity Boost',
-        Min = 100,
-        Max = 600,
-        Default = 600,
-        Function = function(val) end
-    })
-    antiDeathConfig.Velocity.Object.Visible = false
-
-    antiDeathConfig.CFrame = antiDeath:CreateSlider({
-        Name = 'CFrame Boost',
-        Min = 100,
-        Max = 1000,
-        Default = 1000,
-        Function = function(val) end
-    })
-    antiDeathConfig.CFrame.Object.Visible = false
-
-    antiDeathConfig.TweenPower = antiDeath:CreateSlider({
-        Name = 'Tween Boost',
-        Min = 100,
-        Max = 1300,
-        Default = 1000,
-        Function = function(val) end
-    })
-    antiDeathConfig.TweenPower.Object.Visible = false
-
-    antiDeathConfig.TweenDuration = antiDeath:CreateSlider({
-        Name = 'Tween Duration',
-        Min = 1,
-        Max = 10,
-        Default = 4,
-        Function = function(val) end
-    })
-    antiDeathConfig.TweenDuration.Object.Visible = false
-
-    antiDeathConfig.SkyPosition = antiDeath:CreateSlider({
-        Name = 'Sky Position',
-        Min = 100,
-        Max = 1000,
-        Default = 1000,
-        Function = function(val) end
-    })
-    antiDeathConfig.SkyPosition.Object.Visible = false
-
-    antiDeathConfig.AutoDisable = antiDeath:CreateToggle({
-        Name = 'Auto Disable',
-        Function = function(val) end,
-        Default = true
-    })
-    antiDeathConfig.AutoDisable.Object.Visible = false
-
-    antiDeathConfig.Sound = antiDeath:CreateToggle({
-        Name = 'Sound',
-        Function = function(callback)
-            antiDeathConfig.SongId.Object.Visible = callback
-        end,
-        Default = true
-    })
-
-    antiDeathConfig.Notify = antiDeath:CreateToggle({
-        Name = 'Notification',
-        Default = true,
-        Function = function(callback) end
-    })
-end)
-run(function()
-	local AntiHit = {}
-	local physEngine = game:GetService("RunService")
-	local worldSpace = game.Workspace
-	local camView = worldSpace.CurrentCamera
-	local plyr = lplr
-	local entSys = entitylib
-	local queryutil = {}
-	function queryutil:setQueryIgnored(part, index)
-		if index == nil then index = true end
-		if part then part:SetAttribute("gamecore_GameQueryIgnore", index) end
-	end
-	local utilPack = {QueryUtil = queryutil}
-
-	local dupeNode, altHeight, initOk, sysOk = nil, nil, false, true
-	shared.anchorBase = nil
-	shared.evadeFlag = false
-
-	local trigSet = {p = true, n = false, w = false}
-	local shiftMode = "Up"
-	local scanRad = 30
-
-	local function genTwin()
-		if entSys.isAlive and entSys.character.Humanoid.Health > 0 and entSys.character.HumanoidRootPart then
-			altHeight = entSys.character.Humanoid.HipHeight
-			shared.anchorBase = entSys.character.HumanoidRootPart
-			utilPack.QueryUtil:setQueryIgnored(shared.anchorBase, true)
-			if not plyr.Character or not plyr.Character.Parent then return false end
-
-			plyr.Character.Parent = game
-			dupeNode = shared.anchorBase:Clone()
-			dupeNode.Parent = plyr.Character
-			shared.anchorBase.Parent = camView
-			dupeNode.CFrame = shared.anchorBase.CFrame
-
-			plyr.Character.PrimaryPart = dupeNode
-			entSys.character.HumanoidRootPart = dupeNode
-			entSys.character.RootPart = dupeNode
-			plyr.Character.Parent = worldSpace
-
-			for _, x in plyr.Character:GetDescendants() do
-				if x:IsA('Weld') or x:IsA('Motor6D') then
-					if x.Part0 == shared.anchorBase then x.Part0 = dupeNode end
-					if x.Part1 == shared.anchorBase then x.Part1 = dupeNode end
-				end
-			end
-			return true
-		end
-		return false
-	end
-
-	local function resetCore()
-		if not entSys.isAlive or not shared.anchorBase or not shared.anchorBase:IsDescendantOf(game) then
-			shared.anchorBase = nil
-			dupeNode = nil
-			return false
-		end
-
-		if not plyr.Character or not plyr.Character.Parent then return false end
-
-		plyr.Character.Parent = game
-
-		shared.anchorBase.Parent = plyr.Character
-		shared.anchorBase.CanCollide = true
-		shared.anchorBase.Velocity = Vector3.zero 
-		shared.anchorBase.Anchored = false 
-
-		plyr.Character.PrimaryPart = shared.anchorBase
-		entSys.character.HumanoidRootPart = shared.anchorBase
-		entSys.character.RootPart = shared.anchorBase
-
-		for _, x in plyr.Character:GetDescendants() do
-			if x:IsA('Weld') or x:IsA('Motor6D') then
-				if x.Part0 == dupeNode then x.Part0 = shared.anchorBase end
-				if x.Part1 == dupeNode then x.Part1 = shared.anchorBase end
-			end
-		end
-
-		local prevLoc = dupeNode and dupeNode.CFrame or shared.anchorBase.CFrame
-		if dupeNode then
-			dupeNode:Destroy()
-			dupeNode = nil
-		end
-
-		plyr.Character.Parent = worldSpace
-		shared.anchorBase.CFrame = prevLoc
-
-		if entSys.character.Humanoid then
-			entSys.character.Humanoid.HipHeight = altHeight or 2
-		end
-
-		shared.anchorBase = nil
-		shared.evadeFlag = false
-		altHeight = nil
-
-		return true
-	end
-
-	local function shiftPos()
-		if not entSys.isAlive or not shared.anchorBase or not AntiHit.on then return end
-
-		local hits = entSys.AllPosition({
-			Range = scanRad,
-			Wallcheck = trigSet.w or nil,
-			Part = 'RootPart',
-			Players = trigSet.p,
-			NPCs = trigSet.n,
-			Limit = 1
-		})
-
-		if #hits > 0 and not shared.evadeFlag then
-			local base = entSys.character.RootPart
-			if base then
-				shared.evadeFlag = true
-				local targetY = shiftMode == "Up" and 150 or 0
-				shared.anchorBase.CFrame = CFrame.new(base.CFrame.X, targetY, base.CFrame.Z)
-				task.wait(0.15)
-				shared.anchorBase.CFrame = base.CFrame
-				task.wait(0.05)
-				shared.evadeFlag = false
-			end
-		end
-	end
-
-	function AntiHit:engage()
-		if self.on then return end
-		self.on = true
-
-		initOk = genTwin()
-		if not initOk then
-			self:disengage()
-			return
-		end
-
-		self.physHook = physEngine.PreSimulation:Connect(function(dt)
-			if entSys.isAlive and shared.anchorBase and entSys.character.RootPart then
-				local currBase = entSys.character.RootPart
-				local currPos = currBase.CFrame
-
-				if not isnetworkowner(shared.anchorBase) then
-					currBase.CFrame = shared.anchorBase.CFrame
-					currBase.Velocity = shared.anchorBase.Velocity
-					return
-				end
-				if not shared.evadeFlag then
-					shared.anchorBase.CFrame = currPos
-				end
-				shared.anchorBase.Velocity = Vector3.zero
-				shared.anchorBase.CanCollide = false
-				shiftPos()
-			else
-				self:disengage() 
-			end
-		end)
-
-		self.respawnHook = entSys.Events.LocalAdded:Connect(function(_)
-			if self.on then
-				self:disengage() 
-				task.wait(0.1) 
-				self:engage() 
-			end
-		end)
-	end
-
-	local Antihit_core = {Enabled = false}
-
-	function AntiHit:disengage()
-		self.on = false
-		local success, err = pcall(resetCore)
-		if not success then
-			warn("AntiHit resetCore failed: " .. tostring(err))
-		end
-		if self.physHook then
-			self.physHook:Disconnect()
-			self.physHook = nil
-		end
-		if self.respawnHook then
-			self.respawnHook:Disconnect()
-			self.respawnHook = nil
-		end
-	end
-
-	Antihit_core = vape.Categories.Blatant:CreateModule({
-		Name = "AntiHit",
-		Function = function(active)
-			if active then
-				warningNotification("Antihit V2", "Warning: this is still experimental!", 3)
-			end
-			task.spawn(function()
-				repeat task.wait() until store.matchState > 0 or not Antihit_core.Enabled
-				if not Antihit_core.Enabled then return end
-				if active then
-					AntiHit:engage()
-				else
-					AntiHit:disengage()
-				end
-			end)
-		end,
-		Tooltip = "Dodges attacks."
-	})
-
-	Antihit_core:CreateTargets({
-		Players = true,
-		NPCs = false
-	})
-	Antihit_core:CreateDropdown({
-		Name = "Shift Type",
-		List = {"Up", "Down"},
-		Value = "Up",
-		Function = function(opt) shiftMode = opt end
-	})
-	Antihit_core:CreateSlider({
-		Name = "Scan Perimeter",
-		Min = 1,
-		Max = 30,
-		Default = 30,
-		Suffix = function(v) return v == 1 and "span" or "spans" end,
-		Function = function(v) scanRad = v end
-	})
-end)
-run(function()
-	function IsAlive(plr)
-		plr = plr or lplr
-		if not plr.Character then return false end
-		if not plr.Character:FindFirstChild("Head") then return false end
-		if not plr.Character:FindFirstChild("Humanoid") then return false end
-		if plr.Character:FindFirstChild("Humanoid").Health < 0.11 then return false end
-		return true
-	end
-	local Slowmode = {Value = 2}
-	GodMode = vape.Categories.Blatant:CreateModule({
-		Name = "AntiShit",
-		Function = function(callback)
-			if callback then
-				task.spawn(function()
-					repeat task.wait()
-						local res, msg = pcall(function()
-							if (not vape.Modules.Fly.Enabled) and (not vape.Modules.InfiniteFly.Enabled) then
-								for i, v in pairs(game:GetService("Players"):GetChildren()) do
-									if v.Team ~= lplr.Team and IsAlive(v) and IsAlive(lplr) then
-										if v and v ~= lplr then
-											local TargetDistance = lplr:DistanceFromCharacter(v.Character:FindFirstChild("HumanoidRootPart").CFrame.p)
-											if TargetDistance < 25 then
-												if not lplr.Character:WaitForChild("HumanoidRootPart"):FindFirstChildOfClass("BodyVelocity") then
-													repeat task.wait() until shared.GlobalStore.matchState ~= 0
-													if not (v.Character.HumanoidRootPart.Velocity.Y < -10*5) then
-														lplr.Character.Archivable = true
-				
-														local Clone = lplr.Character:Clone()
-														Clone.Parent = game.Workspace
-														Clone.Head:ClearAllChildren()
-														gameCamera.CameraSubject = Clone:FindFirstChild("Humanoid")
-					
-														for i,v in pairs(Clone:GetChildren()) do
-															if string.lower(v.ClassName):find("part") and v.Name ~= "HumanoidRootPart" then
-																v.Transparency = 1
-															end
-															if v:IsA("Accessory") then
-																v:FindFirstChild("Handle").Transparency = 1
-															end
-														end
-					
-														lplr.Character:WaitForChild("HumanoidRootPart").CFrame = lplr.Character:WaitForChild("HumanoidRootPart").CFrame + Vector3.new(0,100,0)
-					
-														GodMode:Clean(game:GetService("RunService").RenderStepped:Connect(function()
-															if Clone ~= nil and Clone:FindFirstChild("HumanoidRootPart") then
-																Clone.HumanoidRootPart.Position = Vector3.new(lplr.Character:WaitForChild("HumanoidRootPart").Position.X, Clone.HumanoidRootPart.Position.Y, lplr.Character:WaitForChild("HumanoidRootPart").Position.Z)
-															end
-														end))
-					
-														task.wait(Slowmode.Value/10)
-														lplr.Character:WaitForChild("HumanoidRootPart").Velocity = Vector3.new(lplr.Character:WaitForChild("HumanoidRootPart").Velocity.X, -1, lplr.Character:WaitForChild("HumanoidRootPart").Velocity.Z)
-														lplr.Character:WaitForChild("HumanoidRootPart").CFrame = Clone.HumanoidRootPart.CFrame
-														gameCamera.CameraSubject = lplr.Character:FindFirstChild("Humanoid")
-														Clone:Destroy()
-														task.wait(0.15)
-													end
-												end
-											end
-										end
-									end
-								end
-							end
-						end)
-						if not res then warn(msg) end
-					until (not GodMode.Enabled)
-				end)
-			end
-		end
-	})
-	Slowmode = GodMode:CreateSlider({
-		Name = "Slowmode",
-		Function = function() end,
-		Default = 2,
-		Min = 1,
-		Max = 25
+		Tooltip = 'Asset packs swap models directly.\nURL packs load external scripts (Snoopy/CatVape/qwertyui).'
 	})
 end)
 run(function()
@@ -9700,4 +9370,904 @@ run(function()
 		List = WinEffectName
 	})
 end)
+-- ═══════════════════════════════════════════════════════════════
+-- Envision — Visual Effects (V4 Port)
+-- Motion Blur, Trails, Fire, Sparkles
+-- ═══════════════════════════════════════════════════════════════
+run(function()
+	local Envision
+	local MotionBlur
+	local MotionBlurTarget
+	local MotionBlurIntensity
+	local Trails
+	local TrailDistance
+	local TrailColor
+	local Fire
+	local FireParent
+	local FireFlame
+	local FireColor
+	local FireColor2
+	local Sparkle
+	local SparkleParent
+	local SparkleColor
+
+	local blur
+	local fireobject
+	local sparklesobject
+	local trailparts = {}
+	local lastpos
+	local MAX_TRAIL_PARTS = 50
+
+	-- ═══════════════════════════════════════════════════════════
+	-- Trail creation
+	-- ═══════════════════════════════════════════════════════════
+	local function createtrailpart()
+		if not entitylib.isAlive then return end
+		local part = Instance.new('Part')
+		part.Anchored = true
+		part.Material = Enum.Material.Neon
+		part.Size = Vector3.new(2, 1, 1)
+		part.Shape = Enum.PartType.Ball
+		part.CFrame = entitylib.character.RootPart.CFrame
+		part.CanCollide = false
+		part.Color = Color3.fromHSV(TrailColor.Hue, TrailColor.Sat, TrailColor.Value)
+		part.Parent = workspace
+		lastpos = part.Position
+		table.insert(trailparts, part)
+
+		if #trailparts > MAX_TRAIL_PARTS then
+			trailparts[1]:Destroy()
+			table.remove(trailparts, 1)
+		end
+
+		task.delay(2.5, function()
+			tweenService:Create(part, TweenInfo.new(0.8, Enum.EasingStyle.Quad), {Transparency = 1}):Play()
+			task.delay(0.85, function()
+				pcall(function() part:Destroy() end)
+			end)
+		end)
+
+		return part
+	end
+
+	-- ═══════════════════════════════════════════════════════════
+	-- Fire creation
+	-- ═══════════════════════════════════════════════════════════
+	local function lightfire()
+		if fireobject then
+			pcall(function() fireobject:Destroy() end)
+		end
+		fireobject = Instance.new('Fire')
+		fireobject.Color = Color3.fromHSV(FireColor.Hue, FireColor.Sat, FireColor.Value)
+		fireobject.SecondaryColor = Color3.fromHSV(FireColor2.Hue, FireColor2.Sat, FireColor2.Value)
+		fireobject.Heat = FireFlame.Value
+		pcall(function()
+			local isFirstPerson = (gameCamera.CFrame.Position - gameCamera.Focus.Position).Magnitude <= 0.6
+			fireobject.Parent = isFirstPerson and lplr.Character or lplr.Character:FindFirstChild(FireParent.Value) or lplr.Character
+		end)
+	end
+
+	-- ═══════════════════════════════════════════════════════════
+	-- Sparkle creation
+	-- ═══════════════════════════════════════════════════════════
+	local function addsparkle()
+		if sparklesobject then
+			pcall(function() sparklesobject:Destroy() end)
+		end
+		sparklesobject = Instance.new('Sparkles')
+		sparklesobject.Color = Color3.fromHSV(SparkleColor.Hue, SparkleColor.Sat, SparkleColor.Value)
+		pcall(function()
+			local isFirstPerson = (gameCamera.CFrame.Position - gameCamera.Focus.Position).Magnitude <= 0.6
+			sparklesobject.Parent = isFirstPerson and lplr.Character or lplr.Character:FindFirstChild(SparkleParent.Value) or lplr.Character
+		end)
+	end
+
+	-- ═══════════════════════════════════════════════════════════
+	-- Module
+	-- ═══════════════════════════════════════════════════════════
+	Envision = vape.Categories.Other:CreateModule({
+		Name = 'Petty Visualis',
+		Function = function(callback)
+			if callback then
+				-- Motion Blur
+				if MotionBlur.Enabled and entitylib.isAlive then
+					Envision:Clean(entitylib.character.RootPart:GetPropertyChangedSignal('CFrame'):Connect(function()
+						if MotionBlurTarget.Enabled and not store.KillauraTarget then
+							return
+						end
+						if not blur or blur.Parent == nil then
+							blur = Instance.new('BlurEffect')
+							blur.Parent = game:GetService('Lighting')
+							game:GetService('Debris'):AddItem(blur, 0)
+						end
+						blur.Size = MotionBlurIntensity.Value
+					end))
+
+					Envision:Clean(entitylib.Events.LocalAdded:Connect(function()
+						if Envision.Enabled and MotionBlur.Enabled then
+							Envision:Toggle()
+							Envision:Toggle()
+						end
+					end))
+				end
+
+				-- Sparkles
+				if Sparkle.Enabled then
+					addsparkle()
+					Envision:Clean(entitylib.Events.LocalAdded:Connect(function()
+						if Sparkle.Enabled then
+							task.defer(addsparkle)
+						end
+					end))
+				end
+
+				-- Fire
+				if Fire.Enabled then
+					lightfire()
+					Envision:Clean(entitylib.Events.LocalAdded:Connect(function()
+						if Fire.Enabled then
+							task.defer(lightfire)
+						end
+					end))
+
+					-- Keep fire parent updated (first person check)
+					Envision:Clean(runService.Heartbeat:Connect(function()
+						if fireobject and Fire.Enabled and lplr.Character then
+							pcall(function()
+								local isFirstPerson = (gameCamera.CFrame.Position - gameCamera.Focus.Position).Magnitude <= 0.6
+								local target = isFirstPerson and lplr.Character or lplr.Character:FindFirstChild(FireParent.Value) or lplr.Character
+								if fireobject.Parent ~= target then
+									fireobject.Parent = target
+								end
+							end)
+						end
+					end))
+				end
+
+				-- Trails
+				if Trails.Enabled then
+					Envision:Clean(function()
+						for _, v in trailparts do
+							pcall(function() v:Destroy() end)
+						end
+						table.clear(trailparts)
+						lastpos = nil
+					end)
+
+					task.spawn(function()
+						repeat
+							task.wait(0.03)
+							if entitylib.isAlive then
+								local pos = entitylib.character.RootPart.Position
+								if lastpos == nil or (pos - lastpos).Magnitude > TrailDistance.Value then
+									createtrailpart()
+								end
+							end
+						until not Trails.Enabled or not Envision.Enabled
+					end)
+				end
+			else
+				-- Cleanup
+				if fireobject then
+					pcall(function() fireobject:Destroy() end)
+					fireobject = nil
+				end
+				if sparklesobject then
+					pcall(function() sparklesobject:Destroy() end)
+					sparklesobject = nil
+				end
+				if blur then
+					pcall(function() blur:Destroy() end)
+					blur = nil
+				end
+				for _, v in trailparts do
+					pcall(function() v:Destroy() end)
+				end
+				table.clear(trailparts)
+				lastpos = nil
+			end
+		end,
+		Tooltip = 'Customize visual effects on your character'
+	})
+
+	-- ═══════════════════════════════════════════════════════════
+	-- Options
+	-- ═══════════════════════════════════════════════════════════
+	MotionBlur = Envision:CreateToggle({
+		Name = 'Motion Blur',
+		Function = function()
+			if Envision.Enabled then
+				Envision:Toggle()
+				Envision:Toggle()
+			end
+		end
+	})
+	MotionBlurIntensity = Envision:CreateSlider({
+		Name = 'Blur Intensity',
+		Min = 2,
+		Max = 10,
+		Default = 8.5,
+		Decimal = 10,
+		Darker = true
+	})
+	MotionBlurTarget = Envision:CreateToggle({
+		Name = 'Only when targeting',
+		Darker = true,
+		Tooltip = 'Only applies motion blur when Killaura has a target'
+	})
+
+	Trails = Envision:CreateToggle({
+		Name = 'Trails Effect',
+		Function = function()
+			if Envision.Enabled then
+				Envision:Toggle()
+				Envision:Toggle()
+			end
+		end
+	})
+	TrailDistance = Envision:CreateSlider({
+		Name = 'Trail Distance',
+		Min = 3,
+		Max = 10,
+		Default = 7,
+		Darker = true
+	})
+	TrailColor = Envision:CreateColorSlider({
+		Name = 'Trail Color',
+		Function = function(hue, sat, val)
+			for _, v in trailparts do
+				pcall(function()
+					v.Color = Color3.fromHSV(hue, sat, val)
+				end)
+			end
+		end,
+		Darker = true
+	})
+
+	Fire = Envision:CreateToggle({
+		Name = 'Fire Effect',
+		Function = function(callback)
+			FireParent.Object.Visible = callback
+			FireFlame.Object.Visible = callback
+			FireColor.Object.Visible = callback
+			FireColor2.Object.Visible = callback
+			if Envision.Enabled then
+				if callback then
+					lightfire()
+				else
+					if fireobject then
+						pcall(function() fireobject:Destroy() end)
+						fireobject = nil
+					end
+				end
+			end
+		end
+	})
+	FireParent = Envision:CreateDropdown({
+		Name = 'Fire Parent',
+		List = {'HumanoidRootPart', 'Head'},
+		Darker = true,
+		Visible = false
+	})
+	FireFlame = Envision:CreateSlider({
+		Name = 'Flame Heat',
+		Min = 1,
+		Max = 25,
+		Default = 25,
+		Function = function(val)
+			if fireobject and Fire.Enabled then
+				fireobject.Heat = val
+			end
+		end,
+		Darker = true,
+		Visible = false
+	})
+	FireColor = Envision:CreateColorSlider({
+		Name = 'Fire Color',
+		Function = function(hue, sat, val)
+			if fireobject and Fire.Enabled then
+				fireobject.Color = Color3.fromHSV(hue, sat, val)
+			end
+		end,
+		Darker = true,
+		Visible = false
+	})
+	FireColor2 = Envision:CreateColorSlider({
+		Name = 'Fire Color 2',
+		Function = function(hue, sat, val)
+			if fireobject and Fire.Enabled then
+				fireobject.SecondaryColor = Color3.fromHSV(hue, sat, val)
+			end
+		end,
+		Darker = true,
+		Visible = false
+	})
+
+	Sparkle = Envision:CreateToggle({
+		Name = 'Sparkle Effect',
+		Function = function(callback)
+			SparkleParent.Object.Visible = callback
+			SparkleColor.Object.Visible = callback
+			if Envision.Enabled then
+				if callback then
+					addsparkle()
+				else
+					if sparklesobject then
+						pcall(function() sparklesobject:Destroy() end)
+						sparklesobject = nil
+					end
+				end
+			end
+		end
+	})
+	SparkleParent = Envision:CreateDropdown({
+		Name = 'Sparkle Parent',
+		List = {'HumanoidRootPart', 'Head'},
+		Darker = true,
+		Visible = false
+	})
+	SparkleColor = Envision:CreateColorSlider({
+		Name = 'Sparkle Color',
+		Function = function(hue, sat, val)
+			if sparklesobject then
+				sparklesobject.Color = Color3.fromHSV(hue, sat, val)
+			end
+		end,
+		Darker = true,
+		Visible = false
+	})
+end)
+run(function()
+	local Atmosphere: table = {["Enabled"] = false};
+	local Toggles: table = {}
+	local themeName: any;
+	local newobjects: table, oldobjects: table = {}, {}
+	local function BeforeShaders()
+	        return {
+	            Brightness = lightingService.Brightness,
+	            ColorShift_Bottom = lightingService.ColorShift_Bottom,
+	            ColorShift_Top = lightingService.ColorShift_Top,
+	            OutdoorAmbient = lightingService.OutdoorAmbient,
+	            TimeOfDay = lightingService.TimeOfDay,
+	            FogColor = lightingService.FogColor,
+	            FogEnd = lightingService.FogEnd,
+	            FogStart = lightingService.FogStart,
+	            ExposureCompensation = lightingService.ExposureCompensation,
+	            ShadowSoftness = lightingService.ShadowSoftness,
+	            Ambient = lightingService.Ambient,
+	            children = lightingService:GetChildren()
+	        }
+	end;
+	local function restoreDefault(lightingState)
+	        lightingService:ClearAllChildren();
+	        lightingService.Brightness = lightingState.Brightness;
+	        lightingService.ColorShift_Bottom = lightingState.ColorShift_Bottom;
+	        lightingService.ColorShift_Top = lightingState.ColorShift_Top;
+	        lightingService.OutdoorAmbient = lightingState.OutdoorAmbient;
+	        lightingService.TimeOfDay = lightingState.TimeOfDay;
+	        lightingService.FogColor = lightingState.FogColor;
+	        lightingService.FogEnd = lightingState.FogEnd;
+	        lightingService.FogStart = lightingState.FogStart;
+	        lightingService.ExposureCompensation = lightingState.ExposureCompensation;
+	        lightingService.ShadowSoftness = lightingState.ShadowSoftness;
+	        lightingService.Ambient = lightingState.Ambient;
+	        for _, child in next, workspace.ItemDrops:GetChildren() do
+	            child.Parent = lightingService;
+	        end;
+	end;
+	local apidump: table = {
+		Sky = {
+			SkyboxUp = 'Text',
+			SkyboxDn = 'Text',
+			SkyboxLf = 'Text',
+			SkyboxRt = 'Text',
+			SkyboxFt = 'Text',
+			SkyboxBk = 'Text',
+			SunTextureId = 'Text',
+			SunAngularSize = 'Number',
+			MoonTextureId = 'Text',
+			MoonAngularSize = 'Number',
+			StarCount = 'Number'
+		},
+		Atmosphere = {
+			Color = 'Color',
+			Decay = 'Color',
+			Density = 'Number',
+			Offset = 'Number',
+			Glare = 'Number',
+			Haze = 'Number'
+		},
+		BloomEffect = {
+			Intensity = 'Number',
+			Size = 'Number',
+			Threshold = 'Number'
+		},
+		DepthOfFieldEffect = {
+			FarIntensity = 'Number',
+			FocusDistance = 'Number',
+			InFocusRadius = 'Number',
+			NearIntensity = 'Number'
+		},
+		SunRaysEffect = {
+			Intensity = 'Number',
+			Spread = 'Number'
+		},
+		ColorCorrectionEffect = {
+			TintColor = 'Color',
+			Saturation = 'Number',
+			Contrast = 'Number',
+			Brightness = 'Number'
+		}
+	}
+    	local skyThemes: table = {
+		        NetherWorld = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://14365019002',
+			            SkyboxDn = 'rbxassetid://14365023350',
+			            SkyboxFt = 'rbxassetid://14365018399',
+			            SkyboxLf = 'rbxassetid://14365018705',
+			            SkyboxRt = 'rbxassetid://14365018143',
+			            SkyboxUp = 'rbxassetid://14365019327',
+		        },
+		        Neptune = {
+				    SkyboxBk = 'rbxassetid://218955819',
+				    SkyboxDn = 'rbxassetid://218953419',
+				    SkyboxFt = 'rbxassetid://218954524',
+				    SkyboxLf = 'rbxassetid://218958493',
+				    SkyboxRt = 'rbxassetid://218957134',
+				    SkyboxUp = 'rbxassetid://218950090',
+		        },
+		        Velocity = {
+			            SkyboxBk = 'rbxassetid://570557514',
+			            SkyboxDn = 'rbxassetid://570557775',
+			            SkyboxFt = 'rbxassetid://570557559',
+			            SkyboxLf = 'rbxassetid://570557620',
+			            SkyboxRt = 'rbxassetid://570557672',
+			            SkyboxUp = 'rbxassetid://570557727',
+		        },
+		        Minecraft = {
+			            SkyboxBk = 'rbxassetid://591058823',
+			            SkyboxDn = 'rbxassetid://591059876',
+			            SkyboxFt = 'rbxassetid://591058104',
+			            SkyboxLf = 'rbxassetid://591057861',
+			            SkyboxRt = 'rbxassetid://591057625',
+			            SkyboxUp = 'rbxassetid://591059642',
+		        },
+		        Purple = {
+			            SkyboxBk = "rbxassetid://8539982183",
+			            SkyboxDn = "rbxassetid://8539981943",
+			            SkyboxFt = "rbxassetid://8539981721",
+			            SkyboxLf = "rbxassetid://8539981424",
+			            SkyboxRt = "rbxassetid://8539980766",
+			            SkyboxUp = "rbxassetid://8539981085",
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            StarCount = 3000,
+		        }, 
+		        ["日の出"] = {
+				    SkyboxBk = "rbxassetid://600830446",
+				    SkyboxDn = "rbxassetid://600831635",
+				    SkyboxFt = "rbxassetid://600832720",
+				    SkyboxLf = "rbxassetid://600886090",
+				    SkyboxRt = "rbxassetid://600833862",
+				    SkyboxUp = "rbxassetid://600835177",
+		        },
+		        Sakura = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=16694315897",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=16694319417",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=16694324910",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=16694328308",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=16694331447",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=16694334666",
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Hexagonal = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=15876463105",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=15876464432",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=15876465852",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=15876467260",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=15876469097",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=15876470945",
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Reality = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=6778646360",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=6778658683",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=6778648039",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=6778649136",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=6778650519",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=6778658364",
+		        },
+		        LunarNight = {
+			            SkyboxBk = 'rbxassetid://187713366',
+			            SkyboxDn = 'rbxassetid://187712428',
+			            SkyboxFt = 'rbxassetid://187712836',
+			            SkyboxLf = 'rbxassetid://187713755',
+			            SkyboxRt = 'rbxassetid://187714525',
+			            SkyboxUp = 'rbxassetid://187712111',
+			            SunAngularSize = 0,
+			            StarCount = 0,
+		        },
+		        FPSBoost = {
+			            SkyboxBk = 'rbxassetid://11457548274',
+			            SkyboxDn = 'rbxassetid://11457548274',
+			            SkyboxFt = 'rbxassetid://11457548274',
+			            SkyboxLf = 'rbxassetid://11457548274',
+			            SkyboxRt = 'rbxassetid://11457548274',
+			            SkyboxUp = 'rbxassetid://11457548274',
+			            SunAngularSize = 0,
+			            StarCount = 3000,
+		        },
+		        Etheral = {
+			            SkyboxBk = 'rbxassetid://16262356578',
+			            SkyboxDn = 'rbxassetid://16262358026',
+			            SkyboxFt = 'rbxassetid://16262360469',
+			            SkyboxLf = 'rbxassetid://16262362003',
+			            SkyboxRt = 'rbxassetid://16262363873',
+			            SkyboxUp = 'rbxassetid://16262366016',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Pandora = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=16739324092',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=16739325541',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=16739327056',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=16739329370',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=16739331050',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=16739332736',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Polaris = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=16823270864',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=16823272150',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=16823273508',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=16823274898',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=16823276281',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=16823277547',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Diaphanous = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=16888989874',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=16888991855',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=16888995219',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=16888998994',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=16889000916',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=16889004122',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Transcendent = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=17124357467',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=17124359797',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=17124362093',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=17124365127',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=17124367200',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=17124369657',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Truth = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=144933338",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=144931530",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=144933262",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=144933244",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=144933299",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=144931564",
+		        },
+		        RayTracing = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=271042516",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=271077243",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=271042556",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=271042310",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=271042467",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=271077958",
+		        },
+		        Nebula = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://5260808177',
+			            SkyboxDn = 'rbxassetid://5260653793',
+			            SkyboxFt = 'rbxassetid://5260817288',
+			            SkyboxLf = 'rbxassetid://5260800833',
+			            SkyboxRt = 'rbxassetid://5260811073',
+			            SkyboxUp = 'rbxassetid://5260824661',
+		        },
+		        Planets = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://15983968922',
+			            SkyboxDn = 'rbxassetid://15983966825',
+			            SkyboxFt = 'rbxassetid://15983965025',
+			            SkyboxLf = 'rbxassetid://15983967420',
+			            SkyboxRt = 'rbxassetid://15983966246',
+			            SkyboxUp = 'rbxassetid://15983964246',
+			            StarCount = 3000,
+		        },
+		        Galaxy = {
+			            SkyboxBk = "rbxassetid://159454299",
+			            SkyboxDn = "rbxassetid://159454296",
+			            SkyboxFt = "rbxassetid://159454293",
+			            SkyboxLf = "rbxassetid://159454293",
+			            SkyboxRt = "rbxassetid://159454293",
+			            SkyboxUp = "rbxassetid://159454288",
+			            SunAngularSize = 0,
+		        }, 
+		        Blues = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=17124357467',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=17124359797',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=17124362093',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=17124365127',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=17124367200',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=17124369657',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Milkyway = {
+			            MoonTextureId = 'rbxassetid://1075087760',
+			            SkyboxBk = 'rbxassetid://2670643994',
+			            SkyboxDn = 'rbxassetid://2670643365',
+			            SkyboxFt = 'rbxassetid://2670643214',
+			            SkyboxLf = 'rbxassetid://2670643070',
+			            SkyboxRt = 'rbxassetid://2670644173',
+			            SkyboxUp = 'rbxassetid://2670644331',
+			            MoonAngularSize = 1.5,
+			            StarCount = 500,
+		        },
+		        Orange = {
+			            SkyboxBk = 'rbxassetid://150939022',
+			            SkyboxDn = 'rbxassetid://150939038',
+			            SkyboxFt = 'rbxassetid://150939047',
+			            SkyboxLf = 'rbxassetid://150939056',
+			            SkyboxRt = 'rbxassetid://150939063',
+			            SkyboxUp = 'rbxassetid://150939082',
+		        },
+		        DarkMountains = {
+			            SkyboxBk = 'rbxassetid://5098814730',
+			            SkyboxDn = 'rbxassetid://5098815227',
+			            SkyboxFt = 'rbxassetid://5098815653',
+			            SkyboxLf = 'rbxassetid://5098816155',
+			            SkyboxRt = 'rbxassetid://5098820352',
+			            SkyboxUp = 'rbxassetid://5098819127',
+		        },
+		        Space = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://166509999',
+			            SkyboxDn = 'rbxassetid://166510057',
+			            SkyboxFt = 'rbxassetid://166510116',
+			            SkyboxLf = 'rbxassetid://166510092',
+			            SkyboxRt = 'rbxassetid://166510131',
+			            SkyboxUp = 'rbxassetid://166510114',
+		        },
+		        Void = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://14543264135',
+			            SkyboxDn = 'rbxassetid://14543358958',
+			            SkyboxFt = 'rbxassetid://14543257810',
+			            SkyboxLf = 'rbxassetid://14543275895',
+			            SkyboxRt = 'rbxassetid://14543280890',
+			            SkyboxUp = 'rbxassetid://14543371676',
+		        },
+		        Stary = {
+			            SkyboxBk = 'rbxassetid://248431616',
+			            SkyboxDn = 'rbxassetid://248431677',
+			            SkyboxFt = 'rbxassetid://248431598',
+			            SkyboxLf = 'rbxassetid://248431686',
+			            SkyboxRt = 'rbxassetid://248431611',
+			            SkyboxUp = 'rbxassetid://248431605',
+				    StarCount = 3000,       
+		        },
+			Violet = {
+				    SkyboxBk = 'rbxassetid://8107841671',
+				    SkyboxDn = 'rbxassetid://6444884785',
+				    SkyboxFt = 'rbxassetid://8107841671',
+				    SkyboxLf = 'rbxassetid://8107841671',
+				    SkyboxRt = 'rbxassetid://8107841671',
+				    SkyboxUp = 'rbxassetid://8107849791',
+				    SunTextureId = 'rbxassetid://6196665106',
+				    MoonTextureId = 'rbxassetid://6444320592',
+				    MoonAngularSize = 0,
+		        },
+			Cloudy = {
+				    SkyboxBk = 'rbxassetid://15876597103',
+				    SkyboxDn = 'rbxassetid://15876592775',
+				    SkyboxFt = 'rbxassetid://15876640231',
+				    SkyboxLf = 'rbxassetid://15876638420',
+				    SkyboxRt = 'rbxassetid://15876595486',
+				    SkyboxUp = 'rbxassetid://15876639348',
+				    SunTextureId = 'rbxasset://sky/sun.jpg',
+				    MoonTextureId = 'rbxasset://sky/moon.jpg',
+				    MoonAngularSize = 11,
+		            	    SunAngularSize = 21,
+				    StarCount = 3000,
+		    	}
+	};																																					
+    	local ILS: any = BeforeShaders()
+	local function removeObject(v: Instance?)
+		if not table.find(newobjects, v) then 
+			local vt: table? = Toggles[v.ClassName]
+			if vt and vt.Toggle["Enabled"] then
+				table.insert(oldobjects, v);
+				v.Parent = game;
+			end;
+		end;
+	end;
 	
+	local function themes(val: any)
+	        local theme: any = skyThemes[themeName["Value"]];
+	        if theme then
+		        local sky: Sky? = lightingService:FindFirstChild("CustomSky") or Instance.new("Sky", lightingService);
+		        for v: any, value: any in next, theme do
+		                if v ~= "Atmosphere" then
+		                        sky[v] = value;
+		                end;
+		        end;
+		end;
+	end;
+
+	Atmosphere = vape.Categories.Other:CreateModule({
+		["Name"] = 'Atmosphere',
+		["Function"] = function(callback: boolean): void
+			if callback then
+				for _, v in lightingService:GetChildren() do
+			                if v:IsA('PostEffect') or v:IsA('Sky') or v:IsA('Atmosphere') or v:IsA('Clouds') then
+			                        v:Destroy();
+			                end;
+		        	end;
+		
+		                for _, v in workspace:GetDescendants() do
+			                if v:IsA("Clouds") then
+			                        v:Destroy();
+			                end;
+		                end;
+				local d: number = 0;
+				local r: any = workspace.Terrain;
+				for _, v in lightingService:GetChildren() do
+		                	if v:IsA('PostEffect') or v:IsA('Sky') or v:IsA('Atmosphere') or v:IsA('Clouds') then
+		                        	v:Destroy();
+		                        end;
+		                end;
+				lightingService.Brightness = d + 1;
+		                lightingService.EnvironmentDiffuseScale = d + 0.2;
+		                lightingService.EnvironmentSpecularScale = d + 0.82;
+		
+		                local sunRays: SunRaysEffect = Instance.new('SunRaysEffect');
+		                table.insert(newobjects, sunRays);
+		                pcall(function() sunRays.Parent = lightingService end);
+		
+		                local atmosphere: Atmosphere = Instance.new('Atmosphere');
+		                table.insert(newobjects, atmosphere);
+		                pcall(function() atmosphere.Parent = lightingService end);
+		
+		                local sky: Sky = Instance.new('Sky');
+		                table.insert(newobjects, sky);
+		                pcall(function() sky.Parent = lightingService end);
+		
+		                local blur: BlurEffect = Instance.new('BlurEffect');
+		                blur.Size = d + 3.921;
+		                table.insert(newobjects, blur);
+		                pcall(function() blur.Parent = lightingService end);
+		
+		                local color_correction: ColorCorrectionEffect = Instance.new('ColorCorrectionEffect');
+		                color_correction.Saturation = d + 0.092;
+		                table.insert(newobjects, color_correction);
+		                pcall(function() color_correction.Parent = lightingService end);
+		
+		                local clouds: Clouds = Instance.new('Clouds');
+		                clouds.Cover = d + 0.4;
+		                table.insert(newobjects, clouds);
+		                pcall(function() clouds.Parent = r end);
+		
+		                r.WaterTransparency = d + 1;
+		                r.WaterReflectance = d + 1;
+
+				themes()
+				for _, v in lightingService:GetChildren() do
+					removeObject(v);
+				end;
+				Atmosphere:Clean(lightingService.ChildAdded:Connect(function(v)
+					task.defer(removeObject, v);
+				end));
+	
+				for className, classData in Toggles do
+					if classData.Toggle["Enabled"] then
+						local obj: any = Instance.new(className);
+						for propName, propData in classData.Objects do
+							if propData.Type == 'ColorSlider' then
+								obj[propName] = Color3.fromHSV(propData.Hue, propData.Sat, propData.Value);
+							else
+								if apidump[className][propName] == 'Number' then
+									obj[propName] = tonumber(propData.Value) or 0;
+								else
+									obj[propName] = propData.Value;
+								end;
+							end;
+						end;
+						obj.Name = "Custom" .. className;
+						table.insert(newobjects, obj);
+						task.defer(function()
+							pcall(function() obj.Parent = lightingService end);
+						end);
+					end;
+				end;
+			else
+		                for _, v in newobjects do
+			                if v and v.Destroy then
+			                        v:Destroy();
+			                end;
+		                end;
+		                for _, v in oldobjects do
+		                    	pcall(function() v.Parent = lightingService end);
+		                end;
+		                table.clear(newobjects);
+		                table.clear(oldobjects);
+				for _, v in lightingService:GetChildren() do
+		                    	if v:IsA("ColorCorrectionEffect") then
+		                        	v:Destroy();
+		                    	end;
+		                end;
+				restoreDefault(ILS);
+			end;
+		end,
+		["Tooltip"] = 'Custom lighting objects'
+	})
+	local skyboxes: table = {};
+	for v,_ in next, skyThemes do
+	        table.insert(skyboxes, v);
+	end;
+	themeName = Atmosphere:CreateDropdown({
+	        ["Name"] = "Mode",
+	        ["List"] = skyboxes,
+	        ["Function"] = function(val) end
+	})
+	for i, v in apidump do
+		Toggles[i] = {Objects = {}}
+		Toggles[i].Toggle = Atmosphere:CreateToggle({
+			["Name"] = i,
+			["Function"] = function(callback: boolean): void
+				if Atmosphere["Enabled"] then
+					Atmosphere:Toggle();
+					Atmosphere:Toggle();
+				end;
+				for _, toggle in Toggles[i].Objects do
+					toggle.Object.Visible = callback;
+				end;
+			end;
+		})
+	
+		for i2, v2 in v do
+			if v2 == 'Text' or v2 == 'Number' then
+				Toggles[i].Objects[i2] = Atmosphere:CreateTextBox({
+					["Name"] = i2,
+					["Function"] = function(enter)
+						if Atmosphere["Enabled"] and enter then
+							Atmosphere:Toggle();
+							Atmosphere:Toggle();
+						end;
+					end,
+					["Darker"] = true,
+					["Default"] = v2 == 'Number' and '0' or nil,
+					["Visible"] = false
+				})
+			elseif v2 == 'Color' then
+				Toggles[i].Objects[i2] = Atmosphere:CreateColorSlider({
+					["Name"] = i2,
+					["Function"] = function()
+						if Atmosphere["Enabled"] then
+							Atmosphere:Toggle();
+							Atmosphere:Toggle();
+						end;
+					end,
+					["Darker"] = true,
+					["Visible"] = false
+				})
+			end;
+		end;
+	end;
+end)
