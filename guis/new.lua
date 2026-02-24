@@ -125,8 +125,7 @@ local getcustomassets = {
 	['Paragonv4/assets/new/bucket.png'] = 'rbxassetid://14373395239',
 	['Paragonv4/assets/new/dripcape.png'] = '',
 	['Paragonv4/assets/new/warning.png'] = 'rbxassetid://14368361552',
-	['Paragonv4/assets/new/worldicon.png'] = 'rbxassetid://14368362492',
-	['Paragonv4/assets/new/othericon.png'] = 'rbxassetid://14368362492'
+	['Paragonv4/assets/new/worldicon.png'] = 'rbxassetid://14368362492'
 }
 
 local isfile = isfile or function(file)
@@ -5802,10 +5801,6 @@ mainapi:CreateCategory({
 	Icon = getcustomasset('Paragonv4/assets/new/miniicon.png'),
 	Size = UDim2.fromOffset(19, 12)
 })
-mainapi:CreateCategory({
-	Name = 'Other',
-	Icon = getcustomasset('Paragonv4/assets/new/othericon.png'),
-	Size = UDim2.fromOffset(14, 14)
 --[[
 	Friends
 ]]
