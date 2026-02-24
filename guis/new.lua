@@ -1,5 +1,6 @@
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 --This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local mainapi = {
 	Categories = {},
 	GUIColor = {
@@ -5801,7 +5802,6 @@ mainapi:CreateCategory({
 	Icon = getcustomasset('Paragonv4/assets/new/miniicon.png'),
 	Size = UDim2.fromOffset(19, 12)
 })
-mainapi.Categories.Main:CreateDivider('misc')
 mainapi:CreateCategory({
 	Name = 'Other',
 	Icon = getcustomasset('Paragonv4/assets/new/othericon.png'),
