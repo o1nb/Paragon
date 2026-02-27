@@ -1,6 +1,3 @@
---This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
---This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
---This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local loadstring = function(...)
 	local res, err = loadstring(...)
 	if err and vape then
@@ -4377,7 +4374,39 @@ run(function()
 		Visible = false
 	})
 end)
-	
+run(function()
+    local Lighting = game:GetService("Lighting")
+
+    -- Save original lighting values to restore later
+    local originalSettings = {
+        Brightness = Lighting.Brightness,
+        Ambient = Lighting.Ambient,
+        OutdoorAmbient = Lighting.OutdoorAmbient,
+        ClockTime = Lighting.ClockTime,
+        FogEnd = Lighting.FogEnd
+    }
+
+    vape.Categories.World:CreateModule({
+        Name = "Fullbright",
+        Tooltip = "Makes the game much brighter for better visibility.",
+        Function = function(enabled)
+            if enabled then
+                Lighting.Brightness = 5
+                Lighting.Ambient = Color3.new(1, 1, 1)
+                Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+                Lighting.ClockTime = 14 -- Daylight
+                Lighting.FogEnd = 100000 -- Remove fog
+            else
+                -- Restore original settings
+                Lighting.Brightness = originalSettings.Brightness
+                Lighting.Ambient = originalSettings.Ambient
+                Lighting.OutdoorAmbient = originalSettings.OutdoorAmbient
+                Lighting.ClockTime = originalSettings.ClockTime
+                Lighting.FogEnd = originalSettings.FogEnd
+            end
+        end
+    })
+end)
 run(function()
 	local GamingChair = {Enabled = false}
 	local Color
@@ -5075,9 +5104,12 @@ run(function()
 	        lightingService.ExposureCompensation = lightingState.ExposureCompensation;
 	        lightingService.ShadowSoftness = lightingState.ShadowSoftness;
 	        lightingService.Ambient = lightingState.Ambient;
-	        for _, child in next, workspace.ItemDrops:GetChildren() do
-	            child.Parent = lightingService;
-	        end;
+	        local itemDrops = workspace:FindFirstChild('ItemDrops')
+	        if itemDrops then
+	            for _, child in next, itemDrops:GetChildren() do
+	                child.Parent = lightingService;
+	            end
+	        end
 	end;
 	local apidump: table = {
 		Sky = {
