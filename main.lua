@@ -1,3 +1,4 @@
+--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 repeat task.wait() until game:IsLoaded()
 if shared.vape then shared.vape:Uninject() end
 
@@ -44,25 +45,7 @@ local function downloadFile(path, func)
 	return (func or readfile)(path)
 end
 
-local function downloadProfiles()
-	local httpService = cloneref(game:GetService('HttpService'))
-	local suc, res = pcall(game.HttpGet, game, 'https://api.github.com/repos/o1nb/profiles/contents/profiles', true)
-	if not suc or res == '404: Not Found' then return end
-	local suc2, files = pcall(httpService.JSONDecode, httpService, res)
-	if not suc2 or type(files) ~= 'table' then return end
-	for _, file in ipairs(files) do
-		if type(file) == 'table' and type(file.name) == 'string'
-			and file.name:find('%.txt$') and type(file.download_url) == 'string' then
-			pcall(function()
-				local content = game:HttpGet(file.download_url, true)
-				writefile('Paragonv4/profiles/' .. file.name, content)
-			end)
-		end
-	end
-end
-
 local function finishLoading()
-	downloadProfiles()
 	vape.Init = nil
 	vape:Load()
 	task.spawn(function()
