@@ -5970,83 +5970,186 @@ run(function()
 		Tooltip = 'Disables Snap Traps'
 	})
 end)
+local AutoPlayAllow = nil
+local AutoWin = {Enabled = false}
 run(function()
-	function IsAlive(plr)
-		plr = plr or lplr
-		if not plr.Character then return false end
-		if not plr.Character:FindFirstChild("Head") then return false end
-		if not plr.Character:FindFirstChild("Humanoid") then return false end
-		if plr.Character:FindFirstChild("Humanoid").Health < 0.11 then return false end
-		return true
+	local antihit
+	local antihitrange 
+	local antihitairtime 
+	local antihitsettings 
+	local antihitgroundtime 
+	local antihitautoair
+
+	local oldroot
+	local hip
+	local clone
+
+	local function createClone()
+		if entitylib.isAlive and entitylib.character.Humanoid.Health > 0 and (not oldroot or not oldroot.Parent) then
+			hip = entitylib.character.Humanoid.HipHeight
+			oldroot = entitylib.character.HumanoidRootPart
+			if not lplr.Character.Parent then return false end
+			lplr.Character.Parent = game
+			clone = oldroot:Clone()
+			clone.Parent = lplr.Character
+			oldroot.Parent = gameCamera
+			bedwars.QueryUtil:setQueryIgnored(oldroot, true)
+			lplr.Character.PrimaryPart = clone
+			lplr.Character.Parent = workspace
+			for _, v in lplr.Character:GetDescendants() do
+				if v:IsA('Weld') or v:IsA('Motor6D') then
+					if v.Part0 == oldroot then v.Part0 = clone end
+					if v.Part1 == oldroot then v.Part1 = clone end
+				end
+			end
+			return true
+		end
+		return false
 	end
-	local Slowmode = {Value = 2}
-	GodMode = vape.Categories.Blatant:CreateModule({
-		Name = "AntiHit/Godmode",
-		Function = function(callback)
-			if callback then
-				task.spawn(function()
-					repeat task.wait()
-						local res, msg = pcall(function()
-							if (not vape.Modules.Fly.Enabled) and (not vape.Modules.InfiniteFly.Enabled) then
-								for i, v in pairs(game:GetService("Players"):GetChildren()) do
-									if v.Team ~= lplr.Team and IsAlive(v) and IsAlive(lplr) then
-										if v and v ~= lplr then
-											local TargetDistance = lplr:DistanceFromCharacter(v.Character:FindFirstChild("HumanoidRootPart").CFrame.p)
-											if TargetDistance < 25 then
-												if not lplr.Character:WaitForChild("HumanoidRootPart"):FindFirstChildOfClass("BodyVelocity") then
-													repeat task.wait() until shared.GlobalStore.matchState ~= 0
-													if not (v.Character.HumanoidRootPart.Velocity.Y < -10*5) then
-														lplr.Character.Archivable = true
-				
-														local Clone = lplr.Character:Clone()
-														Clone.Parent = game.Workspace
-														Clone.Head:ClearAllChildren()
-														gameCamera.CameraSubject = Clone:FindFirstChild("Humanoid")
-					
-														for i,v in pairs(Clone:GetChildren()) do
-															if string.lower(v.ClassName):find("part") and v.Name ~= "HumanoidRootPart" then
-																v.Transparency = 1
-															end
-															if v:IsA("Accessory") then
-																v:FindFirstChild("Handle").Transparency = 1
-															end
-														end
-					
-														lplr.Character:WaitForChild("HumanoidRootPart").CFrame = lplr.Character:WaitForChild("HumanoidRootPart").CFrame + Vector3.new(0,100,0)
-					
-														GodMode:Clean(game:GetService("RunService").RenderStepped:Connect(function()
-															if Clone ~= nil and Clone:FindFirstChild("HumanoidRootPart") then
-																Clone.HumanoidRootPart.Position = Vector3.new(lplr.Character:WaitForChild("HumanoidRootPart").Position.X, Clone.HumanoidRootPart.Position.Y, lplr.Character:WaitForChild("HumanoidRootPart").Position.Z)
-															end
-														end))
-					
-														task.wait(Slowmode.Value/10)
-														lplr.Character:WaitForChild("HumanoidRootPart").Velocity = Vector3.new(lplr.Character:WaitForChild("HumanoidRootPart").Velocity.X, -1, lplr.Character:WaitForChild("HumanoidRootPart").Velocity.Z)
-														lplr.Character:WaitForChild("HumanoidRootPart").CFrame = Clone.HumanoidRootPart.CFrame
-														gameCamera.CameraSubject = lplr.Character:FindFirstChild("Humanoid")
-														Clone:Destroy()
-														task.wait(0.15)
-													end
-												end
-											end
-										end
-									end
+	
+	local function destroyClone()
+		if not oldroot or not oldroot.Parent or not entitylib.isAlive then return false end
+		lplr.Character.Parent = game
+		oldroot.Parent = lplr.Character
+		lplr.Character.PrimaryPart = oldroot
+		lplr.Character.Parent = workspace
+		oldroot.CanCollide = true
+		for _, v in lplr.Character:GetDescendants() do
+			if v:IsA('Weld') or v:IsA('Motor6D') then
+				if v.Part0 == clone then v.Part0 = oldroot end
+				if v.Part1 == clone then v.Part1 = oldroot end
+			end
+		end
+		local oldcf = clone.CFrame
+		if clone then
+			clone:Destroy()
+			clone = nil
+		end
+		oldroot.Transparency = 1
+		oldroot = nil
+		entitylib.character.RootPart.CFrame = oldcf + Vector3.new(0, 12, 0)
+		task.spawn(function()
+			for i = 1, 12 do
+				entitylib.character.RootPart.Velocity = Vector3.zero
+				task.wait()
+			end
+		end)
+		entitylib.character.Humanoid.HipHeight = hip or 2
+	end
+
+	local rayCheck = RaycastParams.new()
+
+	local getY = function()
+		if oldroot and oldroot.Parent then
+			return 40
+		end
+		return 40
+	end
+
+	local tpbackup = false
+
+	local lastantihitting = nil
+
+	local projectileHitting = false
+
+	local FlyLandTick = 0
+
+	antihit = vape.Categories.Blatant:CreateModule({
+		Name = 'Anti Hit',
+		Function = function(call)
+			if call then
+				antihit:Clean(runService.PreSimulation:Connect(function()
+					if entitylib.isAlive and tick() > (FlyLandTick or 0) then
+						local cf = clone and clone.Parent and {clone.CFrame:GetComponents()} or {entitylib.character.HumanoidRootPart.CFrame:GetComponents()}
+						if store.KillauraTarget and not antihitting then
+							cf[2] = store.KillauraTarget.Character.PrimaryPart.CFrame.Y
+						end
+						if oldroot and oldroot.Parent then
+							oldroot.CFrame = antihitting and (tick() - entitylib.character.AirTime) < 2 and CFrame.new(clone.CFrame.X, oldroot.CFrame.Y, clone.CFrame.Z) or CFrame.new(unpack(cf)) + Vector3.new(0, 6, 0)
+							if not antihitting and lastantihitting then
+								lastantihitting = antihitting
+								for i = 1, 4 do
+									oldroot.Velocity = Vector3.zero
+									task.wait()
 								end
+							else
+								lastantihitting = antihitting
 							end
-						end)
-						if not res then warn(msg) end
-					until (not GodMode.Enabled)
-				end)
+						end
+					end
+				end))
+				repeat
+				  	if store.matchState == 0 or not entitylib.isAlive or tick() < (FlyLandTick or 0) then task.wait() continue end
+					if AutoWin.Enabled and not AutoPlayAllow then return end
+					rayCheck.FilterDescendantsInstances = {lplr.Character, AntiFallPart}
+					local plr = entitylib.AllPosition({
+						Range = antihitrange.Value,
+						Part = 'RootPart',
+						Players = antihitsettings.Players.Enabled,
+						NPCs = antihitsettings.NPCs.Enabled,
+						Limit = 1
+					})[1]
+					if entitylib.character.AirTime and plr and (tick() - entitylib.character.AirTime) < 2 or projectileHitting then
+						createClone()
+						if tpbackup then
+							tpbackup = false
+						else
+							tpbackup = true
+						end
+						antihitting = not tpbackup
+						projectileHitting = false
+						if not tpbackup then
+							oldroot.CFrame += Vector3.new(0, getY(), 0)
+						end
+					else
+						antihitting = false
+						destroyClone()
+					end
+					local delayv = antihitautoair.Enabled and (tpbackup and store.attackSpeed and 0.14) or (tpbackup and antihitairtime.Value or antihitgroundtime.Value) 
+					task.wait(delayv)
+				until not antihit.Enabled
+			else
+				destroyClone()
+				tpbackup = false
 			end
 		end
 	})
-	Slowmode = GodMode:CreateSlider({
-		Name = "Slowmode",
-		Function = function() end,
-		Default = 2,
-		Min = 1,
-		Max = 25
+	antihitsettings = antihit:CreateTargets({
+		Players = true, 
+		NPCs = false
 	})
+	antihitautoair = antihit:CreateToggle({
+		Name = 'Auto Predict',
+		Default = true,
+		Function = function(call)
+			if antihitairtime then
+				antihitairtime.Object.Visible = not call
+				antihitgroundtime.Object.Visible = not call
+			end
+		end
+	})
+	antihitrange = antihit:CreateSlider({
+		Name = 'Range',
+		Min = 1,
+		Max = 40,
+		Default = 25
+	})
+	antihitgroundtime = antihit:CreateSlider({
+		Name = 'Ground Time',
+		Decimal = 15,
+		Min = 0,
+		Max = 2,
+		Default = 0.14
+	})
+	antihitairtime = antihit:CreateSlider({
+		Name = 'Air Time',
+		Decimal = 15,
+		Min = 0,
+		Max = 2,
+		Default = 0.2
+	})
+	antihitgroundtime.Object.Visible = false
+	antihitairtime.Object.Visible = false
 end)
 run(function()
 	vape.Categories.World:CreateModule({
