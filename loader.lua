@@ -8,13 +8,22 @@ local delfile = delfile or function(file)
 	writefile(file, '')
 end
 
+local function httpGet(url)
+	local suc, res = pcall(function()
+		if request then
+			local r = request({Url = url, Method = 'GET'})
+			return r and r.StatusCode == 200 and r.Body or nil
+		end
+		return game:HttpGet(url, true)
+	end)
+	return suc and res or nil
+end
+
 local function downloadFile(path, func)
 	if not isfile(path) then
-		local suc, res = pcall(function()
-			return game:HttpGet('https://raw.githubusercontent.com/o1nb/Paragon/'..readfile('Paragonv4/profiles/commit.txt')..'/'..select(1, path:gsub('Paragonv4/', '')), true)
-		end)
-		if not suc or res == '404: Not Found' then
-			error(res)
+		local res = httpGet('https://raw.githubusercontent.com/o1nb/Paragon/'..readfile('Paragonv4/profiles/commit.txt')..'/'..select(1, path:gsub('Paragonv4/', '')))
+		if not res or res == '404: Not Found' then
+			error('Failed to download: '..path)
 		end
 		if path:find('.lua') then
 			res = '--This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.\n'..res
@@ -41,10 +50,8 @@ for _, folder in {'Paragonv4', 'Paragonv4/games', 'Paragonv4/profiles', 'Paragon
 end
 
 if not shared.VapeDeveloper then
-	local _, subbed = pcall(function() 
-		return game:HttpGet('https://github.com/o1nb/Paragon') 
-	end)
-	local commit = subbed:find('currentOid')
+	local subbed = httpGet('https://github.com/o1nb/Paragon')
+	local commit = subbed and subbed:find('currentOid')
 	commit = commit and subbed:sub(commit + 13, commit + 52) or nil
 	commit = commit and #commit == 40 and commit or 'main'
 	if commit == 'main' or (isfile('Paragonv4/profiles/commit.txt') and readfile('Paragonv4/profiles/commit.txt') or '') ~= commit then
