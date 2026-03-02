@@ -1,4 +1,3 @@
---This watermark is used to delete the file if its cached, remove it to make the file persist after vape updates.
 local loadstring = function(...)
 	local res, err = loadstring(...)
 	if err and vape then
@@ -280,7 +279,103 @@ vape.Libraries.auraanims = {
 			{CFrame = CFrame.new(0.7, -0.71, 0.59) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 0.1},
 			{CFrame = CFrame.new(0.7, -0.71, 0.59) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 0.05},
 			{CFrame = CFrame.new(0.63, -0.1, 1.37) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 0.15}
-		}
+		},
+	Normal = {
+		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(295), math.rad(55), math.rad(290)), Time = 0.05},
+		{CFrame = CFrame.new(0.69, -0.71, 0.6) * CFrame.Angles(math.rad(200), math.rad(60), math.rad(1)), Time = 0.05}
+	},
+	Hamsterware = {
+		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(40), math.rad(-90)), Time = 0.1},
+		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(70), math.rad(-135)), Time = 0.1}
+	},
+	Astral = {
+		{CFrame = CFrame.new(0.7, -0.7, 0.6) * CFrame.Angles(math.rad(-16), math.rad(60), math.rad(-80)), Time = 0.1},
+		{CFrame = CFrame.new(0.7, -0.7, 0.6) * CFrame.Angles(math.rad(-16), math.rad(60), math.rad(-80)), Time = 0.15},
+		{CFrame = CFrame.new(0.95, -1.06, -2.25) * CFrame.Angles(math.rad(-179), math.rad(61), math.rad(80)), Time = 0.15}
+	},
+	Leaked = {
+		{CFrame = CFrame.new(0.7, -0.7, 0.6) * CFrame.Angles(math.rad(-16), math.rad(60), math.rad(-80)), Time = 0},
+		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(16), math.rad(59), math.rad(-90)), Time = 0.156},
+		{CFrame = CFrame.new(0.7, -0.7, 0.6) * CFrame.Angles(math.rad(-16), math.rad(60), math.rad(-80)), Time = 0.075}
+	},
+	Slide2 = {
+		{CFrame = CFrame.new(0.7, -0.7, 0.6) * CFrame.Angles(math.rad(-16), math.rad(60), math.rad(-80)), Time = 0},
+		{CFrame = CFrame.new(0.7, -0.7, 0.6) * CFrame.Angles(math.rad(-171), math.rad(47), math.rad(74)), Time = 0.16}
+	},
+	Femboy = {
+		{CFrame = CFrame.new(0, 0, 0) * CFrame.Angles(math.rad(1), math.rad(-7), math.rad(7)), Time = 0},
+		{CFrame = CFrame.new(0, 0, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0)), Time = 0.08},
+		{CFrame = CFrame.new(-0.01, 0, 0) * CFrame.Angles(math.rad(-7), math.rad(-7), math.rad(-1)), Time = 0.08},
+		{CFrame = CFrame.new(0, 0, 0) * CFrame.Angles(math.rad(1), math.rad(-7), math.rad(7)), Time = 0.11}
+	},
+	Pulse = {
+		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0)), Time = 0.5},
+		{CFrame = CFrame.new(0.69, -0.72, 0.6) * CFrame.Angles(math.rad(-20), math.rad(0), math.rad(0)), Time = 1.0},
+		{CFrame = CFrame.new(0.69, -0.68, 0.6) * CFrame.Angles(math.rad(20), math.rad(0), math.rad(0)), Time = 1.5},
+		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0)), Time = 2.0}
+	},
+	['Slowly Smooth'] = {
+		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(50), math.rad(-90)), Time = 0.25},
+		{CFrame = CFrame.new(0.7, -0.71, 0.59) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 0.5},
+		{CFrame = CFrame.new(0.150, -0.8, 0.1) * CFrame.Angles(math.rad(-45), math.rad(40), math.rad(-75)), Time = 0.75},
+		{CFrame = CFrame.new(0.02, -0.8, 0.05) * CFrame.Angles(math.rad(-60), math.rad(60), math.rad(-95)), Time = 1},
+		{CFrame = CFrame.new(0.7, -0.71, 0.59) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 1.25},
+		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(50), math.rad(-90)), Time = 1.5}
+	},
+	['Latest Remake'] = {
+		{CFrame = CFrame.new(0.68, -0.72, 0.12) * CFrame.Angles(math.rad(-63), math.rad(57), math.rad(-49)), Time = 0.4},
+		{CFrame = CFrame.new(0.17, -1.18, 0.52) * CFrame.Angles(math.rad(-177), math.rad(56), math.rad(31)), Time = 0.4}
+	},
+	['Exhibition Fast'] = {
+		{CFrame = CFrame.new(0.7, -0.7, 0.6) * CFrame.Angles(math.rad(-20), math.rad(50), math.rad(-90)), Time = 0.05},
+		{CFrame = CFrame.new(0.8, -0.8, 0.5) * CFrame.Angles(math.rad(-60), math.rad(60), math.rad(-80)), Time = 0.07}
+	},
+	Smooth = {
+		{CFrame = CFrame.new(1, 0, -0.5) * CFrame.Angles(math.rad(-90), math.rad(60), math.rad(-60)), Time = 0.2},
+		{CFrame = CFrame.new(1, -0.2, -0.5) * CFrame.Angles(math.rad(-160), math.rad(60), math.rad(-30)), Time = 0.12}
+	},
+	Drop = {
+		{CFrame = CFrame.new(-0.4, -0.7, -1.3) * CFrame.Angles(math.rad(111), math.rad(111), math.rad(130)), Time = 0.23},
+		{CFrame = CFrame.new(-0.8, -0.9, -1.7) * CFrame.Angles(math.rad(20), math.rad(130), math.rad(180)), Time = 0.23}
+	},
+	Rise = {
+		{CFrame = CFrame.new(0.9, 0, 0) * CFrame.Angles(math.rad(-80), math.rad(60), math.rad(-40)), Time = 0.14},
+		{CFrame = CFrame.new(0.5, 0.2, -0.7) * CFrame.Angles(math.rad(-150), math.rad(55), math.rad(20)), Time = 0.14}
+	},
+	fdp = {
+		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(295), math.rad(55), math.rad(290)), Time = 0.90},
+		{CFrame = CFrame.new(0.69, -0.71, 0.6) * CFrame.Angles(math.rad(200), math.rad(60), math.rad(1)), Time = 0.50}
+	},
+	['old Tenacity'] = {
+		{CFrame = CFrame.new(0.9, 0, 0) * CFrame.Angles(math.rad(-80), math.rad(60), math.rad(-40)), Time = 0.2},
+		{CFrame = CFrame.new(0.5, -0.2, -0.7) * CFrame.Angles(math.rad(-150), math.rad(55), math.rad(20)), Time = 0.2}
+	},
+	Tenacity = {
+		{CFrame = CFrame.new(0, 0, 0) * CFrame.Angles(-math.rad(190), math.rad(110), -math.rad(90)), Time = 0.3},
+		{CFrame = CFrame.new(0.3, -2, 2) * CFrame.Angles(math.rad(120), math.rad(140), math.rad(320)), Time = 0.3}
+	},
+	Tenacityv2 = {
+		{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(25), math.rad(-60)), Time = 0.1},
+		{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-40), math.rad(40), math.rad(-90)), Time = 0.1},
+		{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(55), math.rad(-115)), Time = 0.1},
+		{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-50), math.rad(70), math.rad(-60)), Time = 0.1},
+		{CFrame = CFrame.new(0.63, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(70), math.rad(-70)), Time = 0.1}
+	},
+	Smoother = {
+		{CFrame = CFrame.new(3.0, -1.7, -1.1) * CFrame.Angles(math.rad(307), math.rad(57), math.rad(145)), Time = 0.18},
+		{CFrame = CFrame.new(3.0, -1.7, -1.3) * CFrame.Angles(math.rad(203), math.rad(57), math.rad(226)), Time = 0.14}
+	},
+	['Smooth Gaming'] = {
+		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(50), math.rad(-90)), Time = 0.25},
+		{CFrame = CFrame.new(0.68, -0.72, 0.12) * CFrame.Angles(math.rad(-63), math.rad(57), math.rad(-49)), Time = 0.4},
+		{CFrame = CFrame.new(0.7, -0.71, 0.59) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 0.6},
+		{CFrame = CFrame.new(0.17, -1.18, 0.52) * CFrame.Angles(math.rad(-177), math.rad(56), math.rad(31)), Time = 0.6},
+		{CFrame = CFrame.new(0.150, -0.8, 0.1) * CFrame.Angles(math.rad(-45), math.rad(40), math.rad(-75)), Time = 0.8},
+		{CFrame = CFrame.new(0.02, -0.8, 0.05) * CFrame.Angles(math.rad(-60), math.rad(60), math.rad(-95)), Time = 1.0},
+		{CFrame = CFrame.new(0.8, -0.8, 0.5) * CFrame.Angles(math.rad(-60), math.rad(60), math.rad(-80)), Time = 1.2},
+		{CFrame = CFrame.new(0.7, -0.71, 0.59) * CFrame.Angles(math.rad(-84), math.rad(50), math.rad(-38)), Time = 1.4},
+		{CFrame = CFrame.new(0.69, -0.7, 0.6) * CFrame.Angles(math.rad(-30), math.rad(50), math.rad(-90)), Time = 1.6}
+	}
 }
 
 local SpeedMethods
@@ -5157,14 +5252,280 @@ run(function()
 		}
 	}
     	local skyThemes: table = {
-		    Zen0flare = {
-    				SkyboxBk = "ParagonV4/assets/new/bk.png",
-   					SkyboxDn = "ParagonV4/assets/new/dn.png",
-   				 	SkyboxFt = "ParagonV4/assets/new/ft.png",
-    				SkyboxLf = "ParagonV4/assets/new/lf.png",
-  				 	SkyboxRt = "ParagonV4/assets/new/rt.png",
-    				SkyboxUp = "ParagonV4/assets/new/up.png",
-				},
+		    NetherWorld = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://14365019002',
+			            SkyboxDn = 'rbxassetid://14365023350',
+			            SkyboxFt = 'rbxassetid://14365018399',
+			            SkyboxLf = 'rbxassetid://14365018705',
+			            SkyboxRt = 'rbxassetid://14365018143',
+			            SkyboxUp = 'rbxassetid://14365019327',
+		        },
+		        Neptune = {
+				    SkyboxBk = 'rbxassetid://218955819',
+				    SkyboxDn = 'rbxassetid://218953419',
+				    SkyboxFt = 'rbxassetid://218954524',
+				    SkyboxLf = 'rbxassetid://218958493',
+				    SkyboxRt = 'rbxassetid://218957134',
+				    SkyboxUp = 'rbxassetid://218950090',
+		        },
+		        Velocity = {
+			            SkyboxBk = 'rbxassetid://570557514',
+			            SkyboxDn = 'rbxassetid://570557775',
+			            SkyboxFt = 'rbxassetid://570557559',
+			            SkyboxLf = 'rbxassetid://570557620',
+			            SkyboxRt = 'rbxassetid://570557672',
+			            SkyboxUp = 'rbxassetid://570557727',
+		        },
+		        Minecraft = {
+			            SkyboxBk = 'rbxassetid://591058823',
+			            SkyboxDn = 'rbxassetid://591059876',
+			            SkyboxFt = 'rbxassetid://591058104',
+			            SkyboxLf = 'rbxassetid://591057861',
+			            SkyboxRt = 'rbxassetid://591057625',
+			            SkyboxUp = 'rbxassetid://591059642',
+		        },
+		        Purple = {
+			            SkyboxBk = "rbxassetid://8539982183",
+			            SkyboxDn = "rbxassetid://8539981943",
+			            SkyboxFt = "rbxassetid://8539981721",
+			            SkyboxLf = "rbxassetid://8539981424",
+			            SkyboxRt = "rbxassetid://8539980766",
+			            SkyboxUp = "rbxassetid://8539981085",
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            StarCount = 3000,
+		        }, 
+		        ["日の出"] = {
+				    SkyboxBk = "rbxassetid://600830446",
+				    SkyboxDn = "rbxassetid://600831635",
+				    SkyboxFt = "rbxassetid://600832720",
+				    SkyboxLf = "rbxassetid://600886090",
+				    SkyboxRt = "rbxassetid://600833862",
+				    SkyboxUp = "rbxassetid://600835177",
+		        },
+		        Sakura = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=16694315897",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=16694319417",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=16694324910",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=16694328308",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=16694331447",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=16694334666",
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Hexagonal = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=15876463105",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=15876464432",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=15876465852",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=15876467260",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=15876469097",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=15876470945",
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Reality = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=6778646360",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=6778658683",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=6778648039",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=6778649136",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=6778650519",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=6778658364",
+		        },
+		        LunarNight = {
+			            SkyboxBk = 'rbxassetid://187713366',
+			            SkyboxDn = 'rbxassetid://187712428',
+			            SkyboxFt = 'rbxassetid://187712836',
+			            SkyboxLf = 'rbxassetid://187713755',
+			            SkyboxRt = 'rbxassetid://187714525',
+			            SkyboxUp = 'rbxassetid://187712111',
+			            SunAngularSize = 0,
+			            StarCount = 0,
+		        },
+		        FPSBoost = {
+			            SkyboxBk = 'rbxassetid://11457548274',
+			            SkyboxDn = 'rbxassetid://11457548274',
+			            SkyboxFt = 'rbxassetid://11457548274',
+			            SkyboxLf = 'rbxassetid://11457548274',
+			            SkyboxRt = 'rbxassetid://11457548274',
+			            SkyboxUp = 'rbxassetid://11457548274',
+			            SunAngularSize = 0,
+			            StarCount = 3000,
+		        },
+		        Etheral = {
+			            SkyboxBk = 'rbxassetid://16262356578',
+			            SkyboxDn = 'rbxassetid://16262358026',
+			            SkyboxFt = 'rbxassetid://16262360469',
+			            SkyboxLf = 'rbxassetid://16262362003',
+			            SkyboxRt = 'rbxassetid://16262363873',
+			            SkyboxUp = 'rbxassetid://16262366016',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Pandora = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=16739324092',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=16739325541',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=16739327056',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=16739329370',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=16739331050',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=16739332736',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Polaris = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=16823270864',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=16823272150',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=16823273508',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=16823274898',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=16823276281',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=16823277547',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Diaphanous = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=16888989874',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=16888991855',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=16888995219',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=16888998994',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=16889000916',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=16889004122',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Transcendent = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=17124357467',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=17124359797',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=17124362093',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=17124365127',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=17124367200',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=17124369657',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Truth = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=144933338",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=144931530",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=144933262",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=144933244",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=144933299",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=144931564",
+		        },
+		        RayTracing = {
+			            SkyboxBk = "http://www.roblox.com/asset/?id=271042516",
+			            SkyboxDn = "http://www.roblox.com/asset/?id=271077243",
+			            SkyboxFt = "http://www.roblox.com/asset/?id=271042556",
+			            SkyboxLf = "http://www.roblox.com/asset/?id=271042310",
+			            SkyboxRt = "http://www.roblox.com/asset/?id=271042467",
+			            SkyboxUp = "http://www.roblox.com/asset/?id=271077958",
+		        },
+		        Nebula = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://5260808177',
+			            SkyboxDn = 'rbxassetid://5260653793',
+			            SkyboxFt = 'rbxassetid://5260817288',
+			            SkyboxLf = 'rbxassetid://5260800833',
+			            SkyboxRt = 'rbxassetid://5260811073',
+			            SkyboxUp = 'rbxassetid://5260824661',
+		        },
+		        Planets = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://15983968922',
+			            SkyboxDn = 'rbxassetid://15983966825',
+			            SkyboxFt = 'rbxassetid://15983965025',
+			            SkyboxLf = 'rbxassetid://15983967420',
+			            SkyboxRt = 'rbxassetid://15983966246',
+			            SkyboxUp = 'rbxassetid://15983964246',
+			            StarCount = 3000,
+		        },
+		        Galaxy = {
+			            SkyboxBk = "rbxassetid://159454299",
+			            SkyboxDn = "rbxassetid://159454296",
+			            SkyboxFt = "rbxassetid://159454293",
+			            SkyboxLf = "rbxassetid://159454293",
+			            SkyboxRt = "rbxassetid://159454293",
+			            SkyboxUp = "rbxassetid://159454288",
+			            SunAngularSize = 0,
+		        }, 
+		        Blues = {
+			            SkyboxBk = 'http://www.roblox.com/asset/?id=17124357467',
+			            SkyboxDn = 'http://www.roblox.com/asset/?id=17124359797',
+			            SkyboxFt = 'http://www.roblox.com/asset/?id=17124362093',
+			            SkyboxLf = 'http://www.roblox.com/asset/?id=17124365127',
+			            SkyboxRt = 'http://www.roblox.com/asset/?id=17124367200',
+			            SkyboxUp = 'http://www.roblox.com/asset/?id=17124369657',
+			            SunAngularSize = 21,
+			            StarCount = 3000,
+		        },
+		        Milkyway = {
+			            MoonTextureId = 'rbxassetid://1075087760',
+			            SkyboxBk = 'rbxassetid://2670643994',
+			            SkyboxDn = 'rbxassetid://2670643365',
+			            SkyboxFt = 'rbxassetid://2670643214',
+			            SkyboxLf = 'rbxassetid://2670643070',
+			            SkyboxRt = 'rbxassetid://2670644173',
+			            SkyboxUp = 'rbxassetid://2670644331',
+			            MoonAngularSize = 1.5,
+			            StarCount = 500,
+		        },
+		        Orange = {
+			            SkyboxBk = 'rbxassetid://150939022',
+			            SkyboxDn = 'rbxassetid://150939038',
+			            SkyboxFt = 'rbxassetid://150939047',
+			            SkyboxLf = 'rbxassetid://150939056',
+			            SkyboxRt = 'rbxassetid://150939063',
+			            SkyboxUp = 'rbxassetid://150939082',
+		        },
+		        DarkMountains = {
+			            SkyboxBk = 'rbxassetid://5098814730',
+			            SkyboxDn = 'rbxassetid://5098815227',
+			            SkyboxFt = 'rbxassetid://5098815653',
+			            SkyboxLf = 'rbxassetid://5098816155',
+			            SkyboxRt = 'rbxassetid://5098820352',
+			            SkyboxUp = 'rbxassetid://5098819127',
+		        },
+		        Space = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://166509999',
+			            SkyboxDn = 'rbxassetid://166510057',
+			            SkyboxFt = 'rbxassetid://166510116',
+			            SkyboxLf = 'rbxassetid://166510092',
+			            SkyboxRt = 'rbxassetid://166510131',
+			            SkyboxUp = 'rbxassetid://166510114',
+		        },
+		        Void = {
+			            MoonAngularSize = 0,
+			            SunAngularSize = 0,
+			            SkyboxBk = 'rbxassetid://14543264135',
+			            SkyboxDn = 'rbxassetid://14543358958',
+			            SkyboxFt = 'rbxassetid://14543257810',
+			            SkyboxLf = 'rbxassetid://14543275895',
+			            SkyboxRt = 'rbxassetid://14543280890',
+			            SkyboxUp = 'rbxassetid://14543371676',
+		        },
+		        Stary = {
+			            SkyboxBk = 'rbxassetid://248431616',
+			            SkyboxDn = 'rbxassetid://248431677',
+			            SkyboxFt = 'rbxassetid://248431598',
+			            SkyboxLf = 'rbxassetid://248431686',
+			            SkyboxRt = 'rbxassetid://248431611',
+			            SkyboxUp = 'rbxassetid://248431605',
+				    StarCount = 3000,       
+		        },
+			Violet = {
+				    SkyboxBk = 'rbxassetid://8107841671',
+				    SkyboxDn = 'rbxassetid://6444884785',
+				    SkyboxFt = 'rbxassetid://8107841671',
+				    SkyboxLf = 'rbxassetid://8107841671',
+				    SkyboxRt = 'rbxassetid://8107841671',
+				    SkyboxUp = 'rbxassetid://8107849791',
+				    SunTextureId = 'rbxassetid://6196665106',
+				    MoonTextureId = 'rbxassetid://6444320592',
+				    MoonAngularSize = 0,
+		        },
 			Cloudy = {
 				    SkyboxBk = 'rbxassetid://15876597103',
 				    SkyboxDn = 'rbxassetid://15876592775',
@@ -5249,7 +5610,7 @@ run(function()
 		                pcall(function() sky.Parent = lightingService end);
 		
 		                local blur: BlurEffect = Instance.new('BlurEffect');
-		                blur.Size = d + 3.921;
+		                blur.Size = d + 2.6;
 		                table.insert(newobjects, blur);
 		                pcall(function() blur.Parent = lightingService end);
 		
