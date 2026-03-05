@@ -4756,7 +4756,140 @@ run(function()
 		Tooltip = 'Displays your health in the center of your screen.'
 	})
 end)
-	
+run(function()
+	local UwUify
+	local Stutter
+	local Faces
+	local chatSG = nil
+
+	local CAS = cloneref(game:GetService("ContextActionService"))
+	local RunService = game:GetService("RunService")
+	local textChatService = cloneref(game:GetService("TextChatService"))
+	local replicatedStorage = cloneref(game:GetService("ReplicatedStorage"))
+	local coreGui = cloneref(game:GetService("CoreGui"))
+
+	local function uwuify(text)
+		if type(text) ~= 'string' then return text end
+		text = text:gsub('r', 'w'):gsub('R', 'W')
+		text = text:gsub('l', 'w'):gsub('L', 'W')
+		text = text:gsub('th', 'd'):gsub('TH', 'D'):gsub('Th', 'D')
+		text = text:gsub('ove', 'uv'):gsub('OVE', 'UV'):gsub('Ove', 'Uv')
+		text = text:gsub('n([aeiouAEIOU])', 'ny%1')
+		text = text:gsub('N([aeiouAEIOU])', 'Ny%1')
+
+		if Stutter and Stutter.Enabled then
+			text = text:gsub('^(%a)', function(c) return c..'-'..c:lower() end)
+			text = text:gsub('%s+(%a)', function(c) return ' '..c..'-'..c:lower() end)
+		end
+
+		if Faces and Faces.Enabled then
+			local faces = {' owo',' uwu',' >w<',' :3',' ^w^',' nyaa~',' >.<','~'}
+			if math.random(3) == 1 then
+				text ..= faces[math.random(#faces)]
+			end
+		end
+		return text
+	end
+
+	local function sendMsg(msg)
+		if textChatService.ChatVersion == Enum.ChatVersion.TextChatService then
+			local ch = textChatService.ChatInputBarConfiguration.TargetTextChannel
+			if ch then task.spawn(function() ch:SendAsync(msg) end) return end
+		end
+		if replicatedStorage:FindFirstChild('DefaultChatSystemChatEvents') then
+			replicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(msg, 'All')
+		end
+	end
+
+	UwUify = vape.Categories.Utility:CreateModule({
+		Name = 'gaychat',
+		Tooltip = 'Turns u gay. / to open chat',
+		Function = function(callback)
+			if callback then
+				pcall(function() textChatService.ChatInputBarConfiguration.Enabled = false end)
+
+				local sg = Instance.new('ScreenGui')
+				sg.Name = 'UwUifyChat'
+				sg.ResetOnSpawn = false
+				sg.IgnoreGuiInset = true
+				sg.Parent = gethui and gethui() or coreGui
+
+				local bg = Instance.new('Frame')
+				bg.Size = UDim2.new(0,470,0,30)
+				bg.Position = UDim2.new(0,8,1,-70)
+				bg.BackgroundColor3 = Color3.fromRGB(31,31,31)
+				bg.BackgroundTransparency = 0.15
+				bg.BorderSizePixel = 0
+				bg.Visible = false
+				bg.Parent = sg
+				Instance.new('UICorner', bg)
+
+				local tb = Instance.new('TextBox')
+				tb.Size = UDim2.new(1,-10,1,0)
+				tb.Position = UDim2.new(0,5,0,0)
+				tb.BackgroundTransparency = 1
+				tb.Text = ''
+				tb.PlaceholderText = 'Say something uwu...'
+				tb.TextColor3 = Color3.new(1,1,1)
+				tb.TextSize = 14
+				tb.ClearTextOnFocus = false
+				tb.Parent = bg
+
+				
+				tb:GetPropertyChangedSignal("Text"):Connect(function()
+					if tb.Text == "/" then
+						tb.Text = ""
+					end
+				end)
+
+				tb.FocusLost:Connect(function(enterPressed)
+					local msg = tb.Text
+					tb.Text = ''
+					bg.Visible = false
+					if enterPressed and msg ~= '' then
+						sendMsg(uwuify(msg))
+					end
+				end)
+
+			
+				CAS:BindActionAtPriority("UwUifyChatOpen", function(_, state)
+					if state ~= Enum.UserInputState.Begin then
+						return Enum.ContextActionResult.Pass
+					end
+
+					if not bg.Visible then
+						bg.Visible = true
+						tb:CaptureFocus()
+
+					
+						RunService.Heartbeat:Wait()
+						tb.Text = ""
+
+						return Enum.ContextActionResult.Sink
+					end
+
+					return Enum.ContextActionResult.Pass
+				end, false, 3000, Enum.KeyCode.Slash)
+
+				chatSG = sg
+			else
+				pcall(function() textChatService.ChatInputBarConfiguration.Enabled = true end)
+				CAS:UnbindAction("UwUifyChatOpen")
+				if chatSG then chatSG:Destroy() chatSG = nil end
+			end
+		end
+	})
+
+	Stutter = UwUify:CreateToggle({
+		Name = 'Stutter',
+		Default = true
+	})
+
+	Faces = UwUify:CreateToggle({
+		Name = 'Faces',
+		Default = true
+	})
+end)
 run(function()
 	local NameTags
 	local Targets
